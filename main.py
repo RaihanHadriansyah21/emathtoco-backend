@@ -558,6 +558,72 @@ def post_audit_log(payload: dict):
     return {"success": True}
 
 
+@app.delete("/admin/user/{user_id}")
+def admin_delete_user(user_id: str):
+    """
+    Menghapus pengguna sepenuhnya dari sistem:
+    1. Verifikasi bahwa user bukan admin
+    2. Hapus dari tabel profil_pengguna
+    3. Hapus dari Supabase Auth
+    """
+    import requests
+    from utils.supabase_client import SUPABASE_URL, SUPABASE_KEY
+
+    if not user_id or len(user_id) < 10:
+        raise HTTPException(status_code=400, detail="User ID tidak valid.")
+
+    # 1. Verify user exists and is NOT admin
+    try:
+        profile_res = supabase.table("profil_pengguna").select("role, nama_lengkap").eq("id", user_id).maybe_single().execute()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Gagal memeriksa profil pengguna: {str(e)}")
+
+    if profile_res.data:
+        role = (profile_res.data.get("role") or "").strip().lower()
+        if role == "admin":
+            raise HTTPException(status_code=403, detail="Administrator accounts cannot be deleted.")
+
+    # 2. Delete from profil_pengguna table
+    try:
+        del_profile_res = supabase.table("profil_pengguna").delete().eq("id", user_id).execute()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Gagal menghapus profil dari database: {str(e)}")
+
+    # 3. Delete from Supabase Auth using Admin API
+    try:
+        auth_url = f"{SUPABASE_URL}/auth/v1/admin/users/{user_id}"
+        headers = {
+            "apikey": SUPABASE_KEY,
+            "Authorization": f"Bearer {SUPABASE_KEY}",
+            "Content-Type": "application/json"
+        }
+        auth_response = requests.delete(auth_url, headers=headers, timeout=10)
+
+        if auth_response.status_code not in [200, 204]:
+            error_detail = "Unknown error"
+            try:
+                error_detail = auth_response.json().get("message", auth_response.text)
+            except Exception:
+                error_detail = auth_response.text
+            raise HTTPException(
+                status_code=500,
+                detail=f"Profil berhasil dihapus, tetapi gagal menghapus akun autentikasi: {error_detail}"
+            )
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Profil berhasil dihapus, tetapi gagal menghubungi server autentikasi: {str(e)}"
+        )
+
+    user_name = profile_res.data.get("nama_lengkap", "Unknown") if profile_res.data else "Unknown"
+    return {
+        "success": True,
+        "message": f"Pengguna '{user_name}' berhasil dihapus sepenuhnya dari sistem.",
+        "deleted_profile": len(del_profile_res.data) > 0 if del_profile_res.data else False,
+        "deleted_auth": True
+    }
+
+
 @app.get("/audit/test")
 def audit_test():
     """
