@@ -13,10 +13,11 @@ def save_prediction(
     error_message: str = None,
 ) -> list:
     """
-    INSERT satu record ke tabel hasil_prediksi.
+    UPSERT satu record ke tabel hasil_prediksi.
 
-    Digunakan untuk debug endpoint /test-save.
-    Untuk pipeline produksi gunakan upsert_prediction().
+    Menggunakan upsert agar aman dari duplikasi.
+    Jika record dengan (pengumpulan_tugas_id, section_code) sudah ada,
+    akan di-UPDATE (termasuk model_ai jika berganti).
     """
     data = {
         "pengumpulan_tugas_id": pengumpulan_tugas_id,
@@ -29,7 +30,11 @@ def save_prediction(
         "status": status,
         "error_message": error_message,
     }
-    response = supabase.table("hasil_prediksi").insert(data).execute()
+    response = (
+        supabase.table("hasil_prediksi")
+        .upsert(data, on_conflict="pengumpulan_tugas_id,section_code")
+        .execute()
+    )
     return response.data
 
 
@@ -48,12 +53,15 @@ def upsert_prediction(
     UPSERT satu record ke tabel hasil_prediksi.
 
     Aman untuk re-run: jika kombinasi
-    (pengumpulan_tugas_id, section_code, model_ai) sudah ada,
+    (pengumpulan_tugas_id, section_code) sudah ada,
     record akan di-UPDATE bukan INSERT duplikat.
+    Ini memastikan hanya ada SATU hasil per section per submission,
+    bahkan jika dosen mengganti model AI.
 
     Prasyarat di database:
-        CREATE UNIQUE INDEX idx_hasil_prediksi_unique
-            ON hasil_prediksi(pengumpulan_tugas_id, section_code, model_ai);
+        ALTER TABLE hasil_prediksi
+            ADD CONSTRAINT uq_hasil_prediksi_submission_section
+            UNIQUE (pengumpulan_tugas_id, section_code);
     """
     data = {
         "pengumpulan_tugas_id": pengumpulan_tugas_id,
@@ -68,7 +76,7 @@ def upsert_prediction(
     }
     response = (
         supabase.table("hasil_prediksi")
-        .upsert(data, on_conflict="pengumpulan_tugas_id,section_code,model_ai")
+        .upsert(data, on_conflict="pengumpulan_tugas_id,section_code")
         .execute()
     )
     return response.data
@@ -88,6 +96,19 @@ def get_predictions_by_submission(submission_id: str, model_ai: str = None) -> l
             query = query.in_("model_ai", ["MobileNetV2", "MobilenetV2"])
         else:
             query = query.eq("model_ai", model_ai)
+    response = query.execute()
+    return response.data
+
+
+def delete_predictions_by_submission(submission_id: str, model_ai: str = None) -> list:
+    """
+    Hapus SEMUA hasil prediksi untuk satu submission_id.
+
+    Parameter model_ai tetap diterima untuk kompatibilitas mundur,
+    tetapi diabaikan — selalu menghapus semua prediksi untuk
+    submission agar tidak ada data lama menumpuk saat re-run.
+    """
+    query = supabase.table("hasil_prediksi").delete().eq("pengumpulan_tugas_id", submission_id)
     response = query.execute()
     return response.data
 

@@ -1,19 +1,34 @@
 import numpy as np
+from datetime import datetime
 
 from repositories.lembar_jawaban_repository import get_answer_sheets
-from repositories.prediction_repository import upsert_prediction
+from repositories.prediction_repository import upsert_prediction, delete_predictions_by_submission
 from repositories.submission_repository import (
     get_submission_by_id,
     update_ai_status,
     update_submission_result,
 )
 from services.class_mapping import get_score
-from services.image_service import download_image
+from services.image_service import download_image, check_file_exists
 from services.model_registry import get_model, MODEL_CONFIG
 from services.preprocess import preprocess_image
 
 # Nama arsitektur default yang digunakan pada tahap ini
 MODEL_AI = "MobileNetV2"
+
+
+def _normalize_model_name(model_name: str) -> str:
+    """Normalize model name ke format standar."""
+    if not model_name:
+        return "MobileNetV2"
+    lower = model_name.lower()
+    if lower == "mobilenetv2":
+        return "MobileNetV2"
+    elif lower == "densenet121":
+        return "DenseNet121"
+    elif lower == "inceptionv3":
+        return "InceptionV3"
+    return model_name if model_name in MODEL_CONFIG else "MobileNetV2"
 
 
 def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
@@ -27,7 +42,7 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
                   - pengumpulan_tugas_id
                   - section_code
                   - image_url
-        model_name : nama model yang dipilih, contoh "MobileNetV2", "DenseNet201", "InceptionV3"
+        model_name : nama model yang dipilih, contoh "MobileNetV2", "DenseNet121", "InceptionV3"
 
     Return:
         dict hasil prediksi:
@@ -40,13 +55,16 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
           }
 
     Raise:
-        ValueError      jika image gagal di-decode (None dari OpenCV)
-        Exception lain  jika ada error di download / predict / save
+        FileNotFoundError  jika file tidak ditemukan di Storage
+        ValueError         jika image gagal di-decode (None dari OpenCV)
+        Exception lain     jika ada error di download / predict / save
     """
     section_code = sheet["section_code"]
     image_url = sheet["image_url"]
     lembar_jawaban_id = sheet["id"]
     pengumpulan_tugas_id = sheet["pengumpulan_tugas_id"]
+
+    normalized_model_name = _normalize_model_name(model_name)
 
     # --------------------------------------------------
     # 1. Download + decode image
@@ -57,48 +75,32 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
             f"Gagal decode image untuk section {section_code} (path: {image_url})"
         )
 
-    # --------------------------------------------------
-    # 2. Normalize and check model settings
-    # --------------------------------------------------
-    normalized_model_name = model_name
-    if not model_name:
-        normalized_model_name = "MobileNetV2"
-    elif model_name.lower() == "mobilenetv2":
-        normalized_model_name = "MobileNetV2"
-    elif model_name.lower() == "densenet201":
-        normalized_model_name = "DenseNet201"
-    elif model_name.lower() == "inceptionv3":
-        normalized_model_name = "InceptionV3"
-
-    if normalized_model_name not in MODEL_CONFIG:
-        normalized_model_name = "MobileNetV2"
-
     input_size = MODEL_CONFIG[normalized_model_name]["input_size"]
 
     # --------------------------------------------------
-    # 3. Preprocess → (1, H, W, 3) float32
+    # 2. Preprocess → (1, H, W, 3) float32
     # --------------------------------------------------
     processed = preprocess_image(img, input_size)
 
     # --------------------------------------------------
-    # 4. Lazy load model dari cache
+    # 3. Lazy load model dari cache
     # --------------------------------------------------
     model = get_model(section_code, normalized_model_name)
 
     # --------------------------------------------------
-    # 5. Predict
+    # 4. Predict
     # --------------------------------------------------
     output = model.predict(processed, verbose=0)
     predicted_class = int(np.argmax(output[0]))
     confidence = float(np.max(output[0]))
 
     # --------------------------------------------------
-    # 6. Convert class → score via CLASS_SCORE_MAP
+    # 5. Convert class → score via CLASS_SCORE_MAP
     # --------------------------------------------------
     predicted_score = get_score(section_code, predicted_class)
 
     # --------------------------------------------------
-    # 7. Simpan ke tabel hasil_prediksi (upsert)
+    # 6. Simpan ke tabel hasil_prediksi (upsert)
     # --------------------------------------------------
     upsert_prediction(
         pengumpulan_tugas_id=pengumpulan_tugas_id,
@@ -120,10 +122,106 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
     }
 
 
+def _validate_storage_files(sheets: list) -> tuple[list, list]:
+    """
+    Pre-flight check: validasi bahwa file gambar benar-benar ada di Storage
+    untuk setiap lembar jawaban.
+
+    Return:
+        (available_sheets, missing_sheets)
+        available_sheets : list of sheets yang file-nya ada
+        missing_sheets   : list of dicts {section_code, image_url} yang file-nya hilang
+    """
+    available = []
+    missing = []
+
+    for sheet in sheets:
+        section_code = sheet.get("section_code", "unknown")
+        image_url = sheet.get("image_url", "")
+
+        if not image_url:
+            print(f"[AI] Missing file: submission={sheet.get('pengumpulan_tugas_id')} "
+                  f"section={section_code} path=(empty)")
+            missing.append({
+                "section_code": section_code,
+                "image_url": "(empty)",
+                "reason": "image_url kosong di database",
+            })
+            continue
+
+        if check_file_exists(image_url):
+            available.append(sheet)
+        else:
+            print(f"[AI] Missing file: submission={sheet.get('pengumpulan_tugas_id')} "
+                  f"section={section_code} path={image_url}")
+            missing.append({
+                "section_code": section_code,
+                "image_url": image_url,
+                "reason": "File tidak ditemukan di Storage",
+            })
+
+    return available, missing
+
+
+def log_ai_run(
+    submission_id: str,
+    model_ai: str,
+    started_at: str,
+    completed_at: str,
+    status: str,
+    error_message: str = None
+):
+    """
+    Catat eksekusi AI ke tabel audit_log.
+    """
+    try:
+        from utils.audit_helper import create_audit_log, standardize_model_name
+        from utils.supabase_client import supabase
+        
+        # Standardize model name
+        model_ai = standardize_model_name(model_ai)
+        
+        if status == "success":
+            total_score = None
+            try:
+                sub_res = supabase.table("pengumpulan_tugas").select("nilai_akhir").eq("id", submission_id).execute()
+                if sub_res.data:
+                    total_score = sub_res.data[0].get("nilai_akhir")
+            except Exception as e:
+                print(f"[AI] Error fetching total score for logging: {e}")
+                
+            create_audit_log(
+                action="AI_PROCESS_COMPLETED",
+                target="pengumpulan_tugas",
+                detail={
+                    "model": model_ai,
+                    "total_score": total_score if total_score is not None else 0
+                },
+                role="dosen",
+                user_name="Dosen"
+            )
+        else:
+            create_audit_log(
+                action="AI_PROCESS_FAILED",
+                target="pengumpulan_tugas",
+                detail={
+                    "error": error_message or "Proses AI gagal tanpa detail pesan error."
+                },
+                role="dosen",
+                user_name="Dosen"
+            )
+    except Exception as e:
+        print(f"[AI] Gagal menulis ke audit_log: {e}")
+
+
 def process_submission(submission_id: str, model_name: str = "MobileNetV2") -> dict:
     """
     Pipeline lengkap untuk satu submission.
+
+    Termasuk pre-flight validasi file Storage sebelum inferensi dimulai.
+    Jika seluruh file hilang, prediksi diblokir dan error jelas dikembalikan.
     """
+    started_at = datetime.now().strftime("%Y-%m-%d %H:%M")
     warnings = []
 
     # --------------------------------------------------
@@ -136,114 +234,258 @@ def process_submission(submission_id: str, model_name: str = "MobileNetV2") -> d
             "error": f"Submission '{submission_id}' tidak ditemukan di database.",
         }
 
-    # Normalize model_name
-    normalized_model_name = model_name
-    if not model_name:
-        normalized_model_name = "MobileNetV2"
-    elif model_name.lower() == "mobilenetv2":
-        normalized_model_name = "MobileNetV2"
-    elif model_name.lower() == "densenet201":
-        normalized_model_name = "DenseNet201"
-    elif model_name.lower() == "inceptionv3":
-        normalized_model_name = "InceptionV3"
+    normalized_model_name = _normalize_model_name(model_name)
 
-    if normalized_model_name not in MODEL_CONFIG:
-        normalized_model_name = "MobileNetV2"
+    # Log AI_PROCESS_STARTED
+    try:
+        from utils.audit_helper import create_audit_log
+        create_audit_log(
+            action="AI_PROCESS_STARTED",
+            target="pengumpulan_tugas",
+            detail={"model": normalized_model_name},
+            role="dosen",
+            user_name="Dosen"
+        )
+    except Exception as start_err:
+        print(f"[AI] Failed to log AI_PROCESS_STARTED: {start_err}")
 
     # --------------------------------------------------
-    # 2. Update status → processing
+    # 2. Update status → processing & save model name
     # --------------------------------------------------
     try:
-        update_ai_status(submission_id, "processing")
+        from utils.supabase_client import supabase
+        supabase.table("pengumpulan_tugas").update({
+            "ai_status": "processing",
+            "status_submit": "processing_ai",
+            "model_ai": normalized_model_name
+        }).eq("id", submission_id).execute()
     except Exception as e:
-        warnings.append(f"update_ai_status gagal (kolom mungkin belum ada): {e}")
+        warnings.append(f"Gagal mengupdate status awal ke processing: {e}")
 
-    # --------------------------------------------------
-    # 3. Ambil semua lembar jawaban
-    # --------------------------------------------------
-    sheets = get_answer_sheets(submission_id)
-    if not sheets:
+    try:
+        # Delete existing predictions for this submission to prevent duplication
+        delete_predictions_by_submission(submission_id)
+    except Exception as e:
+        warnings.append(f"Gagal menghapus prediksi lama: {e}")
+
+    try:
+        # --------------------------------------------------
+        # 3. Ambil semua lembar jawaban
+        # --------------------------------------------------
+        sheets = get_answer_sheets(submission_id)
+        if not sheets:
+            try:
+                update_ai_status(submission_id, "failed")
+            except Exception:
+                pass
+            completed_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+            log_ai_run(
+                submission_id=submission_id,
+                model_ai=normalized_model_name,
+                started_at=started_at,
+                completed_at=completed_at,
+                status="failed",
+                error_message="Tidak ada lembar jawaban untuk submission ini."
+            )
+            return {
+                "success": False,
+                "error": "Tidak ada lembar jawaban untuk submission ini.",
+            }
+
+        # --------------------------------------------------
+        # 4. PRE-FLIGHT: Validasi file Storage
+        # --------------------------------------------------
+        available_sheets, missing_files = _validate_storage_files(sheets)
+
+        # Jika ada minimal 1 file hilang → batalkan seluruh inferensi dan return error
+        if len(missing_files) > 0:
+            try:
+                update_ai_status(submission_id, "failed")
+            except Exception as e:
+                print(f"[AI] Gagal update_ai_status ke failed: {e}")
+            try:
+                from utils.supabase_client import supabase
+                supabase.table("pengumpulan_tugas").update({
+                    "ai_status": "failed",
+                    "status_submit": "failed",
+                    "nilai_akhir": None
+                }).eq("id", submission_id).execute()
+            except Exception as e:
+                print(f"[AI] Gagal update direct ke failed: {e}")
+            
+            missing_sections = [m["section_code"] for m in missing_files]
+            print(f"[AI] Pre-flight check failed: {len(missing_files)} file tidak ditemukan "
+                  f"dari total {len(sheets)} lembar jawaban untuk submission {submission_id}")
+            print(f"[AI] Missing sections: {', '.join(missing_sections)}")
+            
+            error_msg = (
+                f"Gagal memulai AI. Terdeteksi {len(missing_files)} file jawaban mahasiswa "
+                f"yang tidak ditemukan di Storage untuk section: {', '.join(missing_sections)}. "
+                f"Seluruh inferensi dibatalkan demi menjaga konsistensi jawaban."
+            )
+            completed_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+            log_ai_run(
+                submission_id=submission_id,
+                model_ai=normalized_model_name,
+                started_at=started_at,
+                completed_at=completed_at,
+                status="failed",
+                error_message=error_msg
+            )
+            return {
+                "success": False,
+                "error": error_msg,
+                "ai_status": "failed",
+                "missing_files": len(missing_files),
+            }
+
+        results = []
+        errors = []
+
+        # --------------------------------------------------
+        # 5. Proses setiap sheet (hanya yang file-nya ada)
+        # --------------------------------------------------
+        for sheet in available_sheets:
+            section_code = sheet.get("section_code", "unknown")
+            try:
+                result = process_single_sheet(sheet, model_name=normalized_model_name)
+                results.append(result)
+            except FileNotFoundError as e:
+                # File hilang saat download (race condition)
+                print(f"[AI] File hilang saat download: submission={submission_id} "
+                      f"section={section_code} error={str(e)}")
+                errors.append({
+                    "section_code": section_code,
+                    "error": f"File tidak ditemukan di Storage: {str(e)}",
+                })
+            except Exception as e:
+                errors.append({
+                    "section_code": section_code,
+                    "error": str(e),
+                })
+
+        # --------------------------------------------------
+        # 6. Hitung nilai_akhir
+        # --------------------------------------------------
+        nilai_akhir = sum(r["predicted_score"] for r in results)
+
+        # --------------------------------------------------
+        # 7. Tentukan status akhir
+        # --------------------------------------------------
+        if len(errors) == 0:
+            ai_status = "completed"
+        else:
+            ai_status = "failed"
+            # Hapus semua hasil prediksi parsial yang sempat tersimpan agar bersih
+            try:
+                delete_predictions_by_submission(submission_id)
+            except Exception:
+                pass
+
+        # --------------------------------------------------
+        # 8. Update submission
+        # --------------------------------------------------
+        try:
+            update_submission_result(
+                submission_id=submission_id,
+                nilai_akhir=nilai_akhir if ai_status == "completed" else None,
+                ai_status=ai_status,
+                model_ai=normalized_model_name,
+            )
+        except Exception as e:
+            warnings.append(
+                f"update_submission_result gagal: {e}. "
+                "Pastikan kolom ai_status dan ai_processed_at sudah ada di tabel "
+                "pengumpulan_tugas."
+            )
+            try:
+                from utils.supabase_client import supabase
+
+                supabase.table("pengumpulan_tugas").update({
+                    "nilai_akhir": nilai_akhir if ai_status == "completed" else None,
+                    "model_ai": normalized_model_name,
+                    "ai_status": ai_status,
+                    "status_submit": "submitted" if ai_status == "completed" else "failed",
+                }).eq(
+                    "id", submission_id
+                ).execute()
+            except Exception as fallback_err:
+                warnings.append(f"Fallback update nilai_akhir/model_ai juga gagal: {fallback_err}")
+
+        completed_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        if ai_status == "failed":
+            error_msgs = [f"Section {err['section_code']}: {err['error']}" for err in errors]
+            error_msg_str = "Proses AI gagal. Detail: " + "; ".join(error_msgs)
+            log_ai_run(
+                submission_id=submission_id,
+                model_ai=normalized_model_name,
+                started_at=started_at,
+                completed_at=completed_at,
+                status="failed",
+                error_message=error_msg_str
+            )
+            return {
+                "success": False,
+                "error": error_msg_str,
+                "submission_id": submission_id,
+                "total_sheets": len(sheets),
+                "processed": len(results),
+                "failed": len(errors),
+                "missing_files": 0,
+                "nilai_akhir": None,
+                "ai_status": "failed",
+                "model_ai": normalized_model_name,
+                "results": results,
+                "errors": errors,
+                "warnings": warnings,
+            }
+
+        log_ai_run(
+            submission_id=submission_id,
+            model_ai=normalized_model_name,
+            started_at=started_at,
+            completed_at=completed_at,
+            status="success"
+        )
+
+        return {
+            "success": True,
+            "submission_id": submission_id,
+            "total_sheets": len(sheets),
+            "processed": len(results),
+            "failed": 0,
+            "missing_files": 0,
+            "nilai_akhir": nilai_akhir,
+            "ai_status": "completed",
+            "model_ai": normalized_model_name,
+            "results": results,
+            "errors": [],
+            "warnings": warnings,
+        }
+    except Exception as e:
+        # Prevent the status from getting stuck in "processing" if something crashes completely
+        try:
+            delete_predictions_by_submission(submission_id)
+        except Exception:
+            pass
         try:
             update_ai_status(submission_id, "failed")
         except Exception:
             pass
+        completed_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+        log_ai_run(
+            submission_id=submission_id,
+            model_ai=normalized_model_name,
+            started_at=started_at,
+            completed_at=completed_at,
+            status="failed",
+            error_message=f"Terjadi kesalahan internal saat memproses AI: {str(e)}"
+        )
         return {
             "success": False,
-            "error": "Tidak ada lembar jawaban untuk submission ini.",
+            "error": f"Terjadi kesalahan internal saat memproses AI: {str(e)}",
+            "ai_status": "failed",
+            "warnings": warnings,
         }
 
-    results = []
-    errors = []
-
-    # --------------------------------------------------
-    # 4. Proses setiap sheet
-    # --------------------------------------------------
-    for sheet in sheets:
-        section_code = sheet.get("section_code", "unknown")
-        try:
-            result = process_single_sheet(sheet, model_name=normalized_model_name)
-            results.append(result)
-        except Exception as e:
-            errors.append(
-                {
-                    "section_code": section_code,
-                    "error": str(e),
-                }
-            )
-
-    # --------------------------------------------------
-    # 5. Hitung nilai_akhir
-    # --------------------------------------------------
-    nilai_akhir = sum(r["predicted_score"] for r in results)
-
-    # --------------------------------------------------
-    # 6. Tentukan status akhir
-    # --------------------------------------------------
-    if len(errors) == 0:
-        ai_status = "completed"
-    elif len(results) > 0:
-        ai_status = "partial"
-    else:
-        ai_status = "failed"
-
-    # --------------------------------------------------
-    # 7. Update submission
-    # --------------------------------------------------
-    try:
-        update_submission_result(
-            submission_id=submission_id,
-            nilai_akhir=nilai_akhir,
-            ai_status=ai_status,
-            model_ai=normalized_model_name,
-        )
-    except Exception as e:
-        warnings.append(
-            f"update_submission_result gagal: {e}. "
-            "Pastikan kolom ai_status dan ai_processed_at sudah ada di tabel "
-            "pengumpulan_tugas."
-        )
-        try:
-            from utils.supabase_client import supabase
-
-            supabase.table("pengumpulan_tugas").update({
-                "nilai_akhir": nilai_akhir,
-                "model_ai": normalized_model_name
-            }).eq(
-                "id", submission_id
-            ).execute()
-        except Exception as fallback_err:
-            warnings.append(f"Fallback update nilai_akhir/model_ai juga gagal: {fallback_err}")
-
-    return {
-        "success": ai_status in ("completed", "partial"),
-        "submission_id": submission_id,
-        "total_sheets": len(sheets),
-        "processed": len(results),
-        "failed": len(errors),
-        "nilai_akhir": nilai_akhir,
-        "ai_status": ai_status,
-        "model_ai": normalized_model_name,
-        "results": results,
-        "errors": errors,
-        "warnings": warnings,
-    }

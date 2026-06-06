@@ -6,8 +6,8 @@ MODEL_CONFIG = {
         "path": "Models/MobilenetV2",
         "input_size": (128, 128)
     },
-    "DenseNet201": {
-        "path": "Models/DenseNet201",
+    "DenseNet121": {
+        "path": "Models/DenseNet121",
         "input_size": (128, 128)
     },
     "InceptionV3": {
@@ -60,8 +60,8 @@ def get_model(section_code: str, model_name: str = "MobileNetV2"):
         normalized_model_name = "MobileNetV2"
     elif model_name.lower() == "mobilenetv2":
         normalized_model_name = "MobileNetV2"
-    elif model_name.lower() == "densenet201":
-        normalized_model_name = "DenseNet201"
+    elif model_name.lower() == "densenet121":
+        normalized_model_name = "DenseNet121"
     elif model_name.lower() == "inceptionv3":
         normalized_model_name = "InceptionV3"
 

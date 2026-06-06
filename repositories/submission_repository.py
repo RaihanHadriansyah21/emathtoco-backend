@@ -33,12 +33,14 @@ def update_submission_result(
     Kolom yang diupdate:
         nilai_akhir      : total score dari semua section
         ai_status        : "completed" | "partial" | "failed"
+        status_submit    : "submitted" if completed else "failed"
         ai_processed_at  : timestamp sekarang (UTC)
         model_ai         : nama model yang digunakan (jika ada)
     """
     payload = {
         "nilai_akhir": nilai_akhir,
         "ai_status": ai_status,
+        "status_submit": "submitted" if ai_status == "completed" else "failed",
         "ai_processed_at": datetime.now(timezone.utc).isoformat(),
     }
     if model_ai is not None:
@@ -63,9 +65,17 @@ def update_ai_status(submission_id: str, status: str) -> list:
         "partial"    → saat sebagian section gagal
         "failed"     → saat semua section gagal
     """
+    payload = {"ai_status": status}
+    if status == "failed":
+        payload["status_submit"] = "failed"
+    elif status == "processing":
+        payload["status_submit"] = "processing_ai"
+    elif status == "completed":
+        payload["status_submit"] = "submitted"
+
     response = (
         supabase.table("pengumpulan_tugas")
-        .update({"ai_status": status})
+        .update(payload)
         .eq("id", submission_id)
         .execute()
     )

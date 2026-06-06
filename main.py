@@ -33,14 +33,18 @@ if allowed_origins_env:
     origins = [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
 else:
     origins = default_origins
-print("=== ALLOWED ORIGINS ===")
-print(origins)
-print("=======================")
 
+# Ensure default local origins are always whitelisted
+for default_origin in default_origins:
+    if default_origin not in origins:
+        origins.append(default_origin)
+
+# Apply CORS middleware with whitelisted origins, dynamic regex for vercel/local subdomains, and enable credentials
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
+    allow_origins=origins,
+    allow_origin_regex=r"^https?://([^/]+\.)?(vercel\.app|localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -57,10 +61,10 @@ def predict(submission_id: str, model: str = "MobileNetV2"):
     Pipeline utama: jalankan AI untuk seluruh lembar jawaban
     milik submission_id.
     """
-    if model not in ["MobileNetV2", "DenseNet201", "InceptionV3"]:
+    if model not in ["MobileNetV2", "DenseNet121", "InceptionV3"]:
         raise HTTPException(
             status_code=400,
-            detail=f"Invalid model. Allowed values: MobileNetV2, DenseNet201, InceptionV3"
+            detail=f"Invalid model. Allowed values: MobileNetV2, DenseNet121, InceptionV3"
         )
     
     submission = get_submission_by_id(submission_id)
@@ -74,6 +78,12 @@ def predict(submission_id: str, model: str = "MobileNetV2"):
         raise HTTPException(
             status_code=400,
             detail="Submission sudah finalized dan tidak dapat diprediksi ulang."
+        )
+    
+    if submission.get("ai_status") == "processing":
+        raise HTTPException(
+            status_code=409,
+            detail="Analisis AI sedang berjalan untuk tugas ini. Silakan tunggu hingga selesai."
         )
 
     result = process_submission(submission_id, model_name=model)
@@ -211,7 +221,10 @@ def health():
     """
     Endpoint untuk pengecekan kesehatan backend.
     """
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "service": "EMATHTOCO AI Backend"
+    }
 
 
 @app.get("/model-info")
@@ -413,5 +426,155 @@ def get_course_stats(course_id: str):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/admin/predictions/count")
+def admin_count_predictions(payload: dict):
+    lembar_jawaban_ids = payload.get("lembar_jawaban_ids", [])
+    if not lembar_jawaban_ids:
+        return {"count": 0}
+    try:
+        res = supabase.table("hasil_prediksi").select("id", count="exact").in_("lembar_jawaban_id", lembar_jawaban_ids).execute()
+        return {"count": res.count if res.count is not None else len(res.data)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/admin/predictions/delete")
+def admin_delete_predictions(payload: dict):
+    lembar_jawaban_ids = payload.get("lembar_jawaban_ids", [])
+    if not lembar_jawaban_ids:
+        return {"deleted": 0}
+    try:
+        res = supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", lembar_jawaban_ids).execute()
+        return {"deleted": len(res.data) if res.data else 0}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/audit/schema-check")
+def audit_schema_check():
+    """
+    Checks the schema version of the audit_log table.
+    Returns whether it is using the legacy schema or the new enterprise schema,
+    along with the list of columns found.
+    """
+    import requests
+    from utils.supabase_client import SUPABASE_URL, SUPABASE_KEY
+    import utils.audit_helper as audit_helper
+
+    columns_found = []
+    
+    # Method 1: Check OpenAPI Spec from Postgrest
+    try:
+        headers = {
+            "apikey": SUPABASE_KEY,
+            "Authorization": f"Bearer {SUPABASE_KEY}"
+        }
+        r = requests.get(f"{SUPABASE_URL}/rest/v1/", headers=headers, timeout=5)
+        if r.status_code == 200:
+            spec = r.json()
+            definitions = spec.get("definitions", {})
+            audit_log_def = definitions.get("audit_log", {})
+            properties = audit_log_def.get("properties", {})
+            columns_found = list(properties.keys())
+    except Exception as e:
+        print(f"[AUDIT] OpenAPI check failed: {e}")
+
+    # Method 2 (Fallback/Verification): Select columns limit 0
+    if not columns_found:
+        test_columns = [
+            "id", "actor_id", "actor_role", "action_type", "target_type", "target_id", 
+            "description", "created_at", "user_id", "user_name", "role", "action", "target", "detail"
+        ]
+        for col in test_columns:
+            try:
+                supabase.table("audit_log").select(col).limit(0).execute()
+                columns_found.append(col)
+            except Exception:
+                pass
+
+    # Determine schema version
+    new_columns = {"user_id", "user_name", "role", "action", "target", "detail"}
+    has_all_new = new_columns.issubset(set(columns_found))
+    schema_version = "enterprise" if has_all_new else "legacy"
+
+    # Synchronize the global cache in audit_helper.py
+    audit_helper._HAS_ENTERPRISE_SCHEMA = has_all_new
+
+    return {
+        "schema_version": schema_version,
+        "columns_found": columns_found
+    }
+
+
+@app.post("/audit/log")
+def post_audit_log(payload: dict):
+    """
+    Endpoint untuk menerima penulisan audit log dari frontend.
+    Memvalidasi dan menormalisasi payload sebelum diteruskan ke database.
+    """
+    if not payload:
+        raise HTTPException(status_code=400, detail="Payload kosong.")
+    
+    # Required fields validation
+    action = payload.get("action")
+    target = payload.get("target")
+    
+    if not action or not target:
+        raise HTTPException(status_code=400, detail="Field 'action' dan 'target' wajib diisi.")
+        
+    user_id = payload.get("user_id")
+    user_name = payload.get("user_name")
+    role = payload.get("role")
+    detail = payload.get("detail")
+
+    # Standardize/Normalize model names
+    from utils.audit_helper import standardize_model_name, create_audit_log
+    
+    action = standardize_model_name(action)
+    target = standardize_model_name(target)
+    
+    if isinstance(detail, str):
+        detail = standardize_model_name(detail)
+    elif isinstance(detail, dict):
+        # normalize values inside detail dict if string
+        for k, v in detail.items():
+            if isinstance(v, str):
+                detail[k] = standardize_model_name(v)
+
+    success = create_audit_log(
+        action=action,
+        target=target,
+        detail=detail,
+        user_id=user_id,
+        user_name=user_name,
+        role=role
+    )
+    
+    if not success:
+        raise HTTPException(status_code=500, detail="Gagal menulis rekam audit ke database.")
+        
+    return {"success": True}
+
+
+@app.get("/audit/test")
+def audit_test():
+    """
+    Endpoint test untuk memverifikasi penulisan log terpusat.
+    """
+    from utils.audit_helper import create_audit_log
+    success = create_audit_log(
+        action="AUDIT_TEST",
+        target="system",
+        detail={"test": "pusat logging backend works!"},
+        user_id=None,
+        user_name="System Test",
+        role="system"
+    )
+    if not success:
+        raise HTTPException(status_code=500, detail="Gagal menulis log uji.")
+    return {"success": True}
+
 
 
