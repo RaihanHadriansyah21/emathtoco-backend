@@ -1,12 +1,13 @@
 import os
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 
 from repositories.prediction_repository import get_predictions_by_submission
 from repositories.submission_repository import get_submission_by_id, update_ai_status
 from services.model_registry import get_cache_status
 from services.prediction_service import process_submission
+from services.settings_service import settings_service
 from utils.supabase_client import supabase
 
 load_dotenv()
@@ -56,11 +57,20 @@ app.add_middleware(
 
 
 @app.post("/predict/{submission_id}")
-def predict(submission_id: str, model: str = "MobileNetV2"):
+def predict(submission_id: str, model: str = None):
     """
     Pipeline utama: jalankan AI untuk seluruh lembar jawaban
     milik submission_id.
     """
+    # Priority:
+    # 1. Explicit model from parameter
+    # 2. Global active model from database settings
+    # 3. Fallback MobileNetV2
+    if not model or model.lower() in ["", "none", "null"]:
+        model = settings_service.get_setting("active_model")
+    if not model:
+        model = "MobileNetV2"
+
     if model not in ["MobileNetV2", "DenseNet121", "InceptionV3"]:
         raise HTTPException(
             status_code=400,
@@ -90,6 +100,139 @@ def predict(submission_id: str, model: str = "MobileNetV2"):
     if not result.get("success") and "error" in result:
         raise HTTPException(status_code=404, detail=result["error"])
     return result
+
+
+@app.get("/settings")
+def get_settings():
+    """Retrieve all system settings from the database (SST)."""
+    return settings_service.get_all_settings()
+
+
+@app.post("/settings")
+def update_settings(payload: dict):
+    """
+    Update specified system settings in the database.
+    Updates in-memory cache and logs audit logs:
+    - SYSTEM_SETTING_CHANGED for general configs
+    - ACTIVE_MODEL_CHANGED for active_model changes
+    """
+    from utils.audit_helper import create_audit_log
+    
+    changed_by = payload.get("changed_by", "Administrator")
+    role = payload.get("role", "admin")
+    user_id = payload.get("user_id", None)
+    
+    updates = payload.get("settings", {})
+    if not updates:
+        updates = {k: v for k, v in payload.items() if k not in ["changed_by", "role", "user_id"]}
+
+    success = True
+    for key, value in updates.items():
+        old_value = settings_service.get_setting(key)
+        
+        if old_value == value:
+            continue
+            
+        ok = settings_service.set_setting(key, str(value))
+        if not ok:
+            success = False
+            continue
+            
+        if key == "active_model":
+            create_audit_log(
+                action="ACTIVE_MODEL_CHANGED",
+                target="ai_models",
+                detail={
+                    "old_model": old_value,
+                    "new_model": value,
+                    "changed_by": changed_by
+                },
+                user_id=user_id,
+                user_name=changed_by,
+                role=role
+            )
+        else:
+            create_audit_log(
+                action="SYSTEM_SETTING_CHANGED",
+                target="system",
+                detail={
+                    "setting_key": key,
+                    "old_value": old_value,
+                    "new_value": value,
+                    "changed_by": changed_by
+                },
+                user_id=user_id,
+                user_name=changed_by,
+                role=role
+            )
+            
+    if not success:
+        raise HTTPException(status_code=500, detail="Gagal memperbarui beberapa pengaturan.")
+        
+    return {"success": True, "settings": settings_service.get_all_settings()}
+
+
+def run_prediction_background(submission_id: str, model_name: str):
+    try:
+        process_submission(submission_id, model_name=model_name)
+    except Exception as e:
+        print(f"[AI Background] Error running prediction for {submission_id}: {e}")
+
+
+@app.post("/submission/{submission_id}/submit")
+def submit_submission(submission_id: str, background_tasks: BackgroundTasks):
+    """
+    Endpoint dipanggil saat mahasiswa klik kumpulkan tugas.
+    Membaca setting auto_run_ai dari database.
+    Jika ON: Jalankan pipeline AI di background.
+    Jika OFF: Kembalikan respon sukses tanpa memproses AI.
+    """
+    submission = get_submission_by_id(submission_id)
+    if not submission:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Submission dengan ID '{submission_id}' tidak ditemukan."
+        )
+        
+    auto_run = settings_service.get_setting("auto_run_ai") == "true"
+    
+    if not auto_run:
+        return {
+            "success": True,
+            "message": "Submission submitted successfully. Auto-run AI is disabled.",
+            "auto_run": False
+        }
+        
+    ai_status = submission.get("ai_status")
+    status_submit = submission.get("status_submit")
+    
+    if ai_status == "processing" or status_submit == "processing_ai":
+        return {
+            "success": True,
+            "message": "AI is already processing for this submission.",
+            "auto_run": True,
+            "already_running": True
+        }
+        
+    if ai_status in ["completed", "reviewed", "finalized"] or status_submit in ["reviewed", "finalized"]:
+        return {
+            "success": True,
+            "message": "AI prediction has already completed for this submission.",
+            "auto_run": True,
+            "already_completed": True
+        }
+        
+    model_name = settings_service.get_setting("active_model")
+    if not model_name:
+        model_name = "MobileNetV2"
+        
+    background_tasks.add_task(run_prediction_background, submission_id, model_name)
+    
+    return {
+        "success": True,
+        "message": f"Submission submitted. AI triggered in background using model {model_name}.",
+        "auto_run": True
+    }
 
 
 @app.get("/prediction/{submission_id}")

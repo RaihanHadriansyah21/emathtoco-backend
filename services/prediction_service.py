@@ -12,6 +12,7 @@ from services.class_mapping import get_score
 from services.image_service import download_image, check_file_exists
 from services.model_registry import get_model, MODEL_CONFIG
 from services.preprocess import preprocess_image
+from services.settings_service import settings_service
 
 # Nama arsitektur default yang digunakan pada tahap ini
 MODEL_AI = "MobileNetV2"
@@ -19,8 +20,12 @@ MODEL_AI = "MobileNetV2"
 
 def _normalize_model_name(model_name: str) -> str:
     """Normalize model name ke format standar."""
+    if not model_name or model_name.lower() in ["", "none", "null"]:
+        model_name = settings_service.get_setting("active_model")
+        
     if not model_name:
-        return "MobileNetV2"
+        model_name = "MobileNetV2"
+        
     lower = model_name.lower()
     if lower == "mobilenetv2":
         return "MobileNetV2"
@@ -66,6 +71,10 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
 
     normalized_model_name = _normalize_model_name(model_name)
 
+    verbose = settings_service.get_setting("verbose_logging") == "true"
+    if verbose:
+        print(f"[AI VERBOSE] [process_single_sheet] Starting section {section_code} with model {normalized_model_name} (path: {image_url})")
+
     # --------------------------------------------------
     # 1. Download + decode image
     # --------------------------------------------------
@@ -74,6 +83,9 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
         raise ValueError(
             f"Gagal decode image untuk section {section_code} (path: {image_url})"
         )
+
+    if verbose:
+        print(f"[AI VERBOSE] [process_single_sheet] Image downloaded successfully, size: {img.shape}")
 
     input_size = MODEL_CONFIG[normalized_model_name]["input_size"]
 
@@ -94,10 +106,16 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
     predicted_class = int(np.argmax(output[0]))
     confidence = float(np.max(output[0]))
 
+    if verbose:
+        print(f"[AI VERBOSE] [process_single_sheet] Section {section_code} prediction raw output shape: {output.shape}, class: {predicted_class}, confidence: {confidence:.4f}")
+
     # --------------------------------------------------
     # 5. Convert class → score via CLASS_SCORE_MAP
     # --------------------------------------------------
     predicted_score = get_score(section_code, predicted_class)
+
+    if verbose:
+        print(f"[AI VERBOSE] [process_single_sheet] Section {section_code} mapped score: {predicted_score}")
 
     # --------------------------------------------------
     # 6. Simpan ke tabel hasil_prediksi (upsert)
@@ -234,7 +252,28 @@ def process_submission(submission_id: str, model_name: str = "MobileNetV2") -> d
             "error": f"Submission '{submission_id}' tidak ditemukan di database.",
         }
 
+    # Guard against duplicate prediction/running processes
+    ai_status = submission.get("ai_status")
+    status_submit = submission.get("status_submit")
+    
+    if ai_status == "processing" or status_submit == "processing_ai":
+        return {
+            "success": False,
+            "error": "Analisis AI sedang berjalan untuk tugas ini.",
+            "already_running": True
+        }
+    if ai_status == "finalized" or status_submit == "finalized":
+        return {
+            "success": False,
+            "error": "Tugas ini sudah difinalisasi dan tidak dapat dianalisis ulang.",
+            "already_completed": True
+        }
+
     normalized_model_name = _normalize_model_name(model_name)
+    
+    verbose = settings_service.get_setting("verbose_logging") == "true"
+    if verbose:
+        print(f"[AI VERBOSE] [process_submission] Started processing submission={submission_id} using model={normalized_model_name}")
 
     # Log AI_PROCESS_STARTED
     try:
