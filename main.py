@@ -571,6 +571,96 @@ def get_course_stats(course_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.get("/lecturer/course/{course_id}/students")
+def get_course_students(course_id: str):
+    """
+    Mengambil data roster mahasiswa terdaftar beserta status pengumpulan tugas mereka.
+    """
+    try:
+        # 1. Ambil data mahasiswa_id yang terdaftar di mata_kuliah_id
+        enrollments = (
+            supabase.table("mahasiswa_mata_kuliah")
+            .select("mahasiswa_id")
+            .eq("mata_kuliah_id", course_id)
+            .execute()
+        )
+        student_ids = [e["mahasiswa_id"] for e in enrollments.data]
+        
+        if not student_ids:
+            return {
+                "success": True,
+                "students": []
+            }
+            
+        # 2. Ambil data profil mahasiswa
+        profiles_res = (
+            supabase.table("profil_pengguna")
+            .select("id, nama_lengkap, nim_nip, kelas, foto_profil_url")
+            .in_("id", student_ids)
+            .execute()
+        )
+        
+        # 3. Ambil data pengumpulan_tugas untuk course_id ini
+        submissions_res = (
+            supabase.table("pengumpulan_tugas")
+            .select("id, mahasiswa_id, status_submit, waktu_submit, nilai_akhir, ai_status")
+            .eq("mata_kuliah_id", course_id)
+            .execute()
+        )
+        
+        # 4. Ambil lembar_jawaban counts per pengumpulan_tugas
+        sub_ids = [s["id"] for s in submissions_res.data]
+        sheets_map = {}
+        if sub_ids:
+            sheets_res = (
+                supabase.table("lembar_jawaban")
+                .select("id, pengumpulan_tugas_id")
+                .in_("pengumpulan_tugas_id", sub_ids)
+                .execute()
+            )
+            for sheet in sheets_res.data:
+                sub_id = sheet["pengumpulan_tugas_id"]
+                sheets_map[sub_id] = sheets_map.get(sub_id, 0) + 1
+        
+        # 5. Gabungkan data
+        students_list = []
+        for profile in profiles_res.data:
+            m_id = profile["id"]
+            sub = next((s for s in submissions_res.data if s["mahasiswa_id"] == m_id), None)
+            
+            sub_data = None
+            if sub:
+                sub_id = sub["id"]
+                sub_data = {
+                    "id": sub_id,
+                    "mahasiswa_id": m_id,
+                    "status_submit": sub["status_submit"],
+                    "waktu_submit": sub["waktu_submit"],
+                    "nilai_akhir": sub["nilai_akhir"],
+                    "ai_status": sub["ai_status"],
+                    "sheets_count": sheets_map.get(sub_id, 0)
+                }
+                
+            students_list.append({
+                "id": m_id,
+                "nama_lengkap": profile.get("nama_lengkap") or "Unknown",
+                "nim_nip": profile.get("nim_nip") or "-",
+                "kelas": profile.get("kelas") or "-",
+                "foto_profil_url": profile.get("foto_profil_url"),
+                "submission": sub_data
+            })
+            
+        # Urutkan berdasarkan nama
+        students_list.sort(key=lambda x: x["nama_lengkap"].lower())
+        
+        return {
+            "success": True,
+            "students": students_list
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/admin/predictions/count")
 def admin_count_predictions(payload: dict):
     lembar_jawaban_ids = payload.get("lembar_jawaban_ids", [])
@@ -701,6 +791,62 @@ def post_audit_log(payload: dict):
     return {"success": True}
 
 
+@app.delete("/admin/user/{user_id}")
+def delete_user(user_id: str):
+    """
+    Endpoint untuk menghapus pengguna dari database (profil_pengguna) 
+    dan auth.users Supabase secara terurut.
+    """
+    import logging
+    logger = logging.getLogger("uvicorn")
+    logger.info(f"[Delete User Request] Target User ID: {user_id}")
+
+    try:
+        # Check if profile exists in profil_pengguna
+        profile_res = supabase.table("profil_pengguna").select("*").eq("id", user_id).execute()
+        profile_exists = len(profile_res.data) > 0
+        logger.info(f"[Delete User Check] Profile exists in profil_pengguna: {profile_exists}")
+        
+        # Check if user exists in auth.users
+        auth_user_exists = False
+        try:
+            auth_user_res = supabase.auth.admin.get_user_by_id(user_id)
+            if auth_user_res and auth_user_res.user:
+                auth_user_exists = True
+        except Exception as auth_err:
+            logger.error(f"[Delete User Check] Error checking auth.users: {auth_err}")
+            
+        logger.info(f"[Delete User Check] User exists in auth.users: {auth_user_exists}")
+        
+        if not profile_exists and not auth_user_exists:
+            raise HTTPException(status_code=404, detail="Pengguna tidak ditemukan di sistem.")
+
+        # 1. Hapus data relasi (mahasiswa_mata_kuliah & dosen_mata_kuliah)
+        rel_mhs = supabase.table("mahasiswa_mata_kuliah").delete().eq("mahasiswa_id", user_id).execute()
+        logger.info(f"[Delete User] Deleted from mahasiswa_mata_kuliah: {len(rel_mhs.data) if rel_mhs.data else 0} rows")
+        
+        rel_dsn = supabase.table("dosen_mata_kuliah").delete().eq("dosen_id", user_id).execute()
+        logger.info(f"[Delete User] Deleted from dosen_mata_kuliah: {len(rel_dsn.data) if rel_dsn.data else 0} rows")
+
+        # 2. Hapus profil_pengguna
+        if profile_exists:
+            profile_del_res = supabase.table("profil_pengguna").delete().eq("id", user_id).execute()
+            logger.info(f"[Delete User] Deleted from profil_pengguna: {len(profile_del_res.data) if profile_del_res.data else 0} rows")
+
+        # 3. Hapus auth.users
+        if auth_user_exists:
+            auth_del_res = supabase.auth.admin.delete_user(user_id)
+            logger.info(f"[Delete User] Deleted from auth.users successfully: {auth_del_res}")
+
+        return {"success": True, "message": f"Pengguna {user_id} berhasil dihapus."}
+
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        logger.error(f"[Delete User Error] Exception occurred: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/audit/test")
 def audit_test():
     """
@@ -718,6 +864,35 @@ def audit_test():
     if not success:
         raise HTTPException(status_code=500, detail="Gagal menulis log uji.")
     return {"success": True}
+
+
+@app.get("/auth/check-email")
+def check_email(email: str):
+    """
+    Check if an email is registered in Supabase auth.users.
+    """
+    if not email:
+        raise HTTPException(status_code=400, detail="Parameter email wajib diisi.")
+    
+    try:
+        page = 1
+        email_clean = email.strip().lower()
+        while True:
+            users = supabase.auth.admin.list_users(page=page, per_page=100)
+            if not users:
+                break
+            if any(u.email and u.email.strip().lower() == email_clean for u in users):
+                return {"exists": True}
+            if len(users) < 100:
+                break
+            page += 1
+        return {"exists": False}
+    except Exception as e:
+        import logging
+        logger = logging.getLogger("uvicorn")
+        logger.error(f"[Check Email Error] {e}")
+        # Fallback to True so we don't block login if there's a temporary issue with Supabase admin API
+        return {"exists": True}
 
 
 
