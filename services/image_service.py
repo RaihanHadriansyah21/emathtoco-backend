@@ -8,13 +8,32 @@ def check_file_exists(image_path: str) -> bool:
     """
     Cek apakah file ada di Supabase Storage bucket "lembar-jawaban".
 
+    EGRESS FIX: Menggunakan storage.list() (metadata-only, zero-egress)
+    bukan .download() (binary download penuh) agar tidak menghabiskan bandwidth
+    hanya untuk mengecek keberadaan file.
+
     Return:
         True jika file ditemukan
         False jika file tidak ditemukan atau terjadi error
     """
     try:
-        file_bytes = supabase.storage.from_("lembar-jawaban").download(image_path)
-        return file_bytes is not None and len(file_bytes) > 0
+        # Split path into folder and filename
+        # image_path format: "user_id/submission_id/S-1A.jpg"
+        parts = image_path.rsplit("/", 1)
+        if len(parts) == 2:
+            folder_path, filename = parts
+        else:
+            folder_path = ""
+            filename = image_path
+
+        # Use list() — metadata only, zero egress cost
+        result = supabase.storage.from_("lembar-jawaban").list(
+            folder_path,
+            {"limit": 100, "offset": 0, "search": filename}
+        )
+        if result and isinstance(result, list):
+            return any(f.get("name") == filename for f in result)
+        return False
     except Exception:
         return False
 

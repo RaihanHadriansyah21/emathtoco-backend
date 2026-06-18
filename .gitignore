@@ -15,3 +15,6 @@ temp/
 tmp/
 
 .DS_Store
+
+# Migration scripts containing sensitive keys
+run_storage_migration.py

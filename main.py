@@ -893,6 +893,3 @@ def check_email(email: str):
         logger.error(f"[Check Email Error] {e}")
         # Fallback to True so we don't block login if there's a temporary issue with Supabase admin API
         return {"exists": True}
-
-
-
