@@ -45,15 +45,21 @@ MODEL_MAP = {
 }
 
 # ==================================================
-# LAZY LOADING CACHE
+# LAZY LOADING CACHE with LRU Eviction Policy (Prevents OOM)
 # Key format: f"{model_name}_{section_code}"
 # ==================================================
-_loaded_models = {}
+from collections import OrderedDict
+import tensorflow as tf
+from utils.logging_helper import logger
+
+MAX_CACHED_MODELS = 6
+_loaded_models = OrderedDict()
 
 
 def get_model(section_code: str, model_name: str = "MobileNetV2"):
     """
     Ambil model untuk section dan arsitektur tertentu.
+    Menggunakan LRU eviction policy agar memory tetap stabil.
     """
     normalized_model_name = model_name
     if not model_name:
@@ -80,9 +86,20 @@ def get_model(section_code: str, model_name: str = "MobileNetV2"):
     model_path = os.path.join(base_path, file_name)
     cache_key = f"{normalized_model_name}_{section_code}"
 
-    if cache_key not in _loaded_models:
+    if cache_key in _loaded_models:
+        # Move to end to mark as Most Recently Used (MRU)
+        _loaded_models.move_to_end(cache_key)
+    else:
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found: {model_path}")
+            
+        # Evict oldest model if cache size exceeds limit
+        if len(_loaded_models) >= MAX_CACHED_MODELS:
+            oldest_key, oldest_model = _loaded_models.popitem(last=False)
+            logger.info(f"[Model Cache Eviction] Evicting model {oldest_key} to release memory.")
+            del oldest_model
+            tf.keras.backend.clear_session()
+            
         _loaded_models[cache_key] = load_mobilenet_model(model_path)
 
     return _loaded_models[cache_key]

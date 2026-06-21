@@ -72,6 +72,10 @@ def update_ai_status(submission_id: str, status: str) -> list:
         payload["status_submit"] = "processing_ai"
     elif status == "completed":
         payload["status_submit"] = "submitted"
+    elif status == "reviewed":
+        payload["status_submit"] = "reviewed"
+    elif status == "finalized":
+        payload["status_submit"] = "finalized"
 
     response = (
         supabase.table("pengumpulan_tugas")

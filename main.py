@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 
 from repositories.prediction_repository import get_predictions_by_submission
@@ -9,6 +9,7 @@ from services.model_registry import get_cache_status
 from services.prediction_service import process_submission
 from services.settings_service import settings_service
 from utils.supabase_client import supabase
+from utils.logging_helper import logger
 
 load_dotenv()
 
@@ -51,13 +52,220 @@ app.add_middleware(
 )
 
 
+def verify_admin_token(authorization: str = Header(None)) -> str:
+    """
+    Verifikasi access token dari Supabase.
+    Memastikan token valid dan memiliki role 'admin'.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Header otentikasi tidak valid atau tidak ditemukan."
+        )
+    token = authorization.split(" ")[1]
+    
+    try:
+        # Panggil API Supabase Auth untuk mendapatkan info user dari token JWT
+        user_res = supabase.auth.get_user(token)
+        if not user_res or not user_res.user:
+            raise HTTPException(
+                status_code=401,
+                detail="Token otentikasi Supabase tidak valid atau kadaluwarsa."
+            )
+            
+        user_id = user_res.user.id
+        
+        # Ambil role dari tabel profil_pengguna untuk otorisasi
+        profile_res = supabase.table("profil_pengguna").select("role").eq("id", user_id).maybe_single().execute()
+        if not profile_res or not profile_res.data:
+            raise HTTPException(
+                status_code=403,
+                detail="Forbidden: Profil pengguna tidak ditemukan."
+            )
+            
+        role = profile_res.data.get("role", "").lower()
+        if role != "admin":
+            raise HTTPException(
+                status_code=403,
+                detail=f"Forbidden: Akses khusus Administrator (role saat ini: '{role}')."
+            )
+            
+        return user_id
+        
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        raise HTTPException(
+            status_code=401,
+            detail=f"Gagal memverifikasi token otentikasi: {str(e)}"
+        )
+
+
+def verify_dosen_or_admin_token(authorization: str = Header(None)) -> str:
+    """
+    Verifikasi access token dari Supabase.
+    Memastikan token valid dan memiliki role 'dosen' atau 'admin'.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Header otentikasi tidak valid atau tidak ditemukan."
+        )
+    token = authorization.split(" ")[1]
+    
+    try:
+        user_res = supabase.auth.get_user(token)
+        if not user_res or not user_res.user:
+            raise HTTPException(
+                status_code=401,
+                detail="Token otentikasi Supabase tidak valid atau kadaluwarsa."
+            )
+            
+        user_id = user_res.user.id
+        
+        profile_res = supabase.table("profil_pengguna").select("role").eq("id", user_id).maybe_single().execute()
+        if not profile_res or not profile_res.data:
+            raise HTTPException(
+                status_code=403,
+                detail="Forbidden: Profil pengguna tidak ditemukan."
+            )
+            
+        role = profile_res.data.get("role", "").lower()
+        if role not in ["dosen", "admin"]:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Forbidden: Akses khusus Dosen/Administrator (role saat ini: '{role}')."
+            )
+            
+        return user_id
+        
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        raise HTTPException(
+            status_code=401,
+            detail=f"Gagal memverifikasi token otentikasi: {str(e)}"
+        )
+
+
+def verify_any_authenticated_token(authorization: str = Header(None)) -> str:
+    """
+    Verifikasi access token dari Supabase.
+    Memastikan token valid dan pengguna terdaftar di sistem.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Header otentikasi tidak valid atau tidak ditemukan."
+        )
+    token = authorization.split(" ")[1]
+    
+    try:
+        user_res = supabase.auth.get_user(token)
+        if not user_res or not user_res.user:
+            raise HTTPException(
+                status_code=401,
+                detail="Token otentikasi Supabase tidak valid atau kadaluwarsa."
+            )
+            
+        return user_res.user.id
+        
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        raise HTTPException(
+            status_code=401,
+            detail=f"Gagal memverifikasi token otentikasi: {str(e)}"
+        )
+
+
+def check_lecturer_course_access(lecturer_id: str, course_id: str) -> bool:
+    """
+    Verifikasi apakah dosen mengajar/ditugaskan pada mata kuliah tertentu.
+    Admin selalu diizinkan.
+    """
+    profile_res = supabase.table("profil_pengguna").select("role").eq("id", lecturer_id).maybe_single().execute()
+    if not profile_res or not profile_res.data:
+        return False
+    
+    role = profile_res.data.get("role", "").lower()
+    if role == "admin":
+        return True
+        
+    if role != "dosen":
+        return False
+        
+    assignment = (
+        supabase.table("dosen_mata_kuliah")
+        .select("id")
+        .eq("dosen_id", lecturer_id)
+        .eq("mata_kuliah_id", course_id)
+        .maybe_single()
+        .execute()
+    )
+    return bool(assignment and assignment.data)
+
+
+def check_user_submission_read_access(user_id: str, submission_id: str) -> bool:
+    """
+    Memeriksa apakah pengguna memiliki hak akses baca untuk submission.
+    Dosen harus ditugaskan ke course, mahasiswa harus memiliki submission tersebut, admin selalu diizinkan.
+    """
+    profile_res = supabase.table("profil_pengguna").select("role").eq("id", user_id).maybe_single().execute()
+    if not profile_res or not profile_res.data:
+        return False
+        
+    role = profile_res.data.get("role", "").lower()
+    if role == "admin":
+        return True
+        
+    submission = get_submission_by_id(submission_id)
+    if not submission:
+        return False
+        
+    if role == "dosen":
+        course_id = submission.get("mata_kuliah_id")
+        if not course_id:
+            return False
+        return check_lecturer_course_access(user_id, course_id)
+        
+    return submission.get("mahasiswa_id") == user_id
+
+
+def check_lecturer_submission_write_access(lecturer_id: str, submission_id: str) -> bool:
+    """
+    Memeriksa apakah dosen memiliki hak akses ubah untuk submission (dosen mata kuliah).
+    Admin selalu diizinkan.
+    """
+    profile_res = supabase.table("profil_pengguna").select("role").eq("id", lecturer_id).maybe_single().execute()
+    if not profile_res or not profile_res.data:
+        return False
+        
+    role = profile_res.data.get("role", "").lower()
+    if role == "admin":
+        return True
+        
+    if role != "dosen":
+        return False
+        
+    submission = get_submission_by_id(submission_id)
+    if not submission:
+        return False
+        
+    course_id = submission.get("mata_kuliah_id")
+    if not course_id:
+        return False
+        
+    return check_lecturer_course_access(lecturer_id, course_id)
+
+
 # ==================================================
 # PRODUCTION ENDPOINTS
 # ==================================================
 
 
 @app.post("/predict/{submission_id}")
-def predict(submission_id: str, model: str = None):
+def predict(submission_id: str, model: str = None, user_id: str = Depends(verify_dosen_or_admin_token)):
     """
     Pipeline utama: jalankan AI untuk seluruh lembar jawaban
     milik submission_id.
@@ -84,6 +292,12 @@ def predict(submission_id: str, model: str = None):
             detail=f"Submission dengan ID '{submission_id}' tidak ditemukan."
         )
     
+    if not check_lecturer_submission_write_access(user_id, submission_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Anda tidak ditugaskan untuk mata kuliah dari submission ini."
+        )
+    
     if submission.get("ai_status") == "finalized" or submission.get("status_submit") == "finalized":
         raise HTTPException(
             status_code=400,
@@ -91,10 +305,47 @@ def predict(submission_id: str, model: str = None):
         )
     
     if submission.get("ai_status") == "processing":
-        raise HTTPException(
-            status_code=409,
-            detail="Analisis AI sedang berjalan untuk tugas ini. Silakan tunggu hingga selesai."
-        )
+        import logging
+        logger = logging.getLogger("uvicorn")
+        
+        # Check if the job is stuck (updated_at is older than 5 minutes)
+        updated_at_str = submission.get("updated_at")
+        is_stuck = False
+        if updated_at_str:
+            try:
+                from datetime import datetime, timezone
+                # Handle ISO 8601 timezone formats
+                if updated_at_str.endswith("Z"):
+                    updated_at_str = updated_at_str[:-1] + "+00:00"
+                updated_at = datetime.fromisoformat(updated_at_str)
+                
+                # Ensure updated_at has timezone
+                if updated_at.tzinfo is None:
+                    updated_at = updated_at.replace(tzinfo=timezone.utc)
+                
+                now = datetime.now(timezone.utc)
+                diff = (now - updated_at).total_seconds()
+                # If older than 5 minutes (300 seconds), it is considered stuck
+                if diff > 300:
+                    is_stuck = True
+            except Exception as parse_err:
+                logger.error(f"[AI Predict Stuck Check] Error parsing updated_at '{updated_at_str}': {parse_err}")
+                pass
+
+        if is_stuck:
+            logger.warning(f"[AI Predict] Stuck job detected for submission {submission_id} (last updated {updated_at_str}). Resetting status to failed.")
+            try:
+                supabase.table("pengumpulan_tugas").update({
+                    "ai_status": "failed",
+                    "status_submit": "failed"
+                }).eq("id", submission_id).execute()
+            except Exception as reset_err:
+                logger.error(f"[AI Predict] Failed to force-reset stuck job: {reset_err}")
+        else:
+            raise HTTPException(
+                status_code=409,
+                detail="Analisis AI sedang berjalan untuk tugas ini. Silakan tunggu hingga selesai."
+            )
 
     result = process_submission(submission_id, model_name=model)
     if not result.get("success") and "error" in result:
@@ -102,14 +353,77 @@ def predict(submission_id: str, model: str = None):
     return result
 
 
+def run_batch_prediction_background(submission_ids: list, model_name: str):
+    import time
+    for sub_id in submission_ids:
+        try:
+            logger.info(f"[Batch AI Background] Starting prediction for submission {sub_id} using {model_name}")
+            process_submission(sub_id, model_name=model_name)
+            time.sleep(1)
+        except Exception as e:
+            logger.error(f"[Batch AI Background] Error processing submission {sub_id}: {e}", exc_info=True)
+
+
+@app.post("/predict/batch")
+def predict_batch(payload: dict, background_tasks: BackgroundTasks, user_id: str = Depends(verify_dosen_or_admin_token)):
+    """
+    Batch AI prediction: triggers background processing for multiple submissions sequentially.
+    """
+    submission_ids = payload.get("submission_ids", [])
+    model = payload.get("model")
+    
+    if not model or model.lower() in ["", "none", "null"]:
+        model = settings_service.get_setting("active_model")
+    if not model:
+        model = "MobileNetV2"
+        
+    if model not in ["MobileNetV2", "DenseNet121", "InceptionV3"]:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid model. Allowed values: MobileNetV2, DenseNet121, InceptionV3"
+        )
+        
+    if not submission_ids:
+        raise HTTPException(status_code=400, detail="Daftar submission_ids kosong.")
+        
+    # Validate write access and eligibility
+    valid_ids = []
+    for sub_id in submission_ids:
+        submission = get_submission_by_id(sub_id)
+        if not submission:
+            continue
+        if not check_lecturer_submission_write_access(user_id, sub_id):
+            continue
+            
+        ai_status = submission.get("ai_status")
+        status_submit = submission.get("status_submit")
+        if ai_status == "finalized" or status_submit == "finalized":
+            continue
+            
+        valid_ids.append(sub_id)
+        
+    if not valid_ids:
+        raise HTTPException(status_code=400, detail="Tidak ada submission valid yang dapat diproses.")
+
+    # Queue background task to run the predictions sequentially
+    background_tasks.add_task(run_batch_prediction_background, valid_ids, model)
+    
+    return {
+        "success": True,
+        "message": f"Batch processing dimulai untuk {len(valid_ids)} tugas di background.",
+        "processed_count": len(valid_ids)
+    }
+
+
+
 @app.get("/settings")
-def get_settings():
+def get_settings(user_id: str = Depends(verify_dosen_or_admin_token)):
     """Retrieve all system settings from the database (SST)."""
     return settings_service.get_all_settings()
 
 
 @app.post("/settings")
-def update_settings(payload: dict):
+def update_settings(payload: dict, admin_user_id: str = Depends(verify_admin_token)):
     """
     Update specified system settings in the database.
     Updates in-memory cache and logs audit logs:
@@ -176,11 +490,11 @@ def run_prediction_background(submission_id: str, model_name: str):
     try:
         process_submission(submission_id, model_name=model_name)
     except Exception as e:
-        print(f"[AI Background] Error running prediction for {submission_id}: {e}")
+        logger.error(f"[AI Background] Error running prediction for {submission_id}: {e}", exc_info=True)
 
 
 @app.post("/submission/{submission_id}/submit")
-def submit_submission(submission_id: str, background_tasks: BackgroundTasks):
+def submit_submission(submission_id: str, background_tasks: BackgroundTasks, user_id: str = Depends(verify_any_authenticated_token)):
     """
     Endpoint dipanggil saat mahasiswa klik kumpulkan tugas.
     Membaca setting auto_run_ai dari database.
@@ -192,6 +506,12 @@ def submit_submission(submission_id: str, background_tasks: BackgroundTasks):
         raise HTTPException(
             status_code=404,
             detail=f"Submission dengan ID '{submission_id}' tidak ditemukan."
+        )
+        
+    if not check_user_submission_read_access(user_id, submission_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Anda tidak memiliki akses untuk mengumpulkan tugas ini."
         )
         
     auto_run = settings_service.get_setting("auto_run_ai") == "true"
@@ -236,7 +556,7 @@ def submit_submission(submission_id: str, background_tasks: BackgroundTasks):
 
 
 @app.get("/prediction/{submission_id}")
-def get_prediction(submission_id: str):
+def get_prediction(submission_id: str, user_id: str = Depends(verify_any_authenticated_token)):
     """
     Mengambil hasil prediksi final untuk submission_id.
     """
@@ -247,30 +567,24 @@ def get_prediction(submission_id: str):
             detail=f"Submission dengan ID '{submission_id}' tidak ditemukan.",
         )
 
+    if not check_user_submission_read_access(user_id, submission_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Anda tidak memiliki akses untuk membaca data prediksi ini."
+        )
+
     model_ai = submission.get("model_ai")
     predictions = get_predictions_by_submission(submission_id, model_ai)
 
     sections_dict = {}
     for pred in predictions:
         code = pred.get("section_code")
-        # If there are duplicates, prioritize MobilenetV2 and non-debug scores (not 85)
-        is_debug = pred.get("predicted_score") == 85
-        if code in sections_dict:
-            # If the existing one is debug and the new one is not, overwrite it
-            if sections_dict[code]["predicted_score"] == 85 and not is_debug:
-                sections_dict[code] = {
-                    "section_code": code,
-                    "predicted_class": pred.get("predicted_class"),
-                    "predicted_score": pred.get("predicted_score"),
-                    "confidence": round(float(pred.get("confidence", 0.0)), 2),
-                }
-        else:
-            sections_dict[code] = {
-                "section_code": code,
-                "predicted_class": pred.get("predicted_class"),
-                "predicted_score": pred.get("predicted_score"),
-                "confidence": round(float(pred.get("confidence", 0.0)), 2),
-            }
+        sections_dict[code] = {
+            "section_code": code,
+            "predicted_class": pred.get("predicted_class"),
+            "predicted_score": pred.get("predicted_score"),
+            "confidence": round(float(pred.get("confidence", 0.0)), 2),
+        }
 
     # Sort the sections alphabetically (e.g. S-1A, S-1B...)
     sorted_sections = [sections_dict[k] for k in sorted(sections_dict.keys())]
@@ -285,7 +599,7 @@ def get_prediction(submission_id: str):
 
 
 @app.get("/submission/{submission_id}/results")
-def get_submission_results(submission_id: str):
+def get_submission_results(submission_id: str, user_id: str = Depends(verify_any_authenticated_token)):
     """
     Mengambil hasil prediksi final untuk submission_id (format dosen).
     """
@@ -296,28 +610,23 @@ def get_submission_results(submission_id: str):
             detail=f"Submission dengan ID '{submission_id}' tidak ditemukan.",
         )
 
+    if not check_user_submission_read_access(user_id, submission_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Anda tidak memiliki akses untuk membaca hasil review ini."
+        )
+
     model_ai = submission.get("model_ai")
     predictions = get_predictions_by_submission(submission_id, model_ai)
 
     sections_dict = {}
     for pred in predictions:
         code = pred.get("section_code")
-        # If there are duplicates, prioritize MobilenetV2 and non-debug scores (not 85)
-        is_debug = pred.get("predicted_score") == 85
-        if code in sections_dict:
-            # If the existing one is debug and the new one is not, overwrite it
-            if sections_dict[code]["predicted_score"] == 85 and not is_debug:
-                sections_dict[code] = {
-                    "section_code": code,
-                    "predicted_score": pred.get("predicted_score"),
-                    "confidence": round(float(pred.get("confidence", 0.0)), 2),
-                }
-        else:
-            sections_dict[code] = {
-                "section_code": code,
-                "predicted_score": pred.get("predicted_score"),
-                "confidence": round(float(pred.get("confidence", 0.0)), 2),
-            }
+        sections_dict[code] = {
+            "section_code": code,
+            "predicted_score": pred.get("predicted_score"),
+            "confidence": round(float(pred.get("confidence", 0.0)), 2),
+        }
 
     # Sort the sections alphabetically (e.g. S-1A, S-1B...)
     sorted_sections = [sections_dict[k] for k in sorted(sections_dict.keys())]
@@ -332,10 +641,16 @@ def get_submission_results(submission_id: str):
 
 
 @app.post("/submission/{submission_id}/reviewed")
-def post_reviewed(submission_id: str):
+def post_reviewed(submission_id: str, user_id: str = Depends(verify_dosen_or_admin_token)):
     """
     Update status submission menjadi reviewed.
     """
+    if not check_lecturer_submission_write_access(user_id, submission_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Anda tidak ditugaskan untuk mata kuliah dari submission ini."
+        )
+
     data = update_ai_status(submission_id, "reviewed")
     if not data:
         raise HTTPException(
@@ -346,10 +661,16 @@ def post_reviewed(submission_id: str):
 
 
 @app.post("/submission/{submission_id}/finalize")
-def post_finalize(submission_id: str):
+def post_finalize(submission_id: str, user_id: str = Depends(verify_dosen_or_admin_token)):
     """
     Update status submission menjadi finalized.
     """
+    if not check_lecturer_submission_write_access(user_id, submission_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Anda tidak ditugaskan untuk mata kuliah dari submission ini."
+        )
+
     data = update_ai_status(submission_id, "finalized")
     if not data:
         raise HTTPException(
@@ -362,16 +683,44 @@ def post_finalize(submission_id: str):
 @app.get("/health")
 def health():
     """
-    Endpoint untuk pengecekan kesehatan backend.
+    Endpoint untuk pengecekan kesehatan backend dengan verifikasi dependensi.
     """
+    db_status = "healthy"
+    db_error = None
+    try:
+        # Check database connection by querying a small record
+        supabase.table("system_settings").select("id").limit(1).execute()
+    except Exception as e:
+        db_status = "unhealthy"
+        db_error = str(e)
+        logger.error(f"[HEALTH CHECK] Database connection failed: {e}", exc_info=True)
+        
+    try:
+        # Check model registry cache state
+        from services.model_registry import get_cache_status
+        cache_status = get_cache_status()
+        loaded_count = cache_status["total_loaded"]
+    except Exception as e:
+        loaded_count = 0
+        logger.error(f"[HEALTH CHECK] Failed to get model cache status: {e}", exc_info=True)
+        
+    status = "ok" if db_status == "healthy" else "error"
     return {
-        "status": "ok",
-        "service": "EMATHTOCO AI Backend"
+        "status": status,
+        "service": "EMATHTOCO AI Backend",
+        "database": {
+            "status": db_status,
+            "error": db_error
+        },
+        "model_registry": {
+            "loaded_models_count": loaded_count,
+            "max_cached_limit": 6
+        }
     }
 
 
 @app.get("/model-info")
-def model_info():
+def model_info(admin_user_id: str = Depends(verify_admin_token)):
     """
     Mengambil informasi cache model registry.
     """
@@ -384,13 +733,13 @@ def model_info():
 
 
 @app.get("/cache-status")
-def cache_status():
+def cache_status(admin_user_id: str = Depends(verify_admin_token)):
     """Lihat model mana yang sudah ada di lazy-load cache."""
     return get_cache_status()
 
 
 @app.get("/audit-models")
-def audit_models():
+def audit_models(admin_user_id: str = Depends(verify_admin_token)):
     """
     Loop all models in MODEL_CONFIG and return details.
     """
@@ -433,7 +782,7 @@ def audit_models():
             input_shape = list(test_model.input_shape) if test_model.input_shape else [None, input_size[0], input_size[1], 3]
             output_shape = list(test_model.output_shape) if test_model.output_shape else None
         except Exception as e:
-            print(f"Error loading test model for {arch}: {e}")
+            logger.error(f"Error loading test model for {arch}: {e}", exc_info=True)
 
         audit_results.append({
             "architecture": arch,
@@ -447,10 +796,18 @@ def audit_models():
 
 
 @app.get("/lecturer/class-summary")
-def get_class_summary(lecturer_id: str):
+def get_class_summary(lecturer_id: str, current_user_id: str = Depends(verify_dosen_or_admin_token)):
     """
     Mengambil ringkasan statistik kelas dan mahasiswa yang diajar oleh dosen.
     """
+    profile_res = supabase.table("profil_pengguna").select("role").eq("id", current_user_id).maybe_single().execute()
+    role = profile_res.data.get("role", "").lower() if profile_res and profile_res.data else ""
+    if role != "admin" and current_user_id != lecturer_id:
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Anda tidak dapat mengakses ringkasan kelas dosen lain."
+        )
+
     # 1. Dapatkan daftar mata_kuliah_id yang diajar oleh dosen
     assignments_res = (
         supabase.table("dosen_mata_kuliah")
@@ -511,7 +868,7 @@ def get_class_summary(lecturer_id: str):
 
 
 @app.get("/ai-models")
-def get_ai_models():
+def get_ai_models(user_id: str = Depends(verify_dosen_or_admin_token)):
     """
     Registry model AI yang digunakan oleh sistem penilaian otomatis.
     """
@@ -548,10 +905,15 @@ def get_ai_models():
 
 
 @app.get("/lecturer/course/{course_id}/stats")
-def get_course_stats(course_id: str):
+def get_course_stats(course_id: str, user_id: str = Depends(verify_dosen_or_admin_token)):
     """
     Mengambil data statistik mahasiswa terdaftar untuk course_id.
     """
+    if not check_lecturer_course_access(user_id, course_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Anda tidak ditugaskan untuk mata kuliah ini."
+        )
     try:
         # Hitung jumlah mahasiswa di mahasiswa_mata_kuliah
         res = (
@@ -572,10 +934,15 @@ def get_course_stats(course_id: str):
 
 
 @app.get("/lecturer/course/{course_id}/students")
-def get_course_students(course_id: str):
+def get_course_students(course_id: str, user_id: str = Depends(verify_dosen_or_admin_token)):
     """
     Mengambil data roster mahasiswa terdaftar beserta status pengumpulan tugas mereka.
     """
+    if not check_lecturer_course_access(user_id, course_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Anda tidak ditugaskan untuk mata kuliah ini."
+        )
     try:
         # 1. Ambil data mahasiswa_id yang terdaftar di mata_kuliah_id
         enrollments = (
@@ -662,7 +1029,7 @@ def get_course_students(course_id: str):
 
 
 @app.post("/admin/predictions/count")
-def admin_count_predictions(payload: dict):
+def admin_count_predictions(payload: dict, admin_user_id: str = Depends(verify_admin_token)):
     lembar_jawaban_ids = payload.get("lembar_jawaban_ids", [])
     if not lembar_jawaban_ids:
         return {"count": 0}
@@ -674,7 +1041,7 @@ def admin_count_predictions(payload: dict):
 
 
 @app.post("/admin/predictions/delete")
-def admin_delete_predictions(payload: dict):
+def admin_delete_predictions(payload: dict, admin_user_id: str = Depends(verify_admin_token)):
     lembar_jawaban_ids = payload.get("lembar_jawaban_ids", [])
     if not lembar_jawaban_ids:
         return {"deleted": 0}
@@ -686,66 +1053,22 @@ def admin_delete_predictions(payload: dict):
 
 
 @app.get("/audit/schema-check")
-def audit_schema_check():
+def audit_schema_check(admin_user_id: str = Depends(verify_admin_token)):
     """
     Checks the schema version of the audit_log table.
-    Returns whether it is using the legacy schema or the new enterprise schema,
-    along with the list of columns found.
     """
-    import requests
-    from utils.supabase_client import SUPABASE_URL, SUPABASE_KEY
-    import utils.audit_helper as audit_helper
-
-    columns_found = []
-    
-    # Method 1: Check OpenAPI Spec from Postgrest
-    try:
-        headers = {
-            "apikey": SUPABASE_KEY,
-            "Authorization": f"Bearer {SUPABASE_KEY}"
-        }
-        r = requests.get(f"{SUPABASE_URL}/rest/v1/", headers=headers, timeout=5)
-        if r.status_code == 200:
-            spec = r.json()
-            definitions = spec.get("definitions", {})
-            audit_log_def = definitions.get("audit_log", {})
-            properties = audit_log_def.get("properties", {})
-            columns_found = list(properties.keys())
-    except Exception as e:
-        print(f"[AUDIT] OpenAPI check failed: {e}")
-
-    # Method 2 (Fallback/Verification): Select columns limit 0
-    if not columns_found:
-        test_columns = [
-            "id", "actor_id", "actor_role", "action_type", "target_type", "target_id", 
-            "description", "created_at", "user_id", "user_name", "role", "action", "target", "detail"
-        ]
-        for col in test_columns:
-            try:
-                supabase.table("audit_log").select(col).limit(0).execute()
-                columns_found.append(col)
-            except Exception:
-                pass
-
-    # Determine schema version
-    new_columns = {"user_id", "user_name", "role", "action", "target", "detail"}
-    has_all_new = new_columns.issubset(set(columns_found))
-    schema_version = "enterprise" if has_all_new else "legacy"
-
-    # Synchronize the global cache in audit_helper.py
-    audit_helper._HAS_ENTERPRISE_SCHEMA = has_all_new
-
     return {
-        "schema_version": schema_version,
-        "columns_found": columns_found
+        "schema_version": "enterprise",
+        "columns_found": ["id", "user_id", "user_name", "role", "action", "target", "detail", "created_at"]
     }
 
 
 @app.post("/audit/log")
-def post_audit_log(payload: dict):
+def post_audit_log(payload: dict, token_user_id: str = Depends(verify_any_authenticated_token)):
     """
     Endpoint untuk menerima penulisan audit log dari frontend.
     Memvalidasi dan menormalisasi payload sebelum diteruskan ke database.
+    Identitas aktor diambil langsung dari token JWT dan profil database.
     """
     if not payload:
         raise HTTPException(status_code=400, detail="Payload kosong.")
@@ -757,10 +1080,17 @@ def post_audit_log(payload: dict):
     if not action or not target:
         raise HTTPException(status_code=400, detail="Field 'action' dan 'target' wajib diisi.")
         
-    user_id = payload.get("user_id")
-    user_name = payload.get("user_name")
-    role = payload.get("role")
-    detail = payload.get("detail")
+    # Ambil identitas aktor secara aman dari token JWT & database
+    profile_res = supabase.table("profil_pengguna").select("nama_lengkap, role").eq("id", token_user_id).maybe_single().execute()
+    if not profile_res or not profile_res.data:
+        raise HTTPException(status_code=404, detail="Profil pengguna untuk token ini tidak ditemukan.")
+        
+    user_id = token_user_id
+    user_name = profile_res.data.get("nama_lengkap") or "Unknown User"
+    role = profile_res.data.get("role") or "mahasiswa"
+    
+    # Baca detail (mendukung detail maupun details)
+    detail = payload.get("details") if payload.get("details") is not None else payload.get("detail")
 
     # Standardize/Normalize model names
     from utils.audit_helper import standardize_model_name, create_audit_log
@@ -792,14 +1122,14 @@ def post_audit_log(payload: dict):
 
 
 @app.delete("/admin/user/{user_id}")
-def delete_user(user_id: str):
+def delete_user(user_id: str, admin_user_id: str = Depends(verify_admin_token)):
     """
     Endpoint untuk menghapus pengguna dari database (profil_pengguna) 
     dan auth.users Supabase secara terurut.
     """
     import logging
     logger = logging.getLogger("uvicorn")
-    logger.info(f"[Delete User Request] Target User ID: {user_id}")
+    logger.info(f"[Delete User Request] Target User ID: {user_id} requested by Admin: {admin_user_id}")
 
     try:
         # Check if profile exists in profil_pengguna
@@ -821,19 +1151,59 @@ def delete_user(user_id: str):
         if not profile_exists and not auth_user_exists:
             raise HTTPException(status_code=404, detail="Pengguna tidak ditemukan di sistem.")
 
-        # 1. Hapus data relasi (mahasiswa_mata_kuliah & dosen_mata_kuliah)
+        # 1. Hapus data lembar jawaban & file storage mahasiswa
+        sub_res = supabase.table("pengumpulan_tugas").select("id").eq("mahasiswa_id", user_id).execute()
+        if sub_res.data:
+            for sub in sub_res.data:
+                sub_id = sub["id"]
+                sheets_res = supabase.table("lembar_jawaban").select("id, image_url").eq("pengumpulan_tugas_id", sub_id).execute()
+                if sheets_res.data:
+                    # Hapus file dari Storage bucket 'lembar-jawaban'
+                    files_to_delete = [s["image_url"] for s in sheets_res.data if s.get("image_url")]
+                    if files_to_delete:
+                        logger.info(f"[Delete User] Removing {len(files_to_delete)} files from storage 'lembar-jawaban'...")
+                        try:
+                            supabase.storage.from_("lembar-jawaban").remove(files_to_delete)
+                        except Exception as storage_err:
+                            logger.error(f"[Delete User Warning] Storage deletion failed: {storage_err}")
+                    
+                    # Hapus hasil_prediksi
+                    sheet_ids = [s["id"] for s in sheets_res.data]
+                    if sheet_ids:
+                        supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", sheet_ids).execute()
+                        logger.info(f"[Delete User] Deleted related hasil_prediksi")
+                    
+                    # Hapus lembar_jawaban rows
+                    supabase.table("lembar_jawaban").delete().eq("pengumpulan_tugas_id", sub_id).execute()
+                    logger.info(f"[Delete User] Deleted related lembar_jawaban")
+                
+                # Hapus pengumpulan_tugas row
+                supabase.table("pengumpulan_tugas").delete().eq("id", sub_id).execute()
+                logger.info(f"[Delete User] Deleted related pengumpulan_tugas")
+
+        # 2. Hapus foto profil dari Storage bucket 'profile-images' jika ada
+        if profile_exists:
+            foto_url = profile_res.data[0].get("foto_profil_url")
+            if foto_url:
+                logger.info(f"[Delete User] Removing profile image from storage: {foto_url}")
+                try:
+                    supabase.storage.from_("profile-images").remove([foto_url])
+                except Exception as avatar_err:
+                    logger.error(f"[Delete User Warning] Profile image storage deletion failed: {avatar_err}")
+
+        # 3. Hapus data relasi (mahasiswa_mata_kuliah & dosen_mata_kuliah)
         rel_mhs = supabase.table("mahasiswa_mata_kuliah").delete().eq("mahasiswa_id", user_id).execute()
         logger.info(f"[Delete User] Deleted from mahasiswa_mata_kuliah: {len(rel_mhs.data) if rel_mhs.data else 0} rows")
         
         rel_dsn = supabase.table("dosen_mata_kuliah").delete().eq("dosen_id", user_id).execute()
         logger.info(f"[Delete User] Deleted from dosen_mata_kuliah: {len(rel_dsn.data) if rel_dsn.data else 0} rows")
 
-        # 2. Hapus profil_pengguna
+        # 4. Hapus profil_pengguna
         if profile_exists:
             profile_del_res = supabase.table("profil_pengguna").delete().eq("id", user_id).execute()
             logger.info(f"[Delete User] Deleted from profil_pengguna: {len(profile_del_res.data) if profile_del_res.data else 0} rows")
 
-        # 3. Hapus auth.users
+        # 5. Hapus auth.users
         if auth_user_exists:
             auth_del_res = supabase.auth.admin.delete_user(user_id)
             logger.info(f"[Delete User] Deleted from auth.users successfully: {auth_del_res}")
@@ -847,8 +1217,139 @@ def delete_user(user_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.delete("/admin/course/{course_id}")
+def delete_course(course_id: str, admin_user_id: str = Depends(verify_admin_token)):
+    """
+    Endpoint terpusat untuk menghapus mata kuliah beserta semua data terkait
+    (enrollment, submission, lembar jawaban, hasil prediksi, file storage) secara aman.
+    """
+    import logging
+    logger = logging.getLogger("uvicorn")
+    logger.info(f"[Delete Course Request] Target Course ID: {course_id} requested by Admin: {admin_user_id}")
+
+    try:
+        # Check if course exists
+        course_res = supabase.table("mata_kuliah").select("*").eq("id", course_id).execute()
+        if not course_res.data:
+            raise HTTPException(status_code=404, detail="Mata kuliah tidak ditemukan.")
+
+        # 1. Ambil data submission untuk mata kuliah ini
+        sub_res = supabase.table("pengumpulan_tugas").select("id").eq("mata_kuliah_id", course_id).execute()
+        if sub_res.data:
+            for sub in sub_res.data:
+                sub_id = sub["id"]
+                
+                # Ambil data lembar jawaban
+                sheets_res = supabase.table("lembar_jawaban").select("id, image_url").eq("pengumpulan_tugas_id", sub_id).execute()
+                if sheets_res.data:
+                    # Hapus file dari Storage bucket 'lembar-jawaban'
+                    files_to_delete = [s["image_url"] for s in sheets_res.data if s.get("image_url")]
+                    if files_to_delete:
+                        logger.info(f"[Delete Course] Removing {len(files_to_delete)} files from storage...")
+                        try:
+                            supabase.storage.from_("lembar-jawaban").remove(files_to_delete)
+                        except Exception as storage_err:
+                            logger.error(f"[Delete Course Warning] Storage deletion failed: {storage_err}")
+
+                    # Hapus hasil_prediksi
+                    sheet_ids = [s["id"] for s in sheets_res.data]
+                    if sheet_ids:
+                        supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", sheet_ids).execute()
+                        logger.info(f"[Delete Course] Deleted related hasil_prediksi")
+
+                    # Hapus lembar_jawaban rows
+                    supabase.table("lembar_jawaban").delete().eq("pengumpulan_tugas_id", sub_id).execute()
+                    logger.info(f"[Delete Course] Deleted related lembar_jawaban")
+
+                # Hapus pengumpulan_tugas row
+                supabase.table("pengumpulan_tugas").delete().eq("id", sub_id).execute()
+                logger.info(f"[Delete Course] Deleted related pengumpulan_tugas")
+
+        # 2. Hapus mahasiswa_mata_kuliah (enrollment)
+        supabase.table("mahasiswa_mata_kuliah").delete().eq("mata_kuliah_id", course_id).execute()
+        logger.info(f"[Delete Course] Deleted related mahasiswa_mata_kuliah")
+
+        # 3. Hapus dosen_mata_kuliah (assignment)
+        supabase.table("dosen_mata_kuliah").delete().eq("mata_kuliah_id", course_id).execute()
+        logger.info(f"[Delete Course] Deleted related dosen_mata_kuliah")
+
+        # 4. Hapus mata_kuliah row
+        supabase.table("mata_kuliah").delete().eq("id", course_id).execute()
+        logger.info(f"[Delete Course] Deleted mata_kuliah successfully")
+
+        return {"success": True, "message": f"Mata kuliah {course_id} berhasil dihapus."}
+
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        logger.error(f"[Delete Course Error] Exception occurred: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/admin/enrollment/{enrollment_id}")
+def delete_enrollment(enrollment_id: str, admin_user_id: str = Depends(verify_admin_token)):
+    """
+    Endpoint terpusat untuk menghapus enrollment mahasiswa beserta data terkait
+    (submission, lembar jawaban, hasil prediksi, file storage) pada mata kuliah terkait.
+    """
+    import logging
+    logger = logging.getLogger("uvicorn")
+    logger.info(f"[Delete Enrollment Request] Target Enrollment ID: {enrollment_id} requested by Admin: {admin_user_id}")
+
+    try:
+        # Check if enrollment exists
+        enroll_res = supabase.table("mahasiswa_mata_kuliah").select("*").eq("id", enrollment_id).execute()
+        if not enroll_res.data:
+            raise HTTPException(status_code=404, detail="Enrollment tidak ditemukan.")
+
+        enrollment = enroll_res.data[0]
+        mahasiswa_id = enrollment["mahasiswa_id"]
+        mata_kuliah_id = enrollment["mata_kuliah_id"]
+
+        # 1. Ambil data submission untuk mahasiswa di mata kuliah ini
+        sub_res = supabase.table("pengumpulan_tugas").select("id").eq("mahasiswa_id", mahasiswa_id).eq("mata_kuliah_id", mata_kuliah_id).execute()
+        if sub_res.data:
+            for sub in sub_res.data:
+                sub_id = sub["id"]
+                
+                # Ambil data lembar jawaban
+                sheets_res = supabase.table("lembar_jawaban").select("id, image_url").eq("pengumpulan_tugas_id", sub_id).execute()
+                if sheets_res.data:
+                    # Hapus file dari Storage
+                    files_to_delete = [s["image_url"] for s in sheets_res.data if s.get("image_url")]
+                    if files_to_delete:
+                        logger.info(f"[Delete Enrollment] Removing {len(files_to_delete)} files from storage...")
+                        try:
+                            supabase.storage.from_("lembar-jawaban").remove(files_to_delete)
+                        except Exception as storage_err:
+                            logger.error(f"[Delete Enrollment Warning] Storage deletion failed: {storage_err}")
+
+                    # Hapus hasil_prediksi
+                    sheet_ids = [s["id"] for s in sheets_res.data]
+                    if sheet_ids:
+                        supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", sheet_ids).execute()
+
+                    # Hapus lembar_jawaban rows
+                    supabase.table("lembar_jawaban").delete().eq("pengumpulan_tugas_id", sub_id).execute()
+
+                # Hapus pengumpulan_tugas row
+                supabase.table("pengumpulan_tugas").delete().eq("id", sub_id).execute()
+
+        # 2. Hapus mahasiswa_mata_kuliah row
+        supabase.table("mahasiswa_mata_kuliah").delete().eq("id", enrollment_id).execute()
+        logger.info(f"[Delete Enrollment] Deleted mahasiswa_mata_kuliah successfully")
+
+        return {"success": True, "message": f"Enrollment {enrollment_id} berhasil dihapus."}
+
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        logger.error(f"[Delete Enrollment Error] Exception occurred: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/audit/test")
-def audit_test():
+def audit_test(admin_user_id: str = Depends(verify_admin_token)):
     """
     Endpoint test untuk memverifikasi penulisan log terpusat.
     """
@@ -869,27 +1370,21 @@ def audit_test():
 @app.get("/auth/check-email")
 def check_email(email: str):
     """
-    Check if an email is registered in Supabase auth.users.
+    Check if an email is registered in Supabase auth.users using check_email_exists() RPC.
     """
     if not email:
         raise HTTPException(status_code=400, detail="Parameter email wajib diisi.")
     
+    import logging
+    logger = logging.getLogger("uvicorn")
+    
     try:
-        page = 1
         email_clean = email.strip().lower()
-        while True:
-            users = supabase.auth.admin.list_users(page=page, per_page=100)
-            if not users:
-                break
-            if any(u.email and u.email.strip().lower() == email_clean for u in users):
-                return {"exists": True}
-            if len(users) < 100:
-                break
-            page += 1
-        return {"exists": False}
+        response = supabase.rpc("check_email_exists", {"email_to_check": email_clean}).execute()
+        # The RPC returns a boolean directly, which is wrapped in response.data
+        exists = response.data
+        return {"exists": bool(exists)}
     except Exception as e:
-        import logging
-        logger = logging.getLogger("uvicorn")
         logger.error(f"[Check Email Error] {e}")
-        # Fallback to True so we don't block login if there's a temporary issue with Supabase admin API
+        # Fallback to True so we don't block login if there's a temporary database issue
         return {"exists": True}

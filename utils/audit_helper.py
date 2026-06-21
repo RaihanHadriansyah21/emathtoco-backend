@@ -14,28 +14,6 @@ def standardize_model_name(name: str) -> str:
     name = name.replace("Dense Net 121", "DenseNet121")
     return name
 
-_HAS_ENTERPRISE_SCHEMA = None
-
-def check_enterprise_schema() -> bool:
-    """
-    Checks if the enterprise schema is active.
-    Caches the result to prevent repeated database query errors.
-    """
-    global _HAS_ENTERPRISE_SCHEMA
-    if _HAS_ENTERPRISE_SCHEMA is not None:
-        return _HAS_ENTERPRISE_SCHEMA
-    try:
-        # Check if user_id column exists
-        supabase.table("audit_log").select("user_id").limit(0).execute()
-        _HAS_ENTERPRISE_SCHEMA = True
-    except Exception as e:
-        err_msg = str(e).lower()
-        if "column" in err_msg or "undefined_column" in err_msg or "42703" in err_msg:
-            _HAS_ENTERPRISE_SCHEMA = False
-        else:
-            # For connection/network issues, do not cache permanently
-            return False
-    return _HAS_ENTERPRISE_SCHEMA
 
 def create_audit_log(
     action: str,
@@ -46,8 +24,7 @@ def create_audit_log(
     role: str = None
 ) -> bool:
     """
-    Centrally log events in a non-blocking way.
-    Supports both new schema and old schema via dynamic schema detection.
+    Centrally log events in a non-blocking way using the standardized enterprise schema.
     Returns True if log insertion succeeded, otherwise False.
     """
     try:
@@ -71,73 +48,19 @@ def create_audit_log(
         if not user_name:
             user_name = "Dosen"
 
-        description_text = json.dumps(detail, indent=2) if isinstance(detail, (dict, list)) else str(detail)
-
-        has_enterprise = check_enterprise_schema()
-
-        if has_enterprise:
-            payload = {
-                "user_id": user_id,
-                "user_name": user_name,
-                "role": role,
-                "action": action,
-                "target": target,
-                "detail": detail,
-                # Write to legacy columns as well for 100% backward compatibility
-                "actor_id": user_id,
-                "actor_role": role,
-                "action_type": action,
-                "target_type": target,
-                "description": description_text
-            }
-            try:
-                supabase.table("audit_log").insert(payload).execute()
-                print(f"[AUDIT] action={action} role={role} target={target} success=True")
-                return True
-            except Exception as db_err:
-                err_msg = str(db_err)
-                print(f"[AUDIT] action={action} role={role} target={target} success=False")
-                print(f"[AUDIT] [ERROR] code=DB_INSERT_FAILED msg={err_msg}")
-                print(f"[AUDIT] [PAYLOAD] {payload}")
-                
-                # Retry legacy fallback insert
-                fallback_payload = {
-                    "actor_id": user_id,
-                    "actor_role": role,
-                    "action_type": action,
-                    "target_type": target,
-                    "description": description_text
-                }
-                try:
-                    supabase.table("audit_log").insert(fallback_payload).execute()
-                    print(f"[AUDIT] Fallback log insertion success=True")
-                    return True
-                except Exception as fb_err:
-                    fb_msg = str(fb_err)
-                    print(f"[AUDIT] Fallback log insertion success=False")
-                    print(f"[AUDIT] [ERROR] code=FALLBACK_FAILED msg={fb_msg}")
-                    print(f"[AUDIT] [PAYLOAD] {fallback_payload}")
-                    return False
-        else:
-            payload = {
-                "actor_id": user_id,
-                "actor_role": role,
-                "action_type": action,
-                "target_type": target,
-                "description": description_text
-            }
-            try:
-                supabase.table("audit_log").insert(payload).execute()
-                print(f"[AUDIT] action={action} role={role} target={target} success=True")
-                return True
-            except Exception as db_err:
-                err_msg = str(db_err)
-                print(f"[AUDIT] action={action} role={role} target={target} success=False")
-                print(f"[AUDIT] [ERROR] code=DB_LEGACY_INSERT_FAILED msg={err_msg}")
-                print(f"[AUDIT] [PAYLOAD] {payload}")
-                return False
-    except Exception as e:
-        # Non-blocking: only print to console, never crash application
-        print(f"[AUDIT] Central logger exception: {e}")
-        traceback.print_exc()
+        payload = {
+            "user_id": user_id,
+            "user_name": user_name,
+            "role": role,
+            "action": action,
+            "target": target,
+            "detail": detail
+        }
+        
+        supabase.table("audit_log").insert(payload).execute()
+        return True
+    except Exception as db_err:
+        from utils.logging_helper import logger
+        logger.error(f"[AUDIT ERROR] Failed to write audit log: {db_err}", exc_info=True)
         return False
+

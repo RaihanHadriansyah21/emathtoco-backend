@@ -1,6 +1,7 @@
 import time
 from datetime import datetime
 from utils.supabase_client import supabase
+from utils.logging_helper import logger
 
 class SettingsService:
     def __init__(self, ttl_seconds=30):
@@ -30,7 +31,7 @@ class SettingsService:
                 # Auto-seed the database
                 supabase.table("system_settings").insert({"setting_key": key, "setting_value": val}).execute()
         except Exception as e:
-            print(f"[SettingsService] Error reading setting '{key}': {e}")
+            logger.error(f"[SettingsService] Error reading setting '{key}': {e}", exc_info=True)
             val = self.default_settings.get(key, "")
             
         self.cache[key] = (val, now + self.ttl)
@@ -58,7 +59,7 @@ class SettingsService:
                 del self.cache[key]
             return True
         except Exception as e:
-            print(f"[SettingsService] Error writing setting '{key}': {e}")
+            logger.error(f"[SettingsService] Error writing setting '{key}': {e}", exc_info=True)
             return False
 
     def get_all_settings(self) -> dict:
@@ -81,7 +82,7 @@ class SettingsService:
                 self.cache[k] = (v, now + self.ttl)
             return db_settings
         except Exception as e:
-            print(f"[SettingsService] Error loading all settings: {e}")
+            logger.error(f"[SettingsService] Error loading all settings: {e}", exc_info=True)
             return self.default_settings
 
     def invalidate_cache(self, key: str = None):
@@ -93,3 +94,4 @@ class SettingsService:
             self.cache.clear()
 
 settings_service = SettingsService()
+

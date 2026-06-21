@@ -13,6 +13,7 @@ from services.image_service import download_image, check_file_exists
 from services.model_registry import get_model, MODEL_CONFIG
 from services.preprocess import preprocess_image
 from services.settings_service import settings_service
+from utils.logging_helper import logger
 
 # Nama arsitektur default yang digunakan pada tahap ini
 MODEL_AI = "MobileNetV2"
@@ -73,7 +74,7 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
 
     verbose = settings_service.get_setting("verbose_logging") == "true"
     if verbose:
-        print(f"[AI VERBOSE] [process_single_sheet] Starting section {section_code} with model {normalized_model_name} (path: {image_url})")
+        logger.info(f"[AI VERBOSE] [process_single_sheet] Starting section {section_code} with model {normalized_model_name} (path: {image_url})")
 
     # --------------------------------------------------
     # 1. Download + decode image
@@ -85,7 +86,7 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
         )
 
     if verbose:
-        print(f"[AI VERBOSE] [process_single_sheet] Image downloaded successfully, size: {img.shape}")
+        logger.info(f"[AI VERBOSE] [process_single_sheet] Image downloaded successfully, size: {img.shape}")
 
     input_size = MODEL_CONFIG[normalized_model_name]["input_size"]
 
@@ -107,7 +108,7 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
     confidence = float(np.max(output[0]))
 
     if verbose:
-        print(f"[AI VERBOSE] [process_single_sheet] Section {section_code} prediction raw output shape: {output.shape}, class: {predicted_class}, confidence: {confidence:.4f}")
+        logger.info(f"[AI VERBOSE] [process_single_sheet] Section {section_code} prediction raw output shape: {output.shape}, class: {predicted_class}, confidence: {confidence:.4f}")
 
     # --------------------------------------------------
     # 5. Convert class → score via CLASS_SCORE_MAP
@@ -115,7 +116,7 @@ def process_single_sheet(sheet: dict, model_name: str = "MobileNetV2") -> dict:
     predicted_score = get_score(section_code, predicted_class)
 
     if verbose:
-        print(f"[AI VERBOSE] [process_single_sheet] Section {section_code} mapped score: {predicted_score}")
+        logger.info(f"[AI VERBOSE] [process_single_sheet] Section {section_code} mapped score: {predicted_score}")
 
     # --------------------------------------------------
     # 6. Simpan ke tabel hasil_prediksi (upsert)
@@ -158,8 +159,8 @@ def _validate_storage_files(sheets: list) -> tuple[list, list]:
         image_url = sheet.get("image_url", "")
 
         if not image_url:
-            print(f"[AI] Missing file: submission={sheet.get('pengumpulan_tugas_id')} "
-                  f"section={section_code} path=(empty)")
+            logger.warning(f"[AI] Missing file: submission={sheet.get('pengumpulan_tugas_id')} "
+                           f"section={section_code} path=(empty)")
             missing.append({
                 "section_code": section_code,
                 "image_url": "(empty)",
@@ -170,8 +171,8 @@ def _validate_storage_files(sheets: list) -> tuple[list, list]:
         if check_file_exists(image_url):
             available.append(sheet)
         else:
-            print(f"[AI] Missing file: submission={sheet.get('pengumpulan_tugas_id')} "
-                  f"section={section_code} path={image_url}")
+            logger.warning(f"[AI] Missing file: submission={sheet.get('pengumpulan_tugas_id')} "
+                           f"section={section_code} path={image_url}")
             missing.append({
                 "section_code": section_code,
                 "image_url": image_url,
@@ -206,7 +207,7 @@ def log_ai_run(
                 if sub_res.data:
                     total_score = sub_res.data[0].get("nilai_akhir")
             except Exception as e:
-                print(f"[AI] Error fetching total score for logging: {e}")
+                logger.error(f"[AI] Error fetching total score for logging: {e}", exc_info=True)
                 
             create_audit_log(
                 action="AI_PROCESS_COMPLETED",
@@ -229,7 +230,7 @@ def log_ai_run(
                 user_name="Dosen"
             )
     except Exception as e:
-        print(f"[AI] Gagal menulis ke audit_log: {e}")
+        logger.error(f"[AI] Gagal menulis ke audit_log: {e}", exc_info=True)
 
 
 def process_submission(submission_id: str, model_name: str = "MobileNetV2") -> dict:
@@ -273,7 +274,7 @@ def process_submission(submission_id: str, model_name: str = "MobileNetV2") -> d
     
     verbose = settings_service.get_setting("verbose_logging") == "true"
     if verbose:
-        print(f"[AI VERBOSE] [process_submission] Started processing submission={submission_id} using model={normalized_model_name}")
+        logger.info(f"[AI VERBOSE] [process_submission] Started processing submission={submission_id} using model={normalized_model_name}")
 
     # Log AI_PROCESS_STARTED
     try:
@@ -286,7 +287,7 @@ def process_submission(submission_id: str, model_name: str = "MobileNetV2") -> d
             user_name="Dosen"
         )
     except Exception as start_err:
-        print(f"[AI] Failed to log AI_PROCESS_STARTED: {start_err}")
+        logger.error(f"[AI] Failed to log AI_PROCESS_STARTED: {start_err}", exc_info=True)
 
     # --------------------------------------------------
     # 2. Update status → processing & save model name
@@ -341,7 +342,7 @@ def process_submission(submission_id: str, model_name: str = "MobileNetV2") -> d
             try:
                 update_ai_status(submission_id, "failed")
             except Exception as e:
-                print(f"[AI] Gagal update_ai_status ke failed: {e}")
+                logger.error(f"[AI] Gagal update_ai_status ke failed: {e}", exc_info=True)
             try:
                 from utils.supabase_client import supabase
                 supabase.table("pengumpulan_tugas").update({
@@ -350,12 +351,12 @@ def process_submission(submission_id: str, model_name: str = "MobileNetV2") -> d
                     "nilai_akhir": None
                 }).eq("id", submission_id).execute()
             except Exception as e:
-                print(f"[AI] Gagal update direct ke failed: {e}")
+                logger.error(f"[AI] Gagal update direct ke failed: {e}", exc_info=True)
             
             missing_sections = [m["section_code"] for m in missing_files]
-            print(f"[AI] Pre-flight check failed: {len(missing_files)} file tidak ditemukan "
+            logger.warning(f"[AI] Pre-flight check failed: {len(missing_files)} file tidak ditemukan "
                   f"dari total {len(sheets)} lembar jawaban untuk submission {submission_id}")
-            print(f"[AI] Missing sections: {', '.join(missing_sections)}")
+            logger.warning(f"[AI] Missing sections: {', '.join(missing_sections)}")
             
             error_msg = (
                 f"Gagal memulai AI. Terdeteksi {len(missing_files)} file jawaban mahasiswa "
@@ -391,8 +392,8 @@ def process_submission(submission_id: str, model_name: str = "MobileNetV2") -> d
                 results.append(result)
             except FileNotFoundError as e:
                 # File hilang saat download (race condition)
-                print(f"[AI] File hilang saat download: submission={submission_id} "
-                      f"section={section_code} error={str(e)}")
+                logger.error(f"[AI] File hilang saat download: submission={submission_id} "
+                      f"section={section_code} error={str(e)}", exc_info=True)
                 errors.append({
                     "section_code": section_code,
                     "error": f"File tidak ditemukan di Storage: {str(e)}",
