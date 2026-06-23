@@ -1367,6 +1367,149 @@ def audit_test(admin_user_id: str = Depends(verify_admin_token)):
     return {"success": True}
 
 
+def _list_storage_files_recursive(bucket: str, folder: str = "") -> list:
+    """
+    List semua file di storage secara rekursif dengan pagination.
+    """
+    import logging
+    logger = logging.getLogger("uvicorn")
+    files = []
+    offset = 0
+    limit = 100
+    try:
+        while True:
+            res = supabase.storage.from_(bucket).list(folder, options={"limit": limit, "offset": offset})
+            if not res:
+                break
+            for item in res:
+                name = item.get("name")
+                if not name or name == ".placeholder":
+                    continue
+                is_folder = item.get("id") is None
+                item_path = f"{folder}/{name}" if folder else name
+                if is_folder:
+                    files.extend(_list_storage_files_recursive(bucket, item_path))
+                else:
+                    files.append({
+                        "path": item_path,
+                        "size": item.get("metadata", {}).get("size", 0) or item.get("size", 0)
+                    })
+            if len(res) < limit:
+                break
+            offset += limit
+    except Exception as e:
+        logger.error(f"[Storage List] Gagal melist folder '{folder}': {e}")
+    return files
+
+
+@app.get("/admin/storage/audit")
+def audit_storage(admin_user_id: str = Depends(verify_admin_token)):
+    """
+    Scan storage bucket 'lembar-jawaban' and find orphaned files.
+    """
+    import logging
+    logger = logging.getLogger("uvicorn")
+    logger.info(f"[Storage Audit Request] Requested by Admin: {admin_user_id}")
+    
+    try:
+        bucket = "lembar-jawaban"
+        
+        # 1. Ambil data image_url dari database
+        db_res = supabase.table("lembar_jawaban").select("image_url").execute()
+        db_paths = {row["image_url"] for row in db_res.data if row.get("image_url")}
+        
+        # 2. List semua file di storage bucket
+        storage_files = _list_storage_files_recursive(bucket)
+        
+        # 3. Cari file yatim piatu (orphan)
+        orphans = []
+        total_size = 0
+        for f in storage_files:
+            path = f["path"]
+            if path not in db_paths:
+                orphans.append(f)
+                total_size += f["size"]
+                
+        return {
+            "success": True,
+            "summary": {
+                "total_files": len(storage_files),
+                "db_referenced_files": len(db_paths),
+                "orphan_count": len(orphans),
+                "orphan_size_bytes": total_size,
+                "orphan_size_mb": round(total_size / (1024 * 1024), 2)
+            },
+            "orphans": orphans
+        }
+    except Exception as e:
+        logger.error(f"[Storage Audit Error] Exception occurred: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/admin/storage/prune")
+def prune_storage(admin_user_id: str = Depends(verify_admin_token)):
+    """
+    Scan storage bucket 'lembar-jawaban' and delete orphaned files.
+    """
+    import logging
+    logger = logging.getLogger("uvicorn")
+    logger.info(f"[Storage Prune Request] Requested by Admin: {admin_user_id}")
+    
+    try:
+        bucket = "lembar-jawaban"
+        
+        # 1. Ambil data image_url dari database
+        db_res = supabase.table("lembar_jawaban").select("image_url").execute()
+        db_paths = {row["image_url"] for row in db_res.data if row.get("image_url")}
+        
+        # 2. List semua file di storage bucket
+        storage_files = _list_storage_files_recursive(bucket)
+        
+        # 3. Cari file yatim piatu (orphan)
+        orphans_to_delete = []
+        total_size = 0
+        for f in storage_files:
+            path = f["path"]
+            if path not in db_paths:
+                orphans_to_delete.append(path)
+                total_size += f["size"]
+                
+        # 4. Hapus file yatim piatu dari storage
+        deleted_count = 0
+        if orphans_to_delete:
+            chunk_size = 100
+            for i in range(0, len(orphans_to_delete), chunk_size):
+                chunk = orphans_to_delete[i:i + chunk_size]
+                supabase.storage.from_(bucket).remove(chunk)
+                deleted_count += len(chunk)
+                logger.info(f"[Storage Prune] Berhasil menghapus chunk {len(chunk)} file")
+                
+        # Tulis ke log audit
+        from utils.audit_helper import create_audit_log
+        create_audit_log(
+            action="STORAGE_PRUNE",
+            target=bucket,
+            detail={
+                "deleted_count": deleted_count,
+                "reclaimed_size_bytes": total_size,
+                "reclaimed_size_mb": round(total_size / (1024 * 1024), 2)
+            },
+            user_id=admin_user_id,
+            user_name="Administrator",
+            role="admin"
+        )
+        
+        return {
+            "success": True,
+            "message": f"Storage cleanup complete. Reclaimed {round(total_size / (1024 * 1024), 2)} MB from {deleted_count} orphaned files.",
+            "deleted_count": deleted_count,
+            "reclaimed_size_bytes": total_size
+        }
+    except Exception as e:
+        logger.error(f"[Storage Prune Error] Exception occurred: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/auth/check-email")
 def check_email(email: str):
     """
