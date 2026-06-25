@@ -8,7 +8,7 @@ from repositories.submission_repository import get_submission_by_id, update_ai_s
 from services.model_registry import get_cache_status
 from services.prediction_service import process_submission
 from services.settings_service import settings_service
-from utils.supabase_client import supabase
+from utils.supabase_client import supabase, verify_user_token
 from utils.logging_helper import logger
 
 load_dotenv()
@@ -65,15 +65,16 @@ def verify_admin_token(authorization: str = Header(None)) -> str:
     token = authorization.split(" ")[1]
     
     try:
-        # Panggil API Supabase Auth untuk mendapatkan info user dari token JWT
-        user_res = supabase.auth.get_user(token)
-        if not user_res or not user_res.user:
+        # FIX #1: Use verify_user_token() instead of supabase.auth.get_user(token)
+        # to avoid polluting the global singleton's auth context.
+        user = verify_user_token(token)
+        if not user:
             raise HTTPException(
                 status_code=401,
                 detail="Token otentikasi Supabase tidak valid atau kadaluwarsa."
             )
             
-        user_id = user_res.user.id
+        user_id = user.id
         
         # Ambil role dari tabel profil_pengguna untuk otorisasi
         profile_res = supabase.table("profil_pengguna").select("role").eq("id", user_id).maybe_single().execute()
@@ -95,9 +96,10 @@ def verify_admin_token(authorization: str = Header(None)) -> str:
     except HTTPException as he:
         raise he
     except Exception as e:
+        logger.error(f"[AUTH] Token verification failed: {e}", exc_info=True)
         raise HTTPException(
             status_code=401,
-            detail=f"Gagal memverifikasi token otentikasi: {str(e)}"
+            detail="Gagal memverifikasi token otentikasi."
         )
 
 
@@ -114,14 +116,15 @@ def verify_dosen_or_admin_token(authorization: str = Header(None)) -> str:
     token = authorization.split(" ")[1]
     
     try:
-        user_res = supabase.auth.get_user(token)
-        if not user_res or not user_res.user:
+        # FIX #1: Use verify_user_token() to avoid token pollution
+        user = verify_user_token(token)
+        if not user:
             raise HTTPException(
                 status_code=401,
                 detail="Token otentikasi Supabase tidak valid atau kadaluwarsa."
             )
             
-        user_id = user_res.user.id
+        user_id = user.id
         
         profile_res = supabase.table("profil_pengguna").select("role").eq("id", user_id).maybe_single().execute()
         if not profile_res or not profile_res.data:
@@ -142,9 +145,10 @@ def verify_dosen_or_admin_token(authorization: str = Header(None)) -> str:
     except HTTPException as he:
         raise he
     except Exception as e:
+        logger.error(f"[AUTH] Token verification failed: {e}", exc_info=True)
         raise HTTPException(
             status_code=401,
-            detail=f"Gagal memverifikasi token otentikasi: {str(e)}"
+            detail="Gagal memverifikasi token otentikasi."
         )
 
 
@@ -161,21 +165,23 @@ def verify_any_authenticated_token(authorization: str = Header(None)) -> str:
     token = authorization.split(" ")[1]
     
     try:
-        user_res = supabase.auth.get_user(token)
-        if not user_res or not user_res.user:
+        # FIX #1: Use verify_user_token() to avoid token pollution
+        user = verify_user_token(token)
+        if not user:
             raise HTTPException(
                 status_code=401,
                 detail="Token otentikasi Supabase tidak valid atau kadaluwarsa."
             )
             
-        return user_res.user.id
+        return user.id
         
     except HTTPException as he:
         raise he
     except Exception as e:
+        logger.error(f"[AUTH] Token verification failed: {e}", exc_info=True)
         raise HTTPException(
             status_code=401,
-            detail=f"Gagal memverifikasi token otentikasi: {str(e)}"
+            detail="Gagal memverifikasi token otentikasi."
         )
 
 
@@ -930,7 +936,8 @@ def get_course_stats(course_id: str, user_id: str = Depends(verify_dosen_or_admi
             "total_students": total_students
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"[Course Stats] Internal error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Gagal mengambil statistik mata kuliah.")
 
 
 @app.get("/lecturer/course/{course_id}/students")
@@ -1025,7 +1032,8 @@ def get_course_students(course_id: str, user_id: str = Depends(verify_dosen_or_a
             "students": students_list
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"[Course Students] Internal error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Gagal mengambil data mahasiswa.")
 
 
 @app.post("/admin/predictions/count")
@@ -1037,7 +1045,8 @@ def admin_count_predictions(payload: dict, admin_user_id: str = Depends(verify_a
         res = supabase.table("hasil_prediksi").select("id", count="exact").in_("lembar_jawaban_id", lembar_jawaban_ids).execute()
         return {"count": res.count if res.count is not None else len(res.data)}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"[Admin Predictions Count] Internal error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Gagal menghitung prediksi.")
 
 
 @app.post("/admin/predictions/delete")
@@ -1049,7 +1058,8 @@ def admin_delete_predictions(payload: dict, admin_user_id: str = Depends(verify_
         res = supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", lembar_jawaban_ids).execute()
         return {"deleted": len(res.data) if res.data else 0}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"[Admin Predictions Delete] Internal error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Gagal menghapus prediksi.")
 
 
 @app.get("/audit/schema-check")
@@ -1128,14 +1138,15 @@ def delete_user(user_id: str, admin_user_id: str = Depends(verify_admin_token)):
     dan auth.users Supabase secara terurut.
     """
     import logging
-    logger = logging.getLogger("uvicorn")
-    logger.info(f"[Delete User Request] Target User ID: {user_id} requested by Admin: {admin_user_id}")
+    _logger = logging.getLogger("uvicorn")
+    _logger.info(f"[Delete User Request] Target User ID: {user_id} requested by Admin: {admin_user_id}")
+    cascade_errors = []
 
     try:
         # Check if profile exists in profil_pengguna
         profile_res = supabase.table("profil_pengguna").select("*").eq("id", user_id).execute()
         profile_exists = len(profile_res.data) > 0
-        logger.info(f"[Delete User Check] Profile exists in profil_pengguna: {profile_exists}")
+        _logger.info(f"[Delete User Check] Profile exists in profil_pengguna: {profile_exists}")
         
         # Check if user exists in auth.users
         auth_user_exists = False
@@ -1144,9 +1155,9 @@ def delete_user(user_id: str, admin_user_id: str = Depends(verify_admin_token)):
             if auth_user_res and auth_user_res.user:
                 auth_user_exists = True
         except Exception as auth_err:
-            logger.error(f"[Delete User Check] Error checking auth.users: {auth_err}")
+            _logger.error(f"[Delete User Check] Error checking auth.users: {auth_err}")
             
-        logger.info(f"[Delete User Check] User exists in auth.users: {auth_user_exists}")
+        _logger.info(f"[Delete User Check] User exists in auth.users: {auth_user_exists}")
         
         if not profile_exists and not auth_user_exists:
             raise HTTPException(status_code=404, detail="Pengguna tidak ditemukan di sistem.")
@@ -1161,60 +1172,78 @@ def delete_user(user_id: str, admin_user_id: str = Depends(verify_admin_token)):
                     # Hapus file dari Storage bucket 'lembar-jawaban'
                     files_to_delete = [s["image_url"] for s in sheets_res.data if s.get("image_url")]
                     if files_to_delete:
-                        logger.info(f"[Delete User] Removing {len(files_to_delete)} files from storage 'lembar-jawaban'...")
+                        _logger.info(f"[Delete User] Removing {len(files_to_delete)} files from storage 'lembar-jawaban'...")
                         try:
                             supabase.storage.from_("lembar-jawaban").remove(files_to_delete)
                         except Exception as storage_err:
-                            logger.error(f"[Delete User Warning] Storage deletion failed: {storage_err}")
+                            _logger.error(f"[Delete User Warning] Storage deletion failed: {storage_err}")
+                            cascade_errors.append(f"storage: {storage_err}")
                     
                     # Hapus hasil_prediksi
                     sheet_ids = [s["id"] for s in sheets_res.data]
                     if sheet_ids:
-                        supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", sheet_ids).execute()
-                        logger.info(f"[Delete User] Deleted related hasil_prediksi")
+                        try:
+                            supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", sheet_ids).execute()
+                            _logger.info(f"[Delete User] Deleted related hasil_prediksi")
+                        except Exception as pred_err:
+                            _logger.error(f"[Delete User] Failed to delete hasil_prediksi: {pred_err}")
+                            cascade_errors.append(f"hasil_prediksi: {pred_err}")
                     
                     # Hapus lembar_jawaban rows
-                    supabase.table("lembar_jawaban").delete().eq("pengumpulan_tugas_id", sub_id).execute()
-                    logger.info(f"[Delete User] Deleted related lembar_jawaban")
+                    try:
+                        supabase.table("lembar_jawaban").delete().eq("pengumpulan_tugas_id", sub_id).execute()
+                        _logger.info(f"[Delete User] Deleted related lembar_jawaban")
+                    except Exception as lj_err:
+                        _logger.error(f"[Delete User] Failed to delete lembar_jawaban: {lj_err}")
+                        cascade_errors.append(f"lembar_jawaban: {lj_err}")
                 
                 # Hapus pengumpulan_tugas row
-                supabase.table("pengumpulan_tugas").delete().eq("id", sub_id).execute()
-                logger.info(f"[Delete User] Deleted related pengumpulan_tugas")
+                try:
+                    supabase.table("pengumpulan_tugas").delete().eq("id", sub_id).execute()
+                    _logger.info(f"[Delete User] Deleted related pengumpulan_tugas")
+                except Exception as pt_err:
+                    _logger.error(f"[Delete User] Failed to delete pengumpulan_tugas: {pt_err}")
+                    cascade_errors.append(f"pengumpulan_tugas: {pt_err}")
 
         # 2. Hapus foto profil dari Storage bucket 'profile-images' jika ada
         if profile_exists:
             foto_url = profile_res.data[0].get("foto_profil_url")
             if foto_url:
-                logger.info(f"[Delete User] Removing profile image from storage: {foto_url}")
+                _logger.info(f"[Delete User] Removing profile image from storage: {foto_url}")
                 try:
                     supabase.storage.from_("profile-images").remove([foto_url])
                 except Exception as avatar_err:
-                    logger.error(f"[Delete User Warning] Profile image storage deletion failed: {avatar_err}")
+                    _logger.error(f"[Delete User Warning] Profile image storage deletion failed: {avatar_err}")
+                    cascade_errors.append(f"profile-image: {avatar_err}")
 
         # 3. Hapus data relasi (mahasiswa_mata_kuliah & dosen_mata_kuliah)
         rel_mhs = supabase.table("mahasiswa_mata_kuliah").delete().eq("mahasiswa_id", user_id).execute()
-        logger.info(f"[Delete User] Deleted from mahasiswa_mata_kuliah: {len(rel_mhs.data) if rel_mhs.data else 0} rows")
+        _logger.info(f"[Delete User] Deleted from mahasiswa_mata_kuliah: {len(rel_mhs.data) if rel_mhs.data else 0} rows")
         
         rel_dsn = supabase.table("dosen_mata_kuliah").delete().eq("dosen_id", user_id).execute()
-        logger.info(f"[Delete User] Deleted from dosen_mata_kuliah: {len(rel_dsn.data) if rel_dsn.data else 0} rows")
+        _logger.info(f"[Delete User] Deleted from dosen_mata_kuliah: {len(rel_dsn.data) if rel_dsn.data else 0} rows")
 
         # 4. Hapus profil_pengguna
         if profile_exists:
             profile_del_res = supabase.table("profil_pengguna").delete().eq("id", user_id).execute()
-            logger.info(f"[Delete User] Deleted from profil_pengguna: {len(profile_del_res.data) if profile_del_res.data else 0} rows")
+            _logger.info(f"[Delete User] Deleted from profil_pengguna: {len(profile_del_res.data) if profile_del_res.data else 0} rows")
 
         # 5. Hapus auth.users
         if auth_user_exists:
             auth_del_res = supabase.auth.admin.delete_user(user_id)
-            logger.info(f"[Delete User] Deleted from auth.users successfully: {auth_del_res}")
+            _logger.info(f"[Delete User] Deleted from auth.users successfully: {auth_del_res}")
 
-        return {"success": True, "message": f"Pengguna {user_id} berhasil dihapus."}
+        # Log cascade errors if any (partial success)
+        if cascade_errors:
+            _logger.warning(f"[Delete User] Completed with {len(cascade_errors)} non-critical errors: {cascade_errors}")
+
+        return {"success": True, "message": f"Pengguna {user_id} berhasil dihapus.", "warnings": len(cascade_errors)}
 
     except HTTPException as he:
         raise he
     except Exception as e:
-        logger.error(f"[Delete User Error] Exception occurred: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"[Delete User Error] Exception occurred: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Gagal menghapus pengguna. Silakan coba lagi.")
 
 
 @app.delete("/admin/course/{course_id}")
@@ -1282,8 +1311,8 @@ def delete_course(course_id: str, admin_user_id: str = Depends(verify_admin_toke
     except HTTPException as he:
         raise he
     except Exception as e:
-        logger.error(f"[Delete Course Error] Exception occurred: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"[Delete Course Error] Exception occurred: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Gagal menghapus mata kuliah. Silakan coba lagi.")
 
 
 @app.delete("/admin/enrollment/{enrollment_id}")
@@ -1344,8 +1373,8 @@ def delete_enrollment(enrollment_id: str, admin_user_id: str = Depends(verify_ad
     except HTTPException as he:
         raise he
     except Exception as e:
-        logger.error(f"[Delete Enrollment Error] Exception occurred: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"[Delete Enrollment Error] Exception occurred: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Gagal menghapus enrollment. Silakan coba lagi.")
 
 
 @app.get("/audit/test")
@@ -1443,7 +1472,7 @@ def audit_storage(admin_user_id: str = Depends(verify_admin_token)):
         }
     except Exception as e:
         logger.error(f"[Storage Audit Error] Exception occurred: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Gagal melakukan audit storage.")
 
 
 @app.post("/admin/storage/prune")
@@ -1507,19 +1536,17 @@ def prune_storage(admin_user_id: str = Depends(verify_admin_token)):
         }
     except Exception as e:
         logger.error(f"[Storage Prune Error] Exception occurred: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Gagal membersihkan storage.")
 
 
 @app.get("/auth/check-email")
-def check_email(email: str):
+def check_email(email: str, user_id: str = Depends(verify_any_authenticated_token)):
     """
     Check if an email is registered in Supabase auth.users using check_email_exists() RPC.
+    FIX #2: Now requires authentication to prevent user enumeration attacks.
     """
     if not email:
         raise HTTPException(status_code=400, detail="Parameter email wajib diisi.")
-    
-    import logging
-    logger = logging.getLogger("uvicorn")
     
     try:
         email_clean = email.strip().lower()
@@ -1528,6 +1555,6 @@ def check_email(email: str):
         exists = response.data
         return {"exists": bool(exists)}
     except Exception as e:
-        logger.error(f"[Check Email Error] {e}")
+        logger.error(f"[Check Email Error] {e}", exc_info=True)
         # Fallback to True so we don't block login if there's a temporary database issue
         return {"exists": True}

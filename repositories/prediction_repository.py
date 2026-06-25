@@ -1,43 +1,6 @@
 from utils.supabase_client import supabase
 
 
-def save_prediction(
-    pengumpulan_tugas_id: str,
-    lembar_jawaban_id: str,
-    section_code: str,
-    model_ai: str,
-    predicted_class: int,
-    predicted_score: int,
-    confidence: float,
-    status: str = "success",
-    error_message: str = None,
-) -> list:
-    """
-    UPSERT satu record ke tabel hasil_prediksi.
-
-    Menggunakan upsert agar aman dari duplikasi.
-    Jika record dengan (pengumpulan_tugas_id, section_code) sudah ada,
-    akan di-UPDATE (termasuk model_ai jika berganti).
-    """
-    data = {
-        "pengumpulan_tugas_id": pengumpulan_tugas_id,
-        "lembar_jawaban_id": lembar_jawaban_id,
-        "section_code": section_code,
-        "model_ai": model_ai,
-        "predicted_class": int(predicted_class),
-        "predicted_score": int(predicted_score),
-        "confidence": float(confidence),
-        "status": status,
-        "error_message": error_message,
-    }
-    response = (
-        supabase.table("hasil_prediksi")
-        .upsert(data, on_conflict="pengumpulan_tugas_id,section_code")
-        .execute()
-    )
-    return response.data
-
-
 def upsert_prediction(
     pengumpulan_tugas_id: str,
     lembar_jawaban_id: str,

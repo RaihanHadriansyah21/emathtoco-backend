@@ -1,7 +1,7 @@
 import os
 import json
 import traceback
-from utils.supabase_client import supabase
+from utils.supabase_client import get_service_client
 
 def standardize_model_name(name: str) -> str:
     """
@@ -57,7 +57,8 @@ def create_audit_log(
             "detail": detail
         }
         
-        supabase.table("audit_log").insert(payload).execute()
+        service_client = get_service_client()
+        service_client.table("audit_log").insert(payload).execute()
         return True
     except Exception as db_err:
         from utils.logging_helper import logger
