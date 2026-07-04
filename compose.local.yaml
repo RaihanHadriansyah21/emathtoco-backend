@@ -1,0 +1,37 @@
+services:
+  caddy:
+    profiles:
+      - vps-only
+
+  api:
+    restart: "no"
+    ports:
+      - "127.0.0.1:8000:8000"
+    mem_limit: 512m
+    cpus: 1.0
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      MODEL_ROOT: /models
+      ALLOWED_ORIGINS: http://localhost:3000,https://emathtoco.vercel.app
+      ENVIRONMENT: development
+      LOG_LEVEL: INFO
+      RQ_JOB_TIMEOUT: "1800"
+
+  worker:
+    restart: "no"
+    mem_limit: 4608m
+    cpus: 4.0
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      MODEL_ROOT: /models
+      ALLOWED_ORIGINS: http://localhost:3000,https://emathtoco.vercel.app
+      ENVIRONMENT: development
+      LOG_LEVEL: INFO
+      RQ_JOB_TIMEOUT: "1800"
+      TF_NUM_INTRAOP_THREADS: "4"
+      TF_NUM_INTEROP_THREADS: "1"
+      OMP_NUM_THREADS: "4"
+
+  redis:
+    restart: "no"
+    mem_limit: 256m

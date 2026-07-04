@@ -1,6 +1,4 @@
-import os
 import json
-import traceback
 from utils.supabase_client import get_service_client
 
 def standardize_model_name(name: str) -> str:
@@ -64,4 +62,3 @@ def create_audit_log(
         from utils.logging_helper import logger
         logger.error(f"[AUDIT ERROR] Failed to write audit log: {db_err}", exc_info=True)
         return False
-

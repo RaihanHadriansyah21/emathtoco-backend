@@ -1,0 +1,49 @@
+name: Backend quality
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - hardening-vps-readiness
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.11"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - run: python -m pip install --require-hashes -r requirements-dev.txt
+      - run: ruff check .
+      - run: pytest
+      - run: python -m pip check
+      - run: docker build -f Dockerfile.api -t emathtoco-api:${{ github.sha }} .
+      - run: docker build -f Dockerfile.worker -t emathtoco-worker:${{ github.sha }} .
+
+  database:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx supabase start -x studio,realtime,imgproxy,edge-runtime,logflare,vector
+      - run: npx supabase db reset --local
+      - run: npx supabase db test
+      - run: npx supabase db lint --local --level warning
+      - name: Verify migration/schema parity
+        shell: bash
+        run: |
+          npx supabase db diff --local \
+            --schema public,app_private,storage \
+            --output schema.diff.sql
+          test ! -s schema.diff.sql

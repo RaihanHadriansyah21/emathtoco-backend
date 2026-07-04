@@ -1,0 +1,15 @@
+{
+  "name": "emathtoco-backend-tooling",
+  "private": true,
+  "scripts": {
+    "db:init": "supabase init",
+    "db:start": "supabase start -x studio,realtime,imgproxy,edge-runtime,logflare,vector,supavisor",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:lint": "supabase db lint --local --level warning --fail-on warning",
+    "db:test": "supabase test db"
+  },
+  "devDependencies": {
+    "supabase": "2.108.0"
+  }
+}

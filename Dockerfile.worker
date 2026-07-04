@@ -1,0 +1,27 @@
+FROM python:3.12.11-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    TF_CPP_MIN_LOG_LEVEL=2
+
+WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y libgl1 libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/* \
+    && addgroup --system app \
+    && adduser --system --ingroup app app
+
+COPY requirements-worker.txt /app/requirements-worker.txt
+RUN python -m pip install --no-cache-dir --require-hashes -r requirements-worker.txt
+
+COPY config.py domain.py worker.py /app/
+COPY repositories /app/repositories
+COPY services /app/services
+COPY utils /app/utils
+COPY scripts/smoke_model_artifacts.py /app/scripts/smoke_model_artifacts.py
+
+USER app
+
+CMD ["python", "worker.py"]

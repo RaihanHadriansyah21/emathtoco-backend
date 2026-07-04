@@ -1,8 +1,13 @@
 venv/
-**pycache**/
+node_modules/
+**/__pycache__/
 *.pyc
 
 .env
+.env.*
+!.env.example
+!.env.vps.example
+!.env.local.example
 
 Models/
 
@@ -13,8 +18,13 @@ Models/
 
 temp/
 tmp/
+*.backup
+*.dump
+*manifest*.json
 
 .DS_Store
 
-# Migration scripts containing sensitive keys
-run_storage_migration.py
+!Models/
+Models/*
+!Models/manifest.json
+!Models/golden_inference.json

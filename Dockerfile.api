@@ -1,0 +1,24 @@
+FROM python:3.12.11-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+WORKDIR /app
+
+RUN addgroup --system app && adduser --system --ingroup app app
+
+COPY requirements-api.txt /app/requirements-api.txt
+RUN python -m pip install --no-cache-dir --require-hashes -r requirements-api.txt
+
+COPY api_models.py config.py domain.py main.py /app/
+COPY repositories /app/repositories
+COPY services /app/services
+COPY utils /app/utils
+RUN mkdir -p /models
+COPY Models/manifest.json /models/manifest.json
+
+USER app
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--proxy-headers", "--forwarded-allow-ips=*"]

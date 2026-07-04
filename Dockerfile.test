@@ -1,0 +1,21 @@
+FROM python:3.12.11-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONPATH=/app
+
+WORKDIR /app
+
+COPY requirements-dev.txt /app/requirements-dev.txt
+RUN python -m pip install --no-cache-dir --require-hashes -r requirements-dev.txt
+
+COPY api_models.py config.py domain.py main.py worker.py pyproject.toml /app/
+COPY repositories /app/repositories
+COPY services /app/services
+COPY utils /app/utils
+COPY tests /app/tests
+RUN mkdir -p /app/Models
+COPY Models/manifest.json Models/golden_inference.json /app/Models/
+
+CMD ["pytest"]

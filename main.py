@@ -1,55 +1,59 @@
-import os
-from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, BackgroundTasks, Depends, Header
-from fastapi.middleware.cors import CORSMiddleware
+from uuid import UUID
 
+from dotenv import load_dotenv
+from fastapi import Depends, FastAPI, Header, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
+from api_models import (
+    AuditEventRequest,
+    BatchPredictionRequest,
+    DemoResetRequest,
+    PredictionIdsRequest,
+    SettingsUpdateRequest,
+    UserRoleUpdateRequest,
+)
+from config import get_settings as load_runtime_settings
+from domain import AIModel, get_domain_contract
 from repositories.prediction_repository import get_predictions_by_submission
-from repositories.submission_repository import get_submission_by_id, update_ai_status
-from services.model_registry import get_cache_status
-from services.prediction_service import process_submission
+from repositories.submission_repository import get_submission_by_id
+from services.queue_service import (
+    enqueue_predictions,
+    enqueue_storage_cleanup,
+    get_job_status,
+    queue_readiness,
+)
 from services.settings_service import settings_service
 from utils.supabase_client import supabase, verify_user_token
 from utils.logging_helper import logger
 
 load_dotenv()
+runtime_settings = load_runtime_settings()
 
 app = FastAPI(title="EMATHTOCO AI Backend Versi 1.0.0")
 # ==================================================
 # CORS CONFIGURATION
 # ==================================================
 
-# Default origins for local development
-default_origins = [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:3001",
-]
-
-# Read ALLOWED_ORIGINS from environment variable (supports comma-separated values, optionally enclosed in brackets)
-allowed_origins_env = os.getenv("ALLOWED_ORIGINS")
-if allowed_origins_env:
-    raw_origins = allowed_origins_env.strip()
-    if raw_origins.startswith("[") and raw_origins.endswith("]"):
-        raw_origins = raw_origins[1:-1]
-    origins = [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
-else:
-    origins = default_origins
-
-# Ensure default local origins are always whitelisted
-for default_origin in default_origins:
-    if default_origin not in origins:
-        origins.append(default_origin)
-
-# Apply CORS middleware with whitelisted origins, dynamic regex for vercel/local subdomains, and enable credentials
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_origin_regex=r"^https?://([^/]+\.)?(vercel\.app|localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_origins=list(runtime_settings.allowed_origins),
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "X-Request-ID", "ngrok-skip-browser-warning"],
 )
+
+
+@app.exception_handler(Exception)
+async def handle_unexpected_error(request: Request, exc: Exception) -> JSONResponse:
+    logger.exception(
+        "Unhandled API error",
+        extra={"path": request.url.path, "method": request.method},
+    )
+    return JSONResponse(
+        status_code=500,
+        content={"error": {"code": "INTERNAL_ERROR"}},
+    )
 
 
 def verify_admin_token(authorization: str = Header(None)) -> str:
@@ -60,7 +64,7 @@ def verify_admin_token(authorization: str = Header(None)) -> str:
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(
             status_code=401,
-            detail="Header otentikasi tidak valid atau tidak ditemukan."
+            detail="AUTHORIZATION_REQUIRED"
         )
     token = authorization.split(" ")[1]
     
@@ -71,7 +75,7 @@ def verify_admin_token(authorization: str = Header(None)) -> str:
         if not user:
             raise HTTPException(
                 status_code=401,
-                detail="Token otentikasi Supabase tidak valid atau kadaluwarsa."
+                detail="INVALID_OR_EXPIRED_TOKEN"
             )
             
         user_id = user.id
@@ -81,14 +85,14 @@ def verify_admin_token(authorization: str = Header(None)) -> str:
         if not profile_res or not profile_res.data:
             raise HTTPException(
                 status_code=403,
-                detail="Forbidden: Profil pengguna tidak ditemukan."
+                detail="PROFILE_NOT_FOUND"
             )
             
         role = profile_res.data.get("role", "").lower()
         if role != "admin":
             raise HTTPException(
                 status_code=403,
-                detail=f"Forbidden: Akses khusus Administrator (role saat ini: '{role}')."
+                detail="ADMIN_ROLE_REQUIRED"
             )
             
         return user_id
@@ -99,7 +103,7 @@ def verify_admin_token(authorization: str = Header(None)) -> str:
         logger.error(f"[AUTH] Token verification failed: {e}", exc_info=True)
         raise HTTPException(
             status_code=401,
-            detail="Gagal memverifikasi token otentikasi."
+            detail="TOKEN_VERIFICATION_FAILED"
         )
 
 
@@ -111,7 +115,7 @@ def verify_dosen_or_admin_token(authorization: str = Header(None)) -> str:
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(
             status_code=401,
-            detail="Header otentikasi tidak valid atau tidak ditemukan."
+            detail="AUTHORIZATION_REQUIRED"
         )
     token = authorization.split(" ")[1]
     
@@ -121,7 +125,7 @@ def verify_dosen_or_admin_token(authorization: str = Header(None)) -> str:
         if not user:
             raise HTTPException(
                 status_code=401,
-                detail="Token otentikasi Supabase tidak valid atau kadaluwarsa."
+                detail="INVALID_OR_EXPIRED_TOKEN"
             )
             
         user_id = user.id
@@ -130,14 +134,14 @@ def verify_dosen_or_admin_token(authorization: str = Header(None)) -> str:
         if not profile_res or not profile_res.data:
             raise HTTPException(
                 status_code=403,
-                detail="Forbidden: Profil pengguna tidak ditemukan."
+                detail="PROFILE_NOT_FOUND"
             )
             
         role = profile_res.data.get("role", "").lower()
         if role not in ["dosen", "admin"]:
             raise HTTPException(
                 status_code=403,
-                detail=f"Forbidden: Akses khusus Dosen/Administrator (role saat ini: '{role}')."
+                detail="LECTURER_OR_ADMIN_REQUIRED"
             )
             
         return user_id
@@ -148,7 +152,7 @@ def verify_dosen_or_admin_token(authorization: str = Header(None)) -> str:
         logger.error(f"[AUTH] Token verification failed: {e}", exc_info=True)
         raise HTTPException(
             status_code=401,
-            detail="Gagal memverifikasi token otentikasi."
+            detail="TOKEN_VERIFICATION_FAILED"
         )
 
 
@@ -160,7 +164,7 @@ def verify_any_authenticated_token(authorization: str = Header(None)) -> str:
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(
             status_code=401,
-            detail="Header otentikasi tidak valid atau tidak ditemukan."
+            detail="AUTHORIZATION_REQUIRED"
         )
     token = authorization.split(" ")[1]
     
@@ -170,7 +174,7 @@ def verify_any_authenticated_token(authorization: str = Header(None)) -> str:
         if not user:
             raise HTTPException(
                 status_code=401,
-                detail="Token otentikasi Supabase tidak valid atau kadaluwarsa."
+                detail="INVALID_OR_EXPIRED_TOKEN"
             )
             
         return user.id
@@ -181,7 +185,7 @@ def verify_any_authenticated_token(authorization: str = Header(None)) -> str:
         logger.error(f"[AUTH] Token verification failed: {e}", exc_info=True)
         raise HTTPException(
             status_code=401,
-            detail="Gagal memverifikasi token otentikasi."
+            detail="TOKEN_VERIFICATION_FAILED"
         )
 
 
@@ -270,155 +274,91 @@ def check_lecturer_submission_write_access(lecturer_id: str, submission_id: str)
 # ==================================================
 
 
-@app.post("/predict/{submission_id}")
-def predict(submission_id: str, model: str = None, user_id: str = Depends(verify_dosen_or_admin_token)):
-    """
-    Pipeline utama: jalankan AI untuk seluruh lembar jawaban
-    milik submission_id.
-    """
-    # Priority:
-    # 1. Explicit model from parameter
-    # 2. Global active model from database settings
-    # 3. Fallback MobileNetV2
-    if not model or model.lower() in ["", "none", "null"]:
-        model = settings_service.get_setting("active_model")
-    if not model:
-        model = "MobileNetV2"
+@app.post("/predict/{submission_id}", status_code=202)
+def predict(
+    submission_id: UUID,
+    model: AIModel | None = None,
+    user_id: str = Depends(verify_dosen_or_admin_token),
+):
+    submission_id_text = str(submission_id)
+    if not check_lecturer_submission_write_access(user_id, submission_id_text):
+        raise HTTPException(status_code=403, detail="SUBMISSION_ACCESS_DENIED")
 
-    if model not in ["MobileNetV2", "DenseNet121", "InceptionV3"]:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid model. Allowed values: MobileNetV2, DenseNet121, InceptionV3"
-        )
-    
-    submission = get_submission_by_id(submission_id)
-    if not submission:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Submission dengan ID '{submission_id}' tidak ditemukan."
-        )
-    
-    if not check_lecturer_submission_write_access(user_id, submission_id):
-        raise HTTPException(
-            status_code=403,
-            detail="Forbidden: Anda tidak ditugaskan untuk mata kuliah dari submission ini."
-        )
-    
-    if submission.get("ai_status") == "finalized" or submission.get("status_submit") == "finalized":
-        raise HTTPException(
-            status_code=400,
-            detail="Submission sudah finalized dan tidak dapat diprediksi ulang."
-        )
-    
-    if submission.get("ai_status") == "processing":
-        import logging
-        logger = logging.getLogger("uvicorn")
-        
-        # Check if the job is stuck (updated_at is older than 5 minutes)
-        updated_at_str = submission.get("updated_at")
-        is_stuck = False
-        if updated_at_str:
-            try:
-                from datetime import datetime, timezone
-                # Handle ISO 8601 timezone formats
-                if updated_at_str.endswith("Z"):
-                    updated_at_str = updated_at_str[:-1] + "+00:00"
-                updated_at = datetime.fromisoformat(updated_at_str)
-                
-                # Ensure updated_at has timezone
-                if updated_at.tzinfo is None:
-                    updated_at = updated_at.replace(tzinfo=timezone.utc)
-                
-                now = datetime.now(timezone.utc)
-                diff = (now - updated_at).total_seconds()
-                # If older than 5 minutes (300 seconds), it is considered stuck
-                if diff > 300:
-                    is_stuck = True
-            except Exception as parse_err:
-                logger.error(f"[AI Predict Stuck Check] Error parsing updated_at '{updated_at_str}': {parse_err}")
-                pass
-
-        if is_stuck:
-            logger.warning(f"[AI Predict] Stuck job detected for submission {submission_id} (last updated {updated_at_str}). Resetting status to failed.")
-            try:
-                supabase.table("pengumpulan_tugas").update({
-                    "ai_status": "failed",
-                    "status_submit": "failed"
-                }).eq("id", submission_id).execute()
-            except Exception as reset_err:
-                logger.error(f"[AI Predict] Failed to force-reset stuck job: {reset_err}")
-        else:
-            raise HTTPException(
-                status_code=409,
-                detail="Analisis AI sedang berjalan untuk tugas ini. Silakan tunggu hingga selesai."
-            )
-
-    result = process_submission(submission_id, model_name=model)
-    if not result.get("success") and "error" in result:
-        raise HTTPException(status_code=404, detail=result["error"])
-    return result
-
-
-def run_batch_prediction_background(submission_ids: list, model_name: str):
-    import time
-    for sub_id in submission_ids:
+    selected_model = model
+    if selected_model is None:
+        configured_model = settings_service.get_setting("active_model")
         try:
-            logger.info(f"[Batch AI Background] Starting prediction for submission {sub_id} using {model_name}")
-            process_submission(sub_id, model_name=model_name)
-            time.sleep(1)
-        except Exception as e:
-            logger.error(f"[Batch AI Background] Error processing submission {sub_id}: {e}", exc_info=True)
+            selected_model = AIModel(configured_model or AIModel.MOBILENET_V2)
+        except ValueError:
+            selected_model = AIModel.MOBILENET_V2
 
-
-@app.post("/predict/batch")
-def predict_batch(payload: dict, background_tasks: BackgroundTasks, user_id: str = Depends(verify_dosen_or_admin_token)):
-    """
-    Batch AI prediction: triggers background processing for multiple submissions sequentially.
-    """
-    submission_ids = payload.get("submission_ids", [])
-    model = payload.get("model")
-    
-    if not model or model.lower() in ["", "none", "null"]:
-        model = settings_service.get_setting("active_model")
-    if not model:
-        model = "MobileNetV2"
-        
-    if model not in ["MobileNetV2", "DenseNet121", "InceptionV3"]:
+    result = enqueue_predictions([submission_id], selected_model)
+    if not result.accepted_ids:
         raise HTTPException(
-            status_code=400,
-            detail=f"Invalid model. Allowed values: MobileNetV2, DenseNet121, InceptionV3"
+            status_code=409,
+            detail=next(iter(result.rejected.values()), "SUBMISSION_NOT_ELIGIBLE"),
         )
-        
-    if not submission_ids:
-        raise HTTPException(status_code=400, detail="Daftar submission_ids kosong.")
-        
-    # Validate write access and eligibility
-    valid_ids = []
-    for sub_id in submission_ids:
-        submission = get_submission_by_id(sub_id)
-        if not submission:
-            continue
-        if not check_lecturer_submission_write_access(user_id, sub_id):
-            continue
-            
-        ai_status = submission.get("ai_status")
-        status_submit = submission.get("status_submit")
-        if ai_status == "finalized" or status_submit == "finalized":
-            continue
-            
-        valid_ids.append(sub_id)
-        
-    if not valid_ids:
-        raise HTTPException(status_code=400, detail="Tidak ada submission valid yang dapat diproses.")
-
-    # Queue background task to run the predictions sequentially
-    background_tasks.add_task(run_batch_prediction_background, valid_ids, model)
-    
     return {
-        "success": True,
-        "message": f"Batch processing dimulai untuk {len(valid_ids)} tugas di background.",
-        "processed_count": len(valid_ids)
+        "job_id": result.job_id,
+        "status": "queued",
+        "accepted_ids": result.accepted_ids,
+        "rejected": result.rejected,
     }
+
+
+@app.post("/predict/batch", status_code=202)
+def predict_batch(
+    payload: BatchPredictionRequest,
+    user_id: str = Depends(verify_dosen_or_admin_token),
+):
+    eligible: list[UUID] = []
+    rejected: dict[str, str] = {}
+    for submission_id in payload.submission_ids:
+        submission_id_text = str(submission_id)
+        if not check_lecturer_submission_write_access(user_id, submission_id_text):
+            rejected[submission_id_text] = "access_denied"
+            continue
+        eligible.append(submission_id)
+
+    if not eligible:
+        raise HTTPException(status_code=403, detail="NO_ELIGIBLE_SUBMISSIONS")
+
+    selected_model = payload.model
+    if selected_model is None:
+        configured_model = settings_service.get_setting("active_model")
+        try:
+            selected_model = AIModel(configured_model or AIModel.MOBILENET_V2)
+        except ValueError:
+            selected_model = AIModel.MOBILENET_V2
+
+    result = enqueue_predictions(eligible, selected_model)
+    rejected.update(result.rejected)
+    if not result.accepted_ids:
+        raise HTTPException(status_code=409, detail="NO_SUBMISSIONS_QUEUED")
+    return {
+        "job_id": result.job_id,
+        "status": "queued",
+        "accepted_ids": result.accepted_ids,
+        "rejected": rejected,
+    }
+
+
+@app.get("/jobs/{job_id}")
+def job_status(
+    job_id: UUID,
+    user_id: str = Depends(verify_any_authenticated_token),
+):
+    try:
+        status = get_job_status(str(job_id))
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail="JOB_NOT_FOUND") from exc
+    accepted_ids = status.get("accepted_ids", [])
+    if not accepted_ids or not any(
+        check_user_submission_read_access(user_id, submission_id)
+        for submission_id in accepted_ids
+    ):
+        raise HTTPException(status_code=403, detail="JOB_ACCESS_DENIED")
+    return status
 
 
 
@@ -429,7 +369,10 @@ def get_settings(user_id: str = Depends(verify_dosen_or_admin_token)):
 
 
 @app.post("/settings")
-def update_settings(payload: dict, admin_user_id: str = Depends(verify_admin_token)):
+def update_settings(
+    payload: SettingsUpdateRequest,
+    admin_user_id: str = Depends(verify_admin_token),
+):
     """
     Update specified system settings in the database.
     Updates in-memory cache and logs audit logs:
@@ -438,22 +381,33 @@ def update_settings(payload: dict, admin_user_id: str = Depends(verify_admin_tok
     """
     from utils.audit_helper import create_audit_log
     
-    changed_by = payload.get("changed_by", "Administrator")
-    role = payload.get("role", "admin")
-    user_id = payload.get("user_id", None)
-    
-    updates = payload.get("settings", {})
-    if not updates:
-        updates = {k: v for k, v in payload.items() if k not in ["changed_by", "role", "user_id"]}
+    import json
+
+    profile = (
+        supabase.table("profil_pengguna")
+        .select("nama_lengkap, role")
+        .eq("id", admin_user_id)
+        .single()
+        .execute()
+    )
+    changed_by = profile.data.get("nama_lengkap", "Administrator")
+    role = profile.data.get("role", "admin")
+    updates = payload.settings
 
     success = True
     for key, value in updates.items():
+        if isinstance(value, bool):
+            serialized_value = str(value).lower()
+        elif isinstance(value, dict):
+            serialized_value = json.dumps(value, separators=(",", ":"))
+        else:
+            serialized_value = str(value)
         old_value = settings_service.get_setting(key)
         
-        if old_value == value:
+        if old_value == serialized_value:
             continue
             
-        ok = settings_service.set_setting(key, str(value))
+        ok = settings_service.set_setting(key, serialized_value)
         if not ok:
             success = False
             continue
@@ -464,10 +418,9 @@ def update_settings(payload: dict, admin_user_id: str = Depends(verify_admin_tok
                 target="ai_models",
                 detail={
                     "old_model": old_value,
-                    "new_model": value,
-                    "changed_by": changed_by
+                    "new_model": serialized_value,
                 },
-                user_id=user_id,
+                user_id=admin_user_id,
                 user_name=changed_by,
                 role=role
             )
@@ -478,10 +431,9 @@ def update_settings(payload: dict, admin_user_id: str = Depends(verify_admin_tok
                 detail={
                     "setting_key": key,
                     "old_value": old_value,
-                    "new_value": value,
-                    "changed_by": changed_by
+                    "new_value": serialized_value,
                 },
-                user_id=user_id,
+                user_id=admin_user_id,
                 user_name=changed_by,
                 role=role
             )
@@ -492,33 +444,27 @@ def update_settings(payload: dict, admin_user_id: str = Depends(verify_admin_tok
     return {"success": True, "settings": settings_service.get_all_settings()}
 
 
-def run_prediction_background(submission_id: str, model_name: str):
-    try:
-        process_submission(submission_id, model_name=model_name)
-    except Exception as e:
-        logger.error(f"[AI Background] Error running prediction for {submission_id}: {e}", exc_info=True)
-
-
 @app.post("/submission/{submission_id}/submit")
-def submit_submission(submission_id: str, background_tasks: BackgroundTasks, user_id: str = Depends(verify_any_authenticated_token)):
+def submit_submission(
+    submission_id: UUID,
+    user_id: str = Depends(verify_any_authenticated_token),
+):
     """
     Endpoint dipanggil saat mahasiswa klik kumpulkan tugas.
     Membaca setting auto_run_ai dari database.
     Jika ON: Jalankan pipeline AI di background.
     Jika OFF: Kembalikan respon sukses tanpa memproses AI.
     """
-    submission = get_submission_by_id(submission_id)
+    submission_id_text = str(submission_id)
+    submission = get_submission_by_id(submission_id_text)
     if not submission:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Submission dengan ID '{submission_id}' tidak ditemukan."
-        )
+        raise HTTPException(status_code=404, detail="SUBMISSION_NOT_FOUND")
         
-    if not check_user_submission_read_access(user_id, submission_id):
-        raise HTTPException(
-            status_code=403,
-            detail="Forbidden: Anda tidak memiliki akses untuk mengumpulkan tugas ini."
-        )
+    if not check_user_submission_read_access(user_id, submission_id_text):
+        raise HTTPException(status_code=403, detail="SUBMISSION_ACCESS_DENIED")
+
+    if submission.get("status_submit") != "submitted":
+        raise HTTPException(status_code=409, detail="SUBMISSION_NOT_SUBMITTED")
         
     auto_run = settings_service.get_setting("auto_run_ai") == "true"
     
@@ -529,35 +475,25 @@ def submit_submission(submission_id: str, background_tasks: BackgroundTasks, use
             "auto_run": False
         }
         
-    ai_status = submission.get("ai_status")
-    status_submit = submission.get("status_submit")
-    
-    if ai_status == "processing" or status_submit == "processing_ai":
-        return {
-            "success": True,
-            "message": "AI is already processing for this submission.",
-            "auto_run": True,
-            "already_running": True
-        }
-        
-    if ai_status in ["completed", "reviewed", "finalized"] or status_submit in ["reviewed", "finalized"]:
-        return {
-            "success": True,
-            "message": "AI prediction has already completed for this submission.",
-            "auto_run": True,
-            "already_completed": True
-        }
-        
     model_name = settings_service.get_setting("active_model")
-    if not model_name:
-        model_name = "MobileNetV2"
-        
-    background_tasks.add_task(run_prediction_background, submission_id, model_name)
-    
+    try:
+        selected_model = AIModel(model_name or AIModel.MOBILENET_V2)
+    except ValueError:
+        selected_model = AIModel.MOBILENET_V2
+
+    result = enqueue_predictions([submission_id], selected_model)
+    if not result.accepted_ids:
+        raise HTTPException(
+            status_code=409,
+            detail=next(iter(result.rejected.values()), "SUBMISSION_NOT_ELIGIBLE"),
+        )
+
     return {
         "success": True,
-        "message": f"Submission submitted. AI triggered in background using model {model_name}.",
-        "auto_run": True
+        "message": "Submission submitted and AI job queued.",
+        "auto_run": True,
+        "job_id": result.job_id,
+        "status": "queued",
     }
 
 
@@ -646,159 +582,109 @@ def get_submission_results(submission_id: str, user_id: str = Depends(verify_any
     }
 
 
-@app.post("/submission/{submission_id}/reviewed")
-def post_reviewed(submission_id: str, user_id: str = Depends(verify_dosen_or_admin_token)):
-    """
-    Update status submission menjadi reviewed.
-    """
-    if not check_lecturer_submission_write_access(user_id, submission_id):
-        raise HTTPException(
-            status_code=403,
-            detail="Forbidden: Anda tidak ditugaskan untuk mata kuliah dari submission ini."
-        )
-
-    data = update_ai_status(submission_id, "reviewed")
-    if not data:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Submission dengan ID '{submission_id}' tidak ditemukan.",
-        )
-    return {"success": True, "data": data}
+@app.get("/health/live")
+def health_live():
+    return {"status": "healthy"}
 
 
-@app.post("/submission/{submission_id}/finalize")
-def post_finalize(submission_id: str, user_id: str = Depends(verify_dosen_or_admin_token)):
-    """
-    Update status submission menjadi finalized.
-    """
-    if not check_lecturer_submission_write_access(user_id, submission_id):
-        raise HTTPException(
-            status_code=403,
-            detail="Forbidden: Anda tidak ditugaskan untuk mata kuliah dari submission ini."
-        )
+@app.get("/contracts/domain")
+def domain_contract():
+    return get_domain_contract()
 
-    data = update_ai_status(submission_id, "finalized")
-    if not data:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Submission dengan ID '{submission_id}' tidak ditemukan.",
-        )
-    return {"success": True, "data": data}
+
+def _readiness_response() -> JSONResponse:
+    dependencies = {
+        "supabase": False,
+        "redis": False,
+        "worker": False,
+    }
+    try:
+        supabase.table("system_settings").select("id").limit(1).execute()
+        dependencies["supabase"] = True
+    except Exception:
+        logger.exception("Supabase readiness check failed")
+
+    try:
+        queue_state = queue_readiness()
+        dependencies["redis"] = queue_state["redis"]
+        dependencies["worker"] = queue_state["worker"]
+    except Exception:
+        logger.exception("Queue readiness check failed")
+
+    ready = all(dependencies.values())
+    return JSONResponse(
+        status_code=200 if ready else 503,
+        content={
+            "status": "healthy" if ready else "degraded",
+            "dependencies": dependencies,
+        },
+    )
+
+
+@app.get("/health/ready")
+def health_ready():
+    return _readiness_response()
 
 
 @app.get("/health")
 def health():
-    """
-    Endpoint untuk pengecekan kesehatan backend dengan verifikasi dependensi.
-    """
-    db_status = "healthy"
-    db_error = None
+    return _readiness_response()
+
+
+def _model_manifest_summary() -> list[dict]:
+    import json
+
+    manifest_path = runtime_settings.model_root / "manifest.json"
+    if not manifest_path.is_file():
+        raise HTTPException(status_code=503, detail="MODEL_MANIFEST_UNAVAILABLE")
     try:
-        # Check database connection by querying a small record
-        supabase.table("system_settings").select("id").limit(1).execute()
-    except Exception as e:
-        db_status = "unhealthy"
-        db_error = str(e)
-        logger.error(f"[HEALTH CHECK] Database connection failed: {e}", exc_info=True)
-        
-    try:
-        # Check model registry cache state
-        from services.model_registry import get_cache_status
-        cache_status = get_cache_status()
-        loaded_count = cache_status["total_loaded"]
-    except Exception as e:
-        loaded_count = 0
-        logger.error(f"[HEALTH CHECK] Failed to get model cache status: {e}", exc_info=True)
-        
-    status = "ok" if db_status == "healthy" else "error"
-    return {
-        "status": status,
-        "service": "EMATHTOCO AI Backend",
-        "database": {
-            "status": db_status,
-            "error": db_error
-        },
-        "model_registry": {
-            "loaded_models_count": loaded_count,
-            "max_cached_limit": 6
-        }
-    }
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise HTTPException(
+            status_code=503,
+            detail="MODEL_MANIFEST_INVALID",
+        ) from exc
+
+    summaries: dict[str, dict] = {}
+    worker_ready = queue_readiness()["worker"]
+    for artifact in manifest.get("artifacts", []):
+        architecture = artifact.get("architecture")
+        if not architecture:
+            continue
+        summary = summaries.setdefault(
+            architecture,
+            {
+                "name": architecture,
+                "total_models": 0,
+                "input_shape": artifact.get("input_shape"),
+                "manifest_verified_by_worker": worker_ready,
+            },
+        )
+        summary["total_models"] += 1
+    return list(summaries.values())
 
 
 @app.get("/model-info")
 def model_info(admin_user_id: str = Depends(verify_admin_token)):
-    """
-    Mengambil informasi cache model registry.
-    """
-    status = get_cache_status()
+    models = _model_manifest_summary()
     return {
-        "loaded_models": status["total_loaded"],
-        "total_models": status["total_available"],
-        "cache": status,
+        "total_models": sum(model["total_models"] for model in models),
+        "models": models,
+        "queue": queue_readiness(),
     }
 
 
 @app.get("/cache-status")
 def cache_status(admin_user_id: str = Depends(verify_admin_token)):
-    """Lihat model mana yang sudah ada di lazy-load cache."""
-    return get_cache_status()
+    return {
+        "strategy": "single_worker_section_lru",
+        "worker": queue_readiness()["worker"],
+    }
 
 
 @app.get("/audit-models")
 def audit_models(admin_user_id: str = Depends(verify_admin_token)):
-    """
-    Loop all models in MODEL_CONFIG and return details.
-    """
-    import os
-    from services.model_registry import MODEL_CONFIG, get_model, _loaded_models
-
-    audit_results = []
-    for arch, config in MODEL_CONFIG.items():
-        base_path = config["path"]
-        input_size = config["input_size"]
-
-        # Count h5 files in folder
-        if not os.path.exists(base_path):
-            audit_results.append({
-                "architecture": arch,
-                "model_count": 0,
-                "input_shape": None,
-                "output_shape": None,
-                "load_status": "folder_not_found"
-            })
-            continue
-
-        h5_files = [f for f in os.listdir(base_path) if f.endswith(".h5")]
-        model_count = len(h5_files)
-
-        # Load one model to check shape dynamically (e.g. S-1A or model_1a.h5)
-        # S-1A is equivalent to model_1a.h5
-        input_shape = None
-        output_shape = None
-        load_status = "lazy"
-
-        # Check if any model for this architecture is loaded in cache
-        cache_keys = [k for k in _loaded_models.keys() if k.startswith(arch)]
-        if len(cache_keys) > 0:
-            load_status = f"loaded_{len(cache_keys)}_models"
-
-        # Try to load model_1a.h5 to get shape details
-        try:
-            test_model = get_model("S-1A", arch)
-            input_shape = list(test_model.input_shape) if test_model.input_shape else [None, input_size[0], input_size[1], 3]
-            output_shape = list(test_model.output_shape) if test_model.output_shape else None
-        except Exception as e:
-            logger.error(f"Error loading test model for {arch}: {e}", exc_info=True)
-
-        audit_results.append({
-            "architecture": arch,
-            "model_count": model_count,
-            "input_shape": input_shape,
-            "output_shape": output_shape,
-            "load_status": load_status
-        })
-
-    return audit_results
+    return _model_manifest_summary()
 
 
 @app.get("/lecturer/class-summary")
@@ -875,38 +761,9 @@ def get_class_summary(lecturer_id: str, current_user_id: str = Depends(verify_do
 
 @app.get("/ai-models")
 def get_ai_models(user_id: str = Depends(verify_dosen_or_admin_token)):
-    """
-    Registry model AI yang digunakan oleh sistem penilaian otomatis.
-    """
-    import os
-    from services.model_registry import MODEL_CONFIG, _loaded_models
-    
-    models_list = []
-    for arch, config in MODEL_CONFIG.items():
-        base_path = config["path"]
-        input_size = config["input_size"]
-        
-        # Count models dynamically
-        total_models = 0
-        if os.path.exists(base_path):
-            total_models = len([f for f in os.listdir(base_path) if f.endswith(".h5")])
-        
-        # Check if loaded (at least one model of this architecture is in _loaded_models cache)
-        is_loaded = any(k.startswith(arch) for k in _loaded_models.keys())
-        
-        # input_shape is [height, width, channels]
-        input_shape = [input_size[0], input_size[1], 3]
-        
-        models_list.append({
-            "name": arch,
-            "loaded": is_loaded,
-            "input_shape": input_shape,
-            "total_models": total_models if total_models > 0 else 24
-        })
-        
     return {
         "success": True,
-        "models": models_list
+        "models": _model_manifest_summary(),
     }
 
 
@@ -1037,12 +894,13 @@ def get_course_students(course_id: str, user_id: str = Depends(verify_dosen_or_a
 
 
 @app.post("/admin/predictions/count")
-def admin_count_predictions(payload: dict, admin_user_id: str = Depends(verify_admin_token)):
-    lembar_jawaban_ids = payload.get("lembar_jawaban_ids", [])
-    if not lembar_jawaban_ids:
-        return {"count": 0}
+def admin_count_predictions(
+    payload: PredictionIdsRequest,
+    admin_user_id: str = Depends(verify_admin_token),
+):
+    answer_ids = [str(item) for item in payload.lembar_jawaban_ids]
     try:
-        res = supabase.table("hasil_prediksi").select("id", count="exact").in_("lembar_jawaban_id", lembar_jawaban_ids).execute()
+        res = supabase.table("hasil_prediksi").select("id", count="exact").in_("lembar_jawaban_id", answer_ids).execute()
         return {"count": res.count if res.count is not None else len(res.data)}
     except Exception as e:
         logger.error(f"[Admin Predictions Count] Internal error: {e}", exc_info=True)
@@ -1050,12 +908,13 @@ def admin_count_predictions(payload: dict, admin_user_id: str = Depends(verify_a
 
 
 @app.post("/admin/predictions/delete")
-def admin_delete_predictions(payload: dict, admin_user_id: str = Depends(verify_admin_token)):
-    lembar_jawaban_ids = payload.get("lembar_jawaban_ids", [])
-    if not lembar_jawaban_ids:
-        return {"deleted": 0}
+def admin_delete_predictions(
+    payload: PredictionIdsRequest,
+    admin_user_id: str = Depends(verify_admin_token),
+):
+    answer_ids = [str(item) for item in payload.lembar_jawaban_ids]
     try:
-        res = supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", lembar_jawaban_ids).execute()
+        res = supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", answer_ids).execute()
         return {"deleted": len(res.data) if res.data else 0}
     except Exception as e:
         logger.error(f"[Admin Predictions Delete] Internal error: {e}", exc_info=True)
@@ -1074,64 +933,65 @@ def audit_schema_check(admin_user_id: str = Depends(verify_admin_token)):
 
 
 @app.post("/audit/log")
-def post_audit_log(payload: dict, token_user_id: str = Depends(verify_any_authenticated_token)):
+def post_audit_log(
+    payload: AuditEventRequest,
+    token_user_id: str = Depends(verify_any_authenticated_token),
+):
     """
     Endpoint untuk menerima penulisan audit log dari frontend.
     Memvalidasi dan menormalisasi payload sebelum diteruskan ke database.
     Identitas aktor diambil langsung dari token JWT dan profil database.
     """
-    if not payload:
-        raise HTTPException(status_code=400, detail="Payload kosong.")
-    
-    # Required fields validation
-    action = payload.get("action")
-    target = payload.get("target")
-    
-    if not action or not target:
-        raise HTTPException(status_code=400, detail="Field 'action' dan 'target' wajib diisi.")
-        
-    # Ambil identitas aktor secara aman dari token JWT & database
     profile_res = supabase.table("profil_pengguna").select("nama_lengkap, role").eq("id", token_user_id).maybe_single().execute()
     if not profile_res or not profile_res.data:
-        raise HTTPException(status_code=404, detail="Profil pengguna untuk token ini tidak ditemukan.")
+        raise HTTPException(status_code=404, detail="PROFILE_NOT_FOUND")
         
     user_id = token_user_id
     user_name = profile_res.data.get("nama_lengkap") or "Unknown User"
-    role = profile_res.data.get("role") or "mahasiswa"
-    
-    # Baca detail (mendukung detail maupun details)
-    detail = payload.get("details") if payload.get("details") is not None else payload.get("detail")
+    role = (profile_res.data.get("role") or "mahasiswa").lower()
+    allowed_actions = {
+        "mahasiswa": {
+            "STUDENT_LOGIN",
+            "ANSWER_UPLOADED",
+            "ANSWER_REPLACED",
+            "ANSWER_DELETED",
+            "SUBMISSION_SUBMITTED",
+        },
+        "dosen": {
+            "LECTURER_LOGIN",
+            "REVIEW_DRAFT_SAVED",
+            "FINAL_SCORE_SUBMITTED",
+            "REUPLOAD_REQUESTED",
+        },
+        "admin": {
+            "ADMIN_LOGIN",
+            "SYSTEM_RESET",
+            "ACTIVE_MODEL_CHANGED",
+            "SYSTEM_SETTING_CHANGED",
+            "STORAGE_PRUNE",
+            "AUDIT_TEST",
+        },
+    }
+    if payload.action not in allowed_actions.get(role, set()):
+        raise HTTPException(status_code=403, detail="AUDIT_ACTION_NOT_ALLOWED")
 
-    # Standardize/Normalize model names
-    from utils.audit_helper import standardize_model_name, create_audit_log
-    
-    action = standardize_model_name(action)
-    target = standardize_model_name(target)
-    
-    if isinstance(detail, str):
-        detail = standardize_model_name(detail)
-    elif isinstance(detail, dict):
-        # normalize values inside detail dict if string
-        for k, v in detail.items():
-            if isinstance(v, str):
-                detail[k] = standardize_model_name(v)
+    from utils.audit_helper import create_audit_log
 
     success = create_audit_log(
-        action=action,
-        target=target,
-        detail=detail,
+        action=payload.action,
+        target=payload.target,
+        detail=payload.detail,
         user_id=user_id,
         user_name=user_name,
         role=role
     )
     
     if not success:
-        raise HTTPException(status_code=500, detail="Gagal menulis rekam audit ke database.")
+        raise HTTPException(status_code=500, detail="AUDIT_WRITE_FAILED")
         
     return {"success": True}
 
 
-@app.delete("/admin/user/{user_id}")
 def delete_user(user_id: str, admin_user_id: str = Depends(verify_admin_token)):
     """
     Endpoint untuk menghapus pengguna dari database (profil_pengguna) 
@@ -1184,7 +1044,7 @@ def delete_user(user_id: str, admin_user_id: str = Depends(verify_admin_token)):
                     if sheet_ids:
                         try:
                             supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", sheet_ids).execute()
-                            _logger.info(f"[Delete User] Deleted related hasil_prediksi")
+                            _logger.info("[Delete User] Deleted related hasil_prediksi")
                         except Exception as pred_err:
                             _logger.error(f"[Delete User] Failed to delete hasil_prediksi: {pred_err}")
                             cascade_errors.append(f"hasil_prediksi: {pred_err}")
@@ -1192,7 +1052,7 @@ def delete_user(user_id: str, admin_user_id: str = Depends(verify_admin_token)):
                     # Hapus lembar_jawaban rows
                     try:
                         supabase.table("lembar_jawaban").delete().eq("pengumpulan_tugas_id", sub_id).execute()
-                        _logger.info(f"[Delete User] Deleted related lembar_jawaban")
+                        _logger.info("[Delete User] Deleted related lembar_jawaban")
                     except Exception as lj_err:
                         _logger.error(f"[Delete User] Failed to delete lembar_jawaban: {lj_err}")
                         cascade_errors.append(f"lembar_jawaban: {lj_err}")
@@ -1200,7 +1060,7 @@ def delete_user(user_id: str, admin_user_id: str = Depends(verify_admin_token)):
                 # Hapus pengumpulan_tugas row
                 try:
                     supabase.table("pengumpulan_tugas").delete().eq("id", sub_id).execute()
-                    _logger.info(f"[Delete User] Deleted related pengumpulan_tugas")
+                    _logger.info("[Delete User] Deleted related pengumpulan_tugas")
                 except Exception as pt_err:
                     _logger.error(f"[Delete User] Failed to delete pengumpulan_tugas: {pt_err}")
                     cascade_errors.append(f"pengumpulan_tugas: {pt_err}")
@@ -1246,7 +1106,6 @@ def delete_user(user_id: str, admin_user_id: str = Depends(verify_admin_token)):
         raise HTTPException(status_code=500, detail="Gagal menghapus pengguna. Silakan coba lagi.")
 
 
-@app.delete("/admin/course/{course_id}")
 def delete_course(course_id: str, admin_user_id: str = Depends(verify_admin_token)):
     """
     Endpoint terpusat untuk menghapus mata kuliah beserta semua data terkait
@@ -1284,27 +1143,27 @@ def delete_course(course_id: str, admin_user_id: str = Depends(verify_admin_toke
                     sheet_ids = [s["id"] for s in sheets_res.data]
                     if sheet_ids:
                         supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", sheet_ids).execute()
-                        logger.info(f"[Delete Course] Deleted related hasil_prediksi")
+                        logger.info("[Delete Course] Deleted related hasil_prediksi")
 
                     # Hapus lembar_jawaban rows
                     supabase.table("lembar_jawaban").delete().eq("pengumpulan_tugas_id", sub_id).execute()
-                    logger.info(f"[Delete Course] Deleted related lembar_jawaban")
+                    logger.info("[Delete Course] Deleted related lembar_jawaban")
 
                 # Hapus pengumpulan_tugas row
                 supabase.table("pengumpulan_tugas").delete().eq("id", sub_id).execute()
-                logger.info(f"[Delete Course] Deleted related pengumpulan_tugas")
+                logger.info("[Delete Course] Deleted related pengumpulan_tugas")
 
         # 2. Hapus mahasiswa_mata_kuliah (enrollment)
         supabase.table("mahasiswa_mata_kuliah").delete().eq("mata_kuliah_id", course_id).execute()
-        logger.info(f"[Delete Course] Deleted related mahasiswa_mata_kuliah")
+        logger.info("[Delete Course] Deleted related mahasiswa_mata_kuliah")
 
         # 3. Hapus dosen_mata_kuliah (assignment)
         supabase.table("dosen_mata_kuliah").delete().eq("mata_kuliah_id", course_id).execute()
-        logger.info(f"[Delete Course] Deleted related dosen_mata_kuliah")
+        logger.info("[Delete Course] Deleted related dosen_mata_kuliah")
 
         # 4. Hapus mata_kuliah row
         supabase.table("mata_kuliah").delete().eq("id", course_id).execute()
-        logger.info(f"[Delete Course] Deleted mata_kuliah successfully")
+        logger.info("[Delete Course] Deleted mata_kuliah successfully")
 
         return {"success": True, "message": f"Mata kuliah {course_id} berhasil dihapus."}
 
@@ -1315,7 +1174,6 @@ def delete_course(course_id: str, admin_user_id: str = Depends(verify_admin_toke
         raise HTTPException(status_code=500, detail="Gagal menghapus mata kuliah. Silakan coba lagi.")
 
 
-@app.delete("/admin/enrollment/{enrollment_id}")
 def delete_enrollment(enrollment_id: str, admin_user_id: str = Depends(verify_admin_token)):
     """
     Endpoint terpusat untuk menghapus enrollment mahasiswa beserta data terkait
@@ -1366,7 +1224,7 @@ def delete_enrollment(enrollment_id: str, admin_user_id: str = Depends(verify_ad
 
         # 2. Hapus mahasiswa_mata_kuliah row
         supabase.table("mahasiswa_mata_kuliah").delete().eq("id", enrollment_id).execute()
-        logger.info(f"[Delete Enrollment] Deleted mahasiswa_mata_kuliah successfully")
+        logger.info("[Delete Enrollment] Deleted mahasiswa_mata_kuliah successfully")
 
         return {"success": True, "message": f"Enrollment {enrollment_id} berhasil dihapus."}
 
@@ -1375,6 +1233,158 @@ def delete_enrollment(enrollment_id: str, admin_user_id: str = Depends(verify_ad
     except Exception as e:
         logger.error(f"[Delete Enrollment Error] Exception occurred: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Gagal menghapus enrollment. Silakan coba lagi.")
+
+
+def _queue_cleanup_from_rpc_result(data: object) -> str | None:
+    if not isinstance(data, dict):
+        return None
+    paths = data.get("object_paths", [])
+    if not isinstance(paths, list):
+        return None
+    return enqueue_storage_cleanup(paths)
+
+
+@app.delete("/admin/user/{user_id}")
+def delete_user_transactional(
+    user_id: UUID,
+    _admin_user_id: str = Depends(verify_admin_token),
+):
+    try:
+        result = supabase.rpc(
+            "admin_delete_user_data",
+            {"p_user_id": str(user_id)},
+        ).execute()
+        cleanup_job_id = _queue_cleanup_from_rpc_result(result.data)
+        return {"success": True, "cleanup_job_id": cleanup_job_id}
+    except Exception as exc:
+        logger.exception("Transactional user deletion failed")
+        raise HTTPException(status_code=500, detail="USER_DELETE_FAILED") from exc
+
+
+@app.patch("/admin/user/{user_id}/role")
+def update_user_role(
+    user_id: UUID,
+    payload: UserRoleUpdateRequest,
+    admin_user_id: str = Depends(verify_admin_token),
+):
+    profile = (
+        supabase.table("profil_pengguna")
+        .select("id, role")
+        .eq("id", str(user_id))
+        .maybe_single()
+        .execute()
+    )
+    if not profile.data:
+        raise HTTPException(status_code=404, detail="USER_NOT_FOUND")
+
+    current_role = str(profile.data.get("role", "")).lower()
+    if current_role == "admin":
+        raise HTTPException(status_code=409, detail="ADMIN_ROLE_IS_PROTECTED")
+
+    try:
+        updated = (
+            supabase.table("profil_pengguna")
+            .update({"role": payload.new_role.value})
+            .eq("id", str(user_id))
+            .select("id, role")
+            .single()
+            .execute()
+        )
+        from utils.audit_helper import create_audit_log
+
+        create_audit_log(
+            action="ADMIN_USER_ROLE_UPDATED",
+            target="profil_pengguna",
+            detail={
+                "target_id": str(user_id),
+                "old_role": current_role,
+                "new_role": payload.new_role.value,
+            },
+            user_id=admin_user_id,
+            role="admin",
+        )
+        return {"success": True, "data": updated.data}
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.exception("Admin role update failed")
+        raise HTTPException(status_code=500, detail="USER_ROLE_UPDATE_FAILED") from exc
+
+
+@app.delete("/admin/course/{course_id}")
+def delete_course_transactional(
+    course_id: UUID,
+    _admin_user_id: str = Depends(verify_admin_token),
+):
+    try:
+        result = supabase.rpc(
+            "admin_delete_course_data",
+            {"p_course_id": str(course_id)},
+        ).execute()
+        cleanup_job_id = _queue_cleanup_from_rpc_result(result.data)
+        return {"success": True, "cleanup_job_id": cleanup_job_id}
+    except Exception as exc:
+        logger.exception("Transactional course deletion failed")
+        raise HTTPException(status_code=500, detail="COURSE_DELETE_FAILED") from exc
+
+
+@app.delete("/admin/enrollment/{enrollment_id}")
+def delete_enrollment_transactional(
+    enrollment_id: UUID,
+    _admin_user_id: str = Depends(verify_admin_token),
+):
+    enrollment = (
+        supabase.table("mahasiswa_mata_kuliah")
+        .select("mahasiswa_id, mata_kuliah_id")
+        .eq("id", str(enrollment_id))
+        .maybe_single()
+        .execute()
+    )
+    if not enrollment.data:
+        raise HTTPException(status_code=404, detail="ENROLLMENT_NOT_FOUND")
+
+    try:
+        result = supabase.rpc(
+            "admin_delete_enrollment_data",
+            {
+                "p_student_id": enrollment.data["mahasiswa_id"],
+                "p_course_id": enrollment.data["mata_kuliah_id"],
+            },
+        ).execute()
+        cleanup_job_id = _queue_cleanup_from_rpc_result(result.data)
+        return {"success": True, "cleanup_job_id": cleanup_job_id}
+    except Exception as exc:
+        logger.exception("Transactional enrollment deletion failed")
+        raise HTTPException(
+            status_code=500,
+            detail="ENROLLMENT_DELETE_FAILED",
+        ) from exc
+
+
+@app.post("/admin/reset")
+def reset_demo_data(
+    payload: DemoResetRequest,
+    _admin_user_id: str = Depends(verify_admin_token),
+):
+    delete_submissions = payload.reset_type in {"submissions", "all"}
+    delete_enrollments = payload.reset_type in {"enrollments", "all"}
+    try:
+        result = supabase.rpc(
+            "admin_reset_demo_data",
+            {
+                "p_delete_submissions": delete_submissions,
+                "p_delete_enrollments": delete_enrollments,
+            },
+        ).execute()
+        cleanup_job_id = _queue_cleanup_from_rpc_result(result.data)
+        return {
+            "success": True,
+            **(result.data if isinstance(result.data, dict) else {}),
+            "cleanup_job_id": cleanup_job_id,
+        }
+    except Exception as exc:
+        logger.exception("Transactional demo reset failed")
+        raise HTTPException(status_code=500, detail="DEMO_RESET_FAILED") from exc
 
 
 @app.get("/audit/test")
@@ -1539,7 +1549,6 @@ def prune_storage(admin_user_id: str = Depends(verify_admin_token)):
         raise HTTPException(status_code=500, detail="Gagal membersihkan storage.")
 
 
-@app.get("/auth/check-email")
 def check_email(email: str, user_id: str = Depends(verify_any_authenticated_token)):
     """
     Check if an email is registered in Supabase auth.users using check_email_exists() RPC.

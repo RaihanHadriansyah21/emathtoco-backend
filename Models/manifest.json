@@ -1,0 +1,1086 @@
+{
+  "schema_version": 1,
+  "generated_from": "local-artifacts",
+  "artifacts": [
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1A",
+      "path": "MobilenetV2/model_1a.h5",
+      "size_bytes": 32059200,
+      "sha256": "c1aed41b776ac28c6154dc1853bfb61bdea55a01190d01f051d323e40999007b",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1B",
+      "path": "MobilenetV2/model_1b.h5",
+      "size_bytes": 32060736,
+      "sha256": "068f72b3ae6a4349e23c28fa34130b9f910eb2cadd285a66db190a8c44161043",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1C",
+      "path": "MobilenetV2/model_1c.h5",
+      "size_bytes": 32060736,
+      "sha256": "accfbeeb215f86238aa79f150e9a404b731f33b382f7a7f06b4cf8c00b5a8368",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1D",
+      "path": "MobilenetV2/model_1d.h5",
+      "size_bytes": 32060736,
+      "sha256": "cb2ac24ddfc8a7bf29ffe9c16831cbb008e7b56f773ecef3293771b637664c0c",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1E",
+      "path": "MobilenetV2/model_1e.h5",
+      "size_bytes": 32060736,
+      "sha256": "c2065d06fe74eeb1dd2f8dc67db08b93d3bc63d1f6bad52712da6e5920ab5fc9",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1F",
+      "path": "MobilenetV2/model_1f.h5",
+      "size_bytes": 32062272,
+      "sha256": "abed6216aaee88793160b15a130440f50e4b7e8d23ad1ccb7cf2bcf6ea79add0",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2A",
+      "path": "MobilenetV2/model_2a.h5",
+      "size_bytes": 32060736,
+      "sha256": "b8200eae9bdbd7236b399be4683973f2f6f98ef54f43f8e8728226e60f98b9b8",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2B",
+      "path": "MobilenetV2/model_2b.h5",
+      "size_bytes": 32059200,
+      "sha256": "f853b53260b9def8cb2af28c2a72f9d17c9acfbc7babfdc06987f2f55910bab9",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2C",
+      "path": "MobilenetV2/model_2c.h5",
+      "size_bytes": 32060736,
+      "sha256": "974f7da64766bb1162e1d88d648eacaf1fc0e5e386c999b2eff14fd02203c472",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2D",
+      "path": "MobilenetV2/model_2d.h5",
+      "size_bytes": 32060736,
+      "sha256": "4964fa23d1bb449ba58ba7bb0612a7366cc548e4affae44a9ddecd1c6eecb917",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2E",
+      "path": "MobilenetV2/model_2e.h5",
+      "size_bytes": 32060736,
+      "sha256": "f4b25414c56a77b42e8183308ca09230ac2f312ad7c273afbcb57f763ba2ce33",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2F",
+      "path": "MobilenetV2/model_2f.h5",
+      "size_bytes": 32062272,
+      "sha256": "8e8caa4e0e64f36c188dc6b71947047eccb61f1f2b4d3b3df3b0fd0e8bbc4c3b",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3A",
+      "path": "MobilenetV2/model_3a.h5",
+      "size_bytes": 32060736,
+      "sha256": "c0a2ad275afda9b404c79130f161dbd4d7260cc0a3c2a9b5757bb59ab94a2ea1",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3B",
+      "path": "MobilenetV2/model_3b.h5",
+      "size_bytes": 32060736,
+      "sha256": "cf9f7fb265ce5fa078fd0c5871d5024587db367d8525bb7d34f38c2a49a2d3d2",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3C",
+      "path": "MobilenetV2/model_3c.h5",
+      "size_bytes": 32060736,
+      "sha256": "258fef5ed2df6f7b67bc8533fcbd18c1d8c14ecf2aa14d71dc32e487a9f34c2a",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3D",
+      "path": "MobilenetV2/model_3d.h5",
+      "size_bytes": 32060736,
+      "sha256": "61a78b982513a69e169eed79ca342e71bf63703d3bcd2a24d152c2be20c565f8",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3E",
+      "path": "MobilenetV2/model_3e.h5",
+      "size_bytes": 32060736,
+      "sha256": "3513dc052525787ed130c86ff0ba46bc57c528772107599ac0fa942fc9e4fea6",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3F",
+      "path": "MobilenetV2/model_3f.h5",
+      "size_bytes": 32060736,
+      "sha256": "3562574d8a8d5ee0a1dbb854ce70763adb21af987d5c16544bc2e63a1d05178a",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4A",
+      "path": "MobilenetV2/model_4a.h5",
+      "size_bytes": 32060736,
+      "sha256": "048e097c6f4dfdf7e59ca56dbf94c023eb5ea05a5c714de0038f818c423bd2f3",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4B",
+      "path": "MobilenetV2/model_4b.h5",
+      "size_bytes": 32060736,
+      "sha256": "b117c10b515f02769145e7b652db08f1df0601f346d76a31aab23536c395b68a",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4C",
+      "path": "MobilenetV2/model_4c.h5",
+      "size_bytes": 32060736,
+      "sha256": "1b2e7f13b0218809684c0135026f51a46775a478f7a5ebfdc6454987afe4fe04",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4D",
+      "path": "MobilenetV2/model_4d.h5",
+      "size_bytes": 32060736,
+      "sha256": "20eb3cd3dc30455c7d1b0b1bb6aae49602f3b005676954e7cc39809f495b6b5f",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4E",
+      "path": "MobilenetV2/model_4e.h5",
+      "size_bytes": 32060736,
+      "sha256": "75dbcb3d3d97eb19169d0fee0d7e7391b2a9592eb5359ee616525da4b5cf189c",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4F",
+      "path": "MobilenetV2/model_4f.h5",
+      "size_bytes": 32062272,
+      "sha256": "b2083daa561630fb0abc22f8448ad8eabd2c56b830e20d1bf2a7efbd62c7a503",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1A",
+      "path": "DenseNet121/model_1a.h5",
+      "size_bytes": 45947752,
+      "sha256": "de05ba8e34fec8bbf438fe9da4f56c8d5bce5c26c70801c0134484793ae655e7",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1B",
+      "path": "DenseNet121/model_1b.h5",
+      "size_bytes": 45949288,
+      "sha256": "7bc50358050bfa8df3ca6b453977df2f30b2c1197e9cdff022f59433466b698a",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1C",
+      "path": "DenseNet121/model_1c.h5",
+      "size_bytes": 45949288,
+      "sha256": "92354c4798a51510e15dc7873addecf46b32fb27eb8b4b3c4c1261d14dfa2fc6",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1D",
+      "path": "DenseNet121/model_1d.h5",
+      "size_bytes": 45949288,
+      "sha256": "83d291d87cb1e18a107b74c732aafd3a2e09f7f41f74beb62e2dae1161f90dcb",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1E",
+      "path": "DenseNet121/model_1e.h5",
+      "size_bytes": 45949288,
+      "sha256": "35fb0ad8e728e3f286e6c02587386d66e3713025b09d9fd5cbc7f9c99600d794",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1F",
+      "path": "DenseNet121/model_1f.h5",
+      "size_bytes": 45950824,
+      "sha256": "164d1302d1ea2ca2cdc5f99396d7ba54b7c3476309260d5512aa74d97cc5e941",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2A",
+      "path": "DenseNet121/model_2a.h5",
+      "size_bytes": 45949288,
+      "sha256": "7de96adb1657ade7e3883b968b72fe45712d7de866c7b505f8c226de77669312",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2B",
+      "path": "DenseNet121/model_2b.h5",
+      "size_bytes": 45947752,
+      "sha256": "b4d41781caf75e393a411ccf27ceeab819db20107a827318d07d492b6d0184f3",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2C",
+      "path": "DenseNet121/model_2c.h5",
+      "size_bytes": 45949288,
+      "sha256": "64e57fd6bcb0cd60ff752712341736b258eca2cf27bed04ea797a89e8fd91071",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2D",
+      "path": "DenseNet121/model_2d.h5",
+      "size_bytes": 45949288,
+      "sha256": "5b5a48e968c8b22e5caaa45a48ac1cb829258f320a25acd5c8ed6c8d615f1c9f",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2E",
+      "path": "DenseNet121/model_2e.h5",
+      "size_bytes": 45949288,
+      "sha256": "492148101d23f5f809b40b7280172333cf4bb4d272a9930a070cab9a870ee6cb",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2F",
+      "path": "DenseNet121/model_2f.h5",
+      "size_bytes": 45950824,
+      "sha256": "5db24f8ea770521bcb7ea011e21da977193f51b7b03f2195d6abfe64df55ca36",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3A",
+      "path": "DenseNet121/model_3a.h5",
+      "size_bytes": 45949288,
+      "sha256": "9d6ed143cee7ee727a8b5be958b19b7496ab0b6753e5e841697ad741cab85967",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3B",
+      "path": "DenseNet121/model_3b.h5",
+      "size_bytes": 45949288,
+      "sha256": "c8a82594a7a20766ec06ab5d70efc8cc8026a0f2563ecf647e5f461148e69fbc",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3C",
+      "path": "DenseNet121/model_3c.h5",
+      "size_bytes": 45949288,
+      "sha256": "ebbc4120b3a980d90cabfa9dadab20ef840abffe6d24c61a7417175f6e6c280e",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3D",
+      "path": "DenseNet121/model_3d.h5",
+      "size_bytes": 45949288,
+      "sha256": "35d2ef53a35f924d2f9d667790e15d7dcdd29aed5fec15b318b040ed7ea4dac4",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3E",
+      "path": "DenseNet121/model_3e.h5",
+      "size_bytes": 45949288,
+      "sha256": "43dbce1bdfea132e4f8c74e8ec22e5699b505dfc3e773456a5763ed0caac0b56",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3F",
+      "path": "DenseNet121/model_3f.h5",
+      "size_bytes": 45949288,
+      "sha256": "ba3ebba8bc596f2eb10a5b3eaf94627e085bd2aa7e020f2f15a9b18ede225b53",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4A",
+      "path": "DenseNet121/model_4a.h5",
+      "size_bytes": 45949288,
+      "sha256": "4683f83c0a89eed3716edcdadb1584e7e9c2d8851ee37e8f9e7cbb986274e691",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4B",
+      "path": "DenseNet121/model_4b.h5",
+      "size_bytes": 45949288,
+      "sha256": "a1ad2db61aa86375f2a93a4cc3966107cc6d44b0e6a21a476a28ee587b64f7cc",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4C",
+      "path": "DenseNet121/model_4c.h5",
+      "size_bytes": 45949288,
+      "sha256": "20edb13565b8e1dfc46cefb79151591ac38b278a2aeb5461cff7be17b7f106a0",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4D",
+      "path": "DenseNet121/model_4d.h5",
+      "size_bytes": 45949288,
+      "sha256": "310ff82d36f17a86c9c2c39c8e9d975cd8661c3b8b206a3ddf9f23272823ef98",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4E",
+      "path": "DenseNet121/model_4e.h5",
+      "size_bytes": 45949288,
+      "sha256": "e649b255c1e7a653b7e2efd5838a3264c24498ae05e47875b06d93429989aea6",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4F",
+      "path": "DenseNet121/model_4f.h5",
+      "size_bytes": 45950824,
+      "sha256": "d26924ccd1430984a23abf071e98903fb40fc76f178ed9abbbf4ccaa88ac321c",
+      "format": "keras-h5",
+      "input_shape": [
+        128,
+        128,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1A",
+      "path": "InceptionV3/model_1a.h5",
+      "size_bytes": 120121000,
+      "sha256": "5d4141ab750e17fdd3398206b416d20efbf21645a2c7b4b9e7eb5a857f849c24",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1B",
+      "path": "InceptionV3/model_1b.h5",
+      "size_bytes": 120122536,
+      "sha256": "1e003a8c74754cfd6cdcd45969476f26d1f2a5d7b10dfea4f831c25378750c21",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1C",
+      "path": "InceptionV3/model_1c.h5",
+      "size_bytes": 120122536,
+      "sha256": "20ab01250df5dafc378951c64c2ed82a6e721fc54394a04d6a9ce40ff6f80c85",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1D",
+      "path": "InceptionV3/model_1d.h5",
+      "size_bytes": 120122536,
+      "sha256": "4f5656c519db88258f9a23b3aef66e2530cf3e193ec619f465b22929917885b7",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1E",
+      "path": "InceptionV3/model_1e.h5",
+      "size_bytes": 120122536,
+      "sha256": "c84b0b23a6c2db2532693016a061aa80bf941dcca228f8af82edb6a2c6218363",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1F",
+      "path": "InceptionV3/model_1f.h5",
+      "size_bytes": 120124072,
+      "sha256": "5945dec14b4d44cc984fa9bcea0c684c8b32b5f277913cdb01d8625509421159",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2A",
+      "path": "InceptionV3/model_2a.h5",
+      "size_bytes": 120122536,
+      "sha256": "1320d4710cab6eabba77467de6d9732054212a1c8a6c3d892784a9dd4eb1c94a",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2B",
+      "path": "InceptionV3/model_2b.h5",
+      "size_bytes": 120121000,
+      "sha256": "e2584601fe86c75b88146528d91b601603a0611050ae43ba7b32cc02d1d4d30a",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2C",
+      "path": "InceptionV3/model_2c.h5",
+      "size_bytes": 120122536,
+      "sha256": "63dfb65670de01ff96e188b1fd98b8e2f93cf6421b6e91397cc212e6faa62b56",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2D",
+      "path": "InceptionV3/model_2d.h5",
+      "size_bytes": 120122536,
+      "sha256": "529d41d61d325e5ecb4dc7fd96fb4bed985aef791d6255f2cb715acc30fb447f",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2E",
+      "path": "InceptionV3/model_2e.h5",
+      "size_bytes": 120122536,
+      "sha256": "77f6f1e71150b6478928bca28e85d7060e5759a35213aa844335a059aec787a6",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2F",
+      "path": "InceptionV3/model_2f.h5",
+      "size_bytes": 120124072,
+      "sha256": "21d38cd3e8b7da0c84afeefdac9e26bba66c38f3e3e86048d9ba657f696b0c0c",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3A",
+      "path": "InceptionV3/model_3a.h5",
+      "size_bytes": 120122536,
+      "sha256": "67cc4a4f73f6fe7614156f498cbb9b77b2c00f8ceef68a92dddf7ff76ccbf90a",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3B",
+      "path": "InceptionV3/model_3b.h5",
+      "size_bytes": 120122536,
+      "sha256": "bc84f579722372749997f6db246eb3af2dec6b2c56efd21bce733b2615309922",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3C",
+      "path": "InceptionV3/model_3c.h5",
+      "size_bytes": 120122536,
+      "sha256": "0c195b35324ece48e1cef674b181680de23be8d1fe28fdec305553723c03bc56",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3D",
+      "path": "InceptionV3/model_3d.h5",
+      "size_bytes": 120122536,
+      "sha256": "137b4dfe8942453b479bed93d47a0844e022a3c09057a1a90255c17f2e7af256",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3E",
+      "path": "InceptionV3/model_3e.h5",
+      "size_bytes": 120122536,
+      "sha256": "692ef647f796a3066cd1a17abd32175699ad279e95edb077360aae6a11f6f824",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3F",
+      "path": "InceptionV3/model_3f.h5",
+      "size_bytes": 120122536,
+      "sha256": "3b12bc8b2d8b3fdebfd1bf402795e96d42141c0ed6ab3a01ae6d7d90fb96f651",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4A",
+      "path": "InceptionV3/model_4a.h5",
+      "size_bytes": 120122536,
+      "sha256": "e123ffac47309ed56793c62dbd91acb01a56254a852de3bb35374d3ff8763f4f",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4B",
+      "path": "InceptionV3/model_4b.h5",
+      "size_bytes": 120122536,
+      "sha256": "128d7082df3b98449ca7c534f0ba12899cea0b5b576f3ed681c9222a876f71a3",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4C",
+      "path": "InceptionV3/model_4c.h5",
+      "size_bytes": 120122536,
+      "sha256": "3654f197b21cf918265805de2a36db0e55b66430b3729029b78924118e54b563",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4D",
+      "path": "InceptionV3/model_4d.h5",
+      "size_bytes": 120122536,
+      "sha256": "20f3dff7c6b050c3179ea1a01d12d209488124316a3847e2bf0f54f340497ddc",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4E",
+      "path": "InceptionV3/model_4e.h5",
+      "size_bytes": 120122536,
+      "sha256": "22e064228f395c15ba9496b1916e121475b1bed9eddd922a9adc68e1ccbe1055",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4F",
+      "path": "InceptionV3/model_4f.h5",
+      "size_bytes": 120124072,
+      "sha256": "019f578e42cd32076305422f95cd945bed5a087316cb6a84859287ea2e47cd09",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+      "version": "1"
+    }
+  ]
+}

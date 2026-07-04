@@ -1,57 +1,43 @@
 import os
+from collections import OrderedDict
+from pathlib import Path
+
+import tensorflow as tf
+
 from services.model_loader import load_mobilenet_model
+from utils.logging_helper import logger
+
+MODEL_ROOT = Path(os.environ.get("MODEL_ROOT", "Models")).expanduser().resolve()
 
 MODEL_CONFIG = {
     "MobileNetV2": {
-        "path": "Models/MobilenetV2",
+        "path": MODEL_ROOT / "MobilenetV2",
         "input_size": (128, 128)
     },
     "DenseNet121": {
-        "path": "Models/DenseNet121",
+        "path": MODEL_ROOT / "DenseNet121",
         "input_size": (128, 128)
     },
     "InceptionV3": {
-        "path": "Models/InceptionV3",
+        "path": MODEL_ROOT / "InceptionV3",
         "input_size": (299, 299)
     }
 }
 
 # Keep backward compatibility with old code that imports MODEL_MAP or refers to it
 MODEL_MAP = {
-    "S-1A": "Models/MobilenetV2/model_1a.h5",
-    "S-1B": "Models/MobilenetV2/model_1b.h5",
-    "S-1C": "Models/MobilenetV2/model_1c.h5",
-    "S-1D": "Models/MobilenetV2/model_1d.h5",
-    "S-1E": "Models/MobilenetV2/model_1e.h5",
-    "S-1F": "Models/MobilenetV2/model_1f.h5",
-    "S-2A": "Models/MobilenetV2/model_2a.h5",
-    "S-2B": "Models/MobilenetV2/model_2b.h5",
-    "S-2C": "Models/MobilenetV2/model_2c.h5",
-    "S-2D": "Models/MobilenetV2/model_2d.h5",
-    "S-2E": "Models/MobilenetV2/model_2e.h5",
-    "S-2F": "Models/MobilenetV2/model_2f.h5",
-    "S-3A": "Models/MobilenetV2/model_3a.h5",
-    "S-3B": "Models/MobilenetV2/model_3b.h5",
-    "S-3C": "Models/MobilenetV2/model_3c.h5",
-    "S-3D": "Models/MobilenetV2/model_3d.h5",
-    "S-3E": "Models/MobilenetV2/model_3e.h5",
-    "S-3F": "Models/MobilenetV2/model_3f.h5",
-    "S-4A": "Models/MobilenetV2/model_4a.h5",
-    "S-4B": "Models/MobilenetV2/model_4b.h5",
-    "S-4C": "Models/MobilenetV2/model_4c.h5",
-    "S-4D": "Models/MobilenetV2/model_4d.h5",
-    "S-4E": "Models/MobilenetV2/model_4e.h5",
-    "S-4F": "Models/MobilenetV2/model_4f.h5",
+    section: str(MODEL_ROOT / "MobilenetV2" / f"model_{section[2:].lower()}.h5")
+    for section in (
+        f"S-{question}{part}"
+        for question in range(1, 5)
+        for part in ("A", "B", "C", "D", "E", "F")
+    )
 }
 
 # ==================================================
 # LAZY LOADING CACHE with LRU Eviction Policy (Prevents OOM)
 # Key format: f"{model_name}_{section_code}"
 # ==================================================
-from collections import OrderedDict
-import tensorflow as tf
-from utils.logging_helper import logger
-
 MAX_CACHED_MODELS = 6
 _loaded_models = OrderedDict()
 
@@ -75,7 +61,7 @@ def get_model(section_code: str, model_name: str = "MobileNetV2"):
         normalized_model_name = "MobileNetV2"
 
     config = MODEL_CONFIG[normalized_model_name]
-    base_path = config["path"]
+    base_path = Path(config["path"])
 
     parts = section_code.split("-")
     if len(parts) == 2:
@@ -83,14 +69,14 @@ def get_model(section_code: str, model_name: str = "MobileNetV2"):
     else:
         file_name = f"model_{section_code.lower()}.h5"
 
-    model_path = os.path.join(base_path, file_name)
+    model_path = (base_path / file_name).resolve()
     cache_key = f"{normalized_model_name}_{section_code}"
 
     if cache_key in _loaded_models:
         # Move to end to mark as Most Recently Used (MRU)
         _loaded_models.move_to_end(cache_key)
     else:
-        if not os.path.exists(model_path):
+        if not model_path.is_file():
             raise FileNotFoundError(f"Model file not found: {model_path}")
             
         # Evict oldest model if cache size exceeds limit
@@ -100,7 +86,7 @@ def get_model(section_code: str, model_name: str = "MobileNetV2"):
             del oldest_model
             tf.keras.backend.clear_session()
             
-        _loaded_models[cache_key] = load_mobilenet_model(model_path)
+        _loaded_models[cache_key] = load_mobilenet_model(str(model_path))
 
     return _loaded_models[cache_key]
 

@@ -1,0 +1,1 @@
+-- Superseded by the consolidated RLS matrix in database_hardening.

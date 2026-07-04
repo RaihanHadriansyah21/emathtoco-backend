@@ -1,0 +1,16 @@
+.git
+.env
+.env.*
+!.env.example
+!.env.vps.example
+venv
+__pycache__
+*.pyc
+Models/*
+!Models/manifest.json
+!Models/golden_inference.json
+supabase
+docs
+*.sql
+*.7z
+*.zip

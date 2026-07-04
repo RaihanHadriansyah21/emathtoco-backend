@@ -1,7 +1,15 @@
+from io import BytesIO
+
 import cv2
 import numpy as np
+from PIL import Image, UnidentifiedImageError
 
 from utils.supabase_client import supabase
+
+MAX_IMAGE_BYTES = 10 * 1024 * 1024
+MAX_IMAGE_DIMENSION = 12_000
+MAX_IMAGE_PIXELS = 40_000_000
+JPEG_SIGNATURE = b"\xff\xd8\xff"
 
 
 def check_file_exists(image_path: str) -> bool:
@@ -55,17 +63,38 @@ def download_image(image_path: str) -> np.ndarray:
     """
     try:
         file_bytes = supabase.storage.from_("lembar-jawaban").download(image_path)
-    except Exception as e:
-        raise FileNotFoundError(
-            f"File tidak ditemukan di Storage: {image_path} — {str(e)}"
-        )
+    except Exception as exc:
+        raise FileNotFoundError("image_object_unavailable") from exc
 
     if file_bytes is None or len(file_bytes) == 0:
-        raise FileNotFoundError(
-            f"File kosong atau tidak ditemukan di Storage: {image_path}"
-        )
+        raise FileNotFoundError("image_object_empty")
+
+    if len(file_bytes) > MAX_IMAGE_BYTES:
+        raise ValueError("image_too_large")
+
+    if not file_bytes.startswith(JPEG_SIGNATURE):
+        raise ValueError("invalid_image_signature")
+
+    try:
+        with Image.open(BytesIO(file_bytes)) as inspected:
+            if inspected.format != "JPEG":
+                raise ValueError("invalid_image_format")
+            width, height = inspected.size
+            if (
+                width <= 0
+                or height <= 0
+                or width > MAX_IMAGE_DIMENSION
+                or height > MAX_IMAGE_DIMENSION
+                or width * height > MAX_IMAGE_PIXELS
+            ):
+                raise ValueError("unsafe_image_dimensions")
+            inspected.verify()
+    except (UnidentifiedImageError, OSError) as exc:
+        raise ValueError("invalid_image_data") from exc
 
     np_array = np.frombuffer(file_bytes, np.uint8)
     image = cv2.imdecode(np_array, cv2.IMREAD_COLOR)
+    if image is None:
+        raise ValueError("image_decode_failed")
     return image
 

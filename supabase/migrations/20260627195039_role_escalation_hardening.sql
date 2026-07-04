@@ -1,0 +1,1 @@
+-- Superseded by the consolidated trigger in database_hardening.

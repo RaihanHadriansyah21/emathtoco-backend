@@ -206,7 +206,9 @@ Emathtoco_Project/
 │   │   ├── MobilenetV2/           ← 24 × model_Xa.h5 files
 │   │   ├── DenseNet121/           ← 24 × model_Xa.h5 files
 │   │   └── InceptionV3/           ← 24 × model_Xa.h5 files
-│   └── requirements.txt
+│   ├── requirements-api.txt
+│   ├── requirements-worker.txt
+│   └── requirements-dev.txt
 │
 └── Emathtoco_AgentDocs/           ← Developer documentation
     ├── PROJECT_CONTEXT.md
@@ -272,7 +274,7 @@ Emathtoco_Project/
 
 | Variable | Deskripsi | Nilai Contoh |
 |---|---|---|
-| `SUPABASE_URL` | Supabase project URL | `https://lgdzanagxehzepcohvpx.supabase.co` |
+| `SUPABASE_URL` | Supabase project URL | `https://hkxxhactpwiqdzecrbxw.supabase.co` |
 | `SUPABASE_SERVICE_ROLE_KEY` | Service role key (admin bypass RLS) | `sb_secret_...` |
 | `ALLOWED_ORIGINS` | CORS whitelist URLs | `http://localhost:3000,...,https://emathtoco.vercel.app` |
 
@@ -1345,7 +1347,7 @@ Supabase RLS memproteksi data di level database:
 |---|---|---|
 | **Frontend** | Vercel | `https://emathtoco.vercel.app` |
 | **Backend AI** | Lokal (development) via ngrok | `https://strife-trapper-dad.ngrok-free.dev` |
-| **Database** | Supabase Cloud | `https://lgdzanagxehzepcohvpx.supabase.co` |
+| **Database** | Supabase Cloud | `https://hkxxhactpwiqdzecrbxw.supabase.co` |
 | **Storage** | Supabase Cloud Storage | Sama dengan database |
 | **Auth** | Supabase Auth | Sama dengan database |
 
@@ -1359,7 +1361,7 @@ cd Emathoco_BackEnd
 .\venv\Scripts\activate  (Windows)
 
 # Install dependencies
-pip install -r requirements.txt
+python -m pip install --require-hashes -r requirements-dev.txt
 
 # Jalankan server
 uvicorn main:app --reload
@@ -1966,7 +1968,7 @@ Gunakan **Bagian 17 (Future Research)** sebagai roadmap pengembangan lanjutan.
 ## A.1 Frontend `next.config.ts`
 Konfigurasi Next.js minimal — tidak ada custom config yang signifikan selain default.
 
-## A.2 Backend `requirements.txt` (Key Dependencies)
+## A.2 Backend dependency locks (Key Dependencies)
 
 ```
 fastapi==0.136.3

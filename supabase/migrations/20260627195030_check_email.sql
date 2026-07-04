@@ -1,0 +1,1 @@
+-- The obsolete email-enumeration RPC is intentionally not recreated.
