@@ -26,10 +26,8 @@ def create_audit_log(
     Returns True if log insertion succeeded, otherwise False.
     """
     try:
-        # Standardize model name
-        action = standardize_model_name(action)
-        target = standardize_model_name(target)
-        
+        # Standardisasi hanya diterapkan pada detail payload.
+        # `action` dan `target` adalah domain audit, bukan nama model.
         if isinstance(detail, str):
             detail = standardize_model_name(detail)
         elif isinstance(detail, dict):

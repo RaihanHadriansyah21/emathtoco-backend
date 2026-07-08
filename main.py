@@ -1,7 +1,9 @@
 from uuid import UUID
+import time
+from collections import defaultdict, deque
 
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, Header, HTTPException, Request
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -31,6 +33,29 @@ load_dotenv()
 runtime_settings = load_runtime_settings()
 
 app = FastAPI(title="EMATHTOCO AI Backend Versi 1.0.0")
+
+_rate_limit_buckets: dict[str, deque[float]] = defaultdict(deque)
+
+
+def enforce_rate_limit(scope: str, actor_id: str, limit: int, window_seconds: int) -> None:
+    """
+    Per-process sliding-window rate limit untuk endpoint mahal.
+
+    Ini cukup untuk mode demo/VPS single API worker. Jika API diskalakan ke multi-instance,
+    limiter ini harus dipindah ke Redis agar berlaku lintas proses.
+    """
+    now = time.monotonic()
+    key = f"{scope}:{actor_id}"
+    bucket = _rate_limit_buckets[key]
+    cutoff = now - window_seconds
+
+    while bucket and bucket[0] <= cutoff:
+        bucket.popleft()
+
+    if len(bucket) >= limit:
+        raise HTTPException(status_code=429, detail="RATE_LIMIT_EXCEEDED")
+
+    bucket.append(now)
 # ==================================================
 # CORS CONFIGURATION
 # ==================================================
@@ -189,16 +214,28 @@ def verify_any_authenticated_token(authorization: str = Header(None)) -> str:
         )
 
 
-def check_lecturer_course_access(lecturer_id: str, course_id: str) -> bool:
+def get_user_role(user_id: str) -> str | None:
+    profile_res = (
+        supabase.table("profil_pengguna")
+        .select("role")
+        .eq("id", user_id)
+        .maybe_single()
+        .execute()
+    )
+    if not profile_res or not profile_res.data:
+        return None
+    return str(profile_res.data.get("role", "")).lower()
+
+
+def check_lecturer_course_access(lecturer_id: str, course_id: str, role: str | None = None) -> bool:
     """
     Verifikasi apakah dosen mengajar/ditugaskan pada mata kuliah tertentu.
     Admin selalu diizinkan.
     """
-    profile_res = supabase.table("profil_pengguna").select("role").eq("id", lecturer_id).maybe_single().execute()
-    if not profile_res or not profile_res.data:
+    role = role or get_user_role(lecturer_id)
+    if not role:
         return False
-    
-    role = profile_res.data.get("role", "").lower()
+
     if role == "admin":
         return True
         
@@ -221,11 +258,10 @@ def check_user_submission_read_access(user_id: str, submission_id: str) -> bool:
     Memeriksa apakah pengguna memiliki hak akses baca untuk submission.
     Dosen harus ditugaskan ke course, mahasiswa harus memiliki submission tersebut, admin selalu diizinkan.
     """
-    profile_res = supabase.table("profil_pengguna").select("role").eq("id", user_id).maybe_single().execute()
-    if not profile_res or not profile_res.data:
+    role = get_user_role(user_id)
+    if not role:
         return False
-        
-    role = profile_res.data.get("role", "").lower()
+
     if role == "admin":
         return True
         
@@ -237,7 +273,7 @@ def check_user_submission_read_access(user_id: str, submission_id: str) -> bool:
         course_id = submission.get("mata_kuliah_id")
         if not course_id:
             return False
-        return check_lecturer_course_access(user_id, course_id)
+        return check_lecturer_course_access(user_id, course_id, role=role)
         
     return submission.get("mahasiswa_id") == user_id
 
@@ -247,11 +283,10 @@ def check_lecturer_submission_write_access(lecturer_id: str, submission_id: str)
     Memeriksa apakah dosen memiliki hak akses ubah untuk submission (dosen mata kuliah).
     Admin selalu diizinkan.
     """
-    profile_res = supabase.table("profil_pengguna").select("role").eq("id", lecturer_id).maybe_single().execute()
-    if not profile_res or not profile_res.data:
+    role = get_user_role(lecturer_id)
+    if not role:
         return False
-        
-    role = profile_res.data.get("role", "").lower()
+
     if role == "admin":
         return True
         
@@ -266,12 +301,122 @@ def check_lecturer_submission_write_access(lecturer_id: str, submission_id: str)
     if not course_id:
         return False
         
-    return check_lecturer_course_access(lecturer_id, course_id)
+    return check_lecturer_course_access(lecturer_id, course_id, role=role)
+
+
+def filter_ai_writable_submissions(user_id: str, submission_ids: list[UUID]) -> tuple[list[UUID], dict[str, str]]:
+    """
+    Batch authorization untuk AI prediction.
+
+    Menghindari pola N+1 query: role dibaca sekali, submission dibaca sekali,
+    dan assignment dosen dibaca sekali untuk seluruh course yang terlibat.
+    """
+    role = get_user_role(user_id)
+    if role not in {"admin", "dosen"}:
+        return [], {str(submission_id): "access_denied" for submission_id in submission_ids}
+
+    submission_id_texts = [str(submission_id) for submission_id in submission_ids]
+    submissions_res = (
+        supabase.table("pengumpulan_tugas")
+        .select("id, mata_kuliah_id")
+        .in_("id", submission_id_texts)
+        .execute()
+    )
+    submissions = submissions_res.data or []
+    submission_by_id = {str(row["id"]): row for row in submissions}
+    rejected: dict[str, str] = {}
+
+    for submission_id in submission_id_texts:
+        if submission_id not in submission_by_id:
+            rejected[submission_id] = "submission_not_found"
+
+    if role == "admin":
+        return [
+            submission_id
+            for submission_id in submission_ids
+            if str(submission_id) in submission_by_id
+        ], rejected
+
+    course_ids = sorted(
+        {
+            str(row.get("mata_kuliah_id"))
+            for row in submissions
+            if row.get("mata_kuliah_id")
+        }
+    )
+    if not course_ids:
+        rejected.update({
+            str(submission_id): "access_denied"
+            for submission_id in submission_ids
+            if str(submission_id) not in rejected
+        })
+        return [], rejected
+
+    assignment_res = (
+        supabase.table("dosen_mata_kuliah")
+        .select("mata_kuliah_id")
+        .eq("dosen_id", user_id)
+        .in_("mata_kuliah_id", course_ids)
+        .execute()
+    )
+    allowed_course_ids = {
+        str(row["mata_kuliah_id"])
+        for row in (assignment_res.data or [])
+    }
+
+    eligible: list[UUID] = []
+    for submission_id in submission_ids:
+        submission_id_text = str(submission_id)
+        if submission_id_text in rejected:
+            continue
+        course_id = str(submission_by_id[submission_id_text].get("mata_kuliah_id"))
+        if course_id in allowed_course_ids:
+            eligible.append(submission_id)
+        else:
+            rejected[submission_id_text] = "access_denied"
+
+    return eligible, rejected
+
+
 
 
 # ==================================================
 # PRODUCTION ENDPOINTS
 # ==================================================
+
+
+# NOTE: /predict/batch MUST be defined BEFORE /predict/{submission_id}.
+# FastAPI matches routes in definition order; if the parameterized route
+# comes first, "batch" would be treated as a submission_id UUID → 422 error.
+@app.post("/predict/batch", status_code=202)
+def predict_batch(
+    payload: BatchPredictionRequest,
+    user_id: str = Depends(verify_dosen_or_admin_token),
+):
+    enforce_rate_limit("predict_batch", user_id, limit=10, window_seconds=60)
+    eligible, rejected = filter_ai_writable_submissions(user_id, payload.submission_ids)
+
+    if not eligible:
+        raise HTTPException(status_code=403, detail="NO_ELIGIBLE_SUBMISSIONS")
+
+    selected_model = payload.model
+    if selected_model is None:
+        configured_model = settings_service.get_setting("active_model")
+        try:
+            selected_model = AIModel(configured_model or AIModel.MOBILENET_V2)
+        except ValueError:
+            selected_model = AIModel.MOBILENET_V2
+
+    result = enqueue_predictions(eligible, selected_model)
+    rejected.update(result.rejected)
+    if not result.accepted_ids:
+        raise HTTPException(status_code=409, detail="NO_SUBMISSIONS_QUEUED")
+    return {
+        "job_id": result.job_id,
+        "status": "queued",
+        "accepted_ids": result.accepted_ids,
+        "rejected": rejected,
+    }
 
 
 @app.post("/predict/{submission_id}", status_code=202)
@@ -280,6 +425,7 @@ def predict(
     model: AIModel | None = None,
     user_id: str = Depends(verify_dosen_or_admin_token),
 ):
+    enforce_rate_limit("predict", user_id, limit=30, window_seconds=60)
     submission_id_text = str(submission_id)
     if not check_lecturer_submission_write_access(user_id, submission_id_text):
         raise HTTPException(status_code=403, detail="SUBMISSION_ACCESS_DENIED")
@@ -306,43 +452,6 @@ def predict(
     }
 
 
-@app.post("/predict/batch", status_code=202)
-def predict_batch(
-    payload: BatchPredictionRequest,
-    user_id: str = Depends(verify_dosen_or_admin_token),
-):
-    eligible: list[UUID] = []
-    rejected: dict[str, str] = {}
-    for submission_id in payload.submission_ids:
-        submission_id_text = str(submission_id)
-        if not check_lecturer_submission_write_access(user_id, submission_id_text):
-            rejected[submission_id_text] = "access_denied"
-            continue
-        eligible.append(submission_id)
-
-    if not eligible:
-        raise HTTPException(status_code=403, detail="NO_ELIGIBLE_SUBMISSIONS")
-
-    selected_model = payload.model
-    if selected_model is None:
-        configured_model = settings_service.get_setting("active_model")
-        try:
-            selected_model = AIModel(configured_model or AIModel.MOBILENET_V2)
-        except ValueError:
-            selected_model = AIModel.MOBILENET_V2
-
-    result = enqueue_predictions(eligible, selected_model)
-    rejected.update(result.rejected)
-    if not result.accepted_ids:
-        raise HTTPException(status_code=409, detail="NO_SUBMISSIONS_QUEUED")
-    return {
-        "job_id": result.job_id,
-        "status": "queued",
-        "accepted_ids": result.accepted_ids,
-        "rejected": rejected,
-    }
-
-
 @app.get("/jobs/{job_id}")
 def job_status(
     job_id: UUID,
@@ -359,7 +468,6 @@ def job_status(
     ):
         raise HTTPException(status_code=403, detail="JOB_ACCESS_DENIED")
     return status
-
 
 
 @app.get("/settings")
@@ -455,6 +563,7 @@ def submit_submission(
     Jika ON: Jalankan pipeline AI di background.
     Jika OFF: Kembalikan respon sukses tanpa memproses AI.
     """
+    enforce_rate_limit("submit_submission", user_id, limit=20, window_seconds=60)
     submission_id_text = str(submission_id)
     submission = get_submission_by_id(submission_id_text)
     if not submission:
@@ -798,7 +907,12 @@ def get_course_stats(course_id: str, user_id: str = Depends(verify_dosen_or_admi
 
 
 @app.get("/lecturer/course/{course_id}/students")
-def get_course_students(course_id: str, user_id: str = Depends(verify_dosen_or_admin_token)):
+def get_course_students(
+    course_id: str,
+    user_id: str = Depends(verify_dosen_or_admin_token),
+    limit: int = Query(100, ge=1, le=250),
+    offset: int = Query(0, ge=0),
+):
     """
     Mengambil data roster mahasiswa terdaftar beserta status pengumpulan tugas mereka.
     """
@@ -811,16 +925,25 @@ def get_course_students(course_id: str, user_id: str = Depends(verify_dosen_or_a
         # 1. Ambil data mahasiswa_id yang terdaftar di mata_kuliah_id
         enrollments = (
             supabase.table("mahasiswa_mata_kuliah")
-            .select("mahasiswa_id")
+            .select("mahasiswa_id", count="exact")
             .eq("mata_kuliah_id", course_id)
+            .range(offset, offset + limit - 1)
             .execute()
         )
-        student_ids = [e["mahasiswa_id"] for e in enrollments.data]
+        enrollment_rows = enrollments.data or []
+        total_students = enrollments.count if enrollments.count is not None else len(enrollment_rows)
+        student_ids = [e["mahasiswa_id"] for e in enrollment_rows]
         
         if not student_ids:
             return {
                 "success": True,
-                "students": []
+                "students": [],
+                "pagination": {
+                    "limit": limit,
+                    "offset": offset,
+                    "total": total_students,
+                    "has_more": False,
+                },
             }
             
         # 2. Ambil data profil mahasiswa
@@ -886,7 +1009,13 @@ def get_course_students(course_id: str, user_id: str = Depends(verify_dosen_or_a
         
         return {
             "success": True,
-            "students": students_list
+            "students": students_list,
+            "pagination": {
+                "limit": limit,
+                "offset": offset,
+                "total": total_students,
+                "has_more": offset + len(students_list) < total_students,
+            },
         }
     except Exception as e:
         logger.error(f"[Course Students] Internal error: {e}", exc_info=True)
@@ -942,6 +1071,7 @@ def post_audit_log(
     Memvalidasi dan menormalisasi payload sebelum diteruskan ke database.
     Identitas aktor diambil langsung dari token JWT dan profil database.
     """
+    enforce_rate_limit("audit_log", token_user_id, limit=120, window_seconds=60)
     profile_res = supabase.table("profil_pengguna").select("nama_lengkap, role").eq("id", token_user_id).maybe_single().execute()
     if not profile_res or not profile_res.data:
         raise HTTPException(status_code=404, detail="PROFILE_NOT_FOUND")
@@ -970,6 +1100,7 @@ def post_audit_log(
             "SYSTEM_SETTING_CHANGED",
             "STORAGE_PRUNE",
             "AUDIT_TEST",
+            "ADMIN_USER_ROLE_UPDATED",
         },
     }
     if payload.action not in allowed_actions.get(role, set()):
@@ -990,250 +1121,6 @@ def post_audit_log(
         raise HTTPException(status_code=500, detail="AUDIT_WRITE_FAILED")
         
     return {"success": True}
-
-
-def delete_user(user_id: str, admin_user_id: str = Depends(verify_admin_token)):
-    """
-    Endpoint untuk menghapus pengguna dari database (profil_pengguna) 
-    dan auth.users Supabase secara terurut.
-    """
-    import logging
-    _logger = logging.getLogger("uvicorn")
-    _logger.info(f"[Delete User Request] Target User ID: {user_id} requested by Admin: {admin_user_id}")
-    cascade_errors = []
-
-    try:
-        # Check if profile exists in profil_pengguna
-        profile_res = supabase.table("profil_pengguna").select("*").eq("id", user_id).execute()
-        profile_exists = len(profile_res.data) > 0
-        _logger.info(f"[Delete User Check] Profile exists in profil_pengguna: {profile_exists}")
-        
-        # Check if user exists in auth.users
-        auth_user_exists = False
-        try:
-            auth_user_res = supabase.auth.admin.get_user_by_id(user_id)
-            if auth_user_res and auth_user_res.user:
-                auth_user_exists = True
-        except Exception as auth_err:
-            _logger.error(f"[Delete User Check] Error checking auth.users: {auth_err}")
-            
-        _logger.info(f"[Delete User Check] User exists in auth.users: {auth_user_exists}")
-        
-        if not profile_exists and not auth_user_exists:
-            raise HTTPException(status_code=404, detail="Pengguna tidak ditemukan di sistem.")
-
-        # 1. Hapus data lembar jawaban & file storage mahasiswa
-        sub_res = supabase.table("pengumpulan_tugas").select("id").eq("mahasiswa_id", user_id).execute()
-        if sub_res.data:
-            for sub in sub_res.data:
-                sub_id = sub["id"]
-                sheets_res = supabase.table("lembar_jawaban").select("id, image_url").eq("pengumpulan_tugas_id", sub_id).execute()
-                if sheets_res.data:
-                    # Hapus file dari Storage bucket 'lembar-jawaban'
-                    files_to_delete = [s["image_url"] for s in sheets_res.data if s.get("image_url")]
-                    if files_to_delete:
-                        _logger.info(f"[Delete User] Removing {len(files_to_delete)} files from storage 'lembar-jawaban'...")
-                        try:
-                            supabase.storage.from_("lembar-jawaban").remove(files_to_delete)
-                        except Exception as storage_err:
-                            _logger.error(f"[Delete User Warning] Storage deletion failed: {storage_err}")
-                            cascade_errors.append(f"storage: {storage_err}")
-                    
-                    # Hapus hasil_prediksi
-                    sheet_ids = [s["id"] for s in sheets_res.data]
-                    if sheet_ids:
-                        try:
-                            supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", sheet_ids).execute()
-                            _logger.info("[Delete User] Deleted related hasil_prediksi")
-                        except Exception as pred_err:
-                            _logger.error(f"[Delete User] Failed to delete hasil_prediksi: {pred_err}")
-                            cascade_errors.append(f"hasil_prediksi: {pred_err}")
-                    
-                    # Hapus lembar_jawaban rows
-                    try:
-                        supabase.table("lembar_jawaban").delete().eq("pengumpulan_tugas_id", sub_id).execute()
-                        _logger.info("[Delete User] Deleted related lembar_jawaban")
-                    except Exception as lj_err:
-                        _logger.error(f"[Delete User] Failed to delete lembar_jawaban: {lj_err}")
-                        cascade_errors.append(f"lembar_jawaban: {lj_err}")
-                
-                # Hapus pengumpulan_tugas row
-                try:
-                    supabase.table("pengumpulan_tugas").delete().eq("id", sub_id).execute()
-                    _logger.info("[Delete User] Deleted related pengumpulan_tugas")
-                except Exception as pt_err:
-                    _logger.error(f"[Delete User] Failed to delete pengumpulan_tugas: {pt_err}")
-                    cascade_errors.append(f"pengumpulan_tugas: {pt_err}")
-
-        # 2. Hapus foto profil dari Storage bucket 'profile-images' jika ada
-        if profile_exists:
-            foto_url = profile_res.data[0].get("foto_profil_url")
-            if foto_url:
-                _logger.info(f"[Delete User] Removing profile image from storage: {foto_url}")
-                try:
-                    supabase.storage.from_("profile-images").remove([foto_url])
-                except Exception as avatar_err:
-                    _logger.error(f"[Delete User Warning] Profile image storage deletion failed: {avatar_err}")
-                    cascade_errors.append(f"profile-image: {avatar_err}")
-
-        # 3. Hapus data relasi (mahasiswa_mata_kuliah & dosen_mata_kuliah)
-        rel_mhs = supabase.table("mahasiswa_mata_kuliah").delete().eq("mahasiswa_id", user_id).execute()
-        _logger.info(f"[Delete User] Deleted from mahasiswa_mata_kuliah: {len(rel_mhs.data) if rel_mhs.data else 0} rows")
-        
-        rel_dsn = supabase.table("dosen_mata_kuliah").delete().eq("dosen_id", user_id).execute()
-        _logger.info(f"[Delete User] Deleted from dosen_mata_kuliah: {len(rel_dsn.data) if rel_dsn.data else 0} rows")
-
-        # 4. Hapus profil_pengguna
-        if profile_exists:
-            profile_del_res = supabase.table("profil_pengguna").delete().eq("id", user_id).execute()
-            _logger.info(f"[Delete User] Deleted from profil_pengguna: {len(profile_del_res.data) if profile_del_res.data else 0} rows")
-
-        # 5. Hapus auth.users
-        if auth_user_exists:
-            auth_del_res = supabase.auth.admin.delete_user(user_id)
-            _logger.info(f"[Delete User] Deleted from auth.users successfully: {auth_del_res}")
-
-        # Log cascade errors if any (partial success)
-        if cascade_errors:
-            _logger.warning(f"[Delete User] Completed with {len(cascade_errors)} non-critical errors: {cascade_errors}")
-
-        return {"success": True, "message": f"Pengguna {user_id} berhasil dihapus.", "warnings": len(cascade_errors)}
-
-    except HTTPException as he:
-        raise he
-    except Exception as e:
-        logger.error(f"[Delete User Error] Exception occurred: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Gagal menghapus pengguna. Silakan coba lagi.")
-
-
-def delete_course(course_id: str, admin_user_id: str = Depends(verify_admin_token)):
-    """
-    Endpoint terpusat untuk menghapus mata kuliah beserta semua data terkait
-    (enrollment, submission, lembar jawaban, hasil prediksi, file storage) secara aman.
-    """
-    import logging
-    logger = logging.getLogger("uvicorn")
-    logger.info(f"[Delete Course Request] Target Course ID: {course_id} requested by Admin: {admin_user_id}")
-
-    try:
-        # Check if course exists
-        course_res = supabase.table("mata_kuliah").select("*").eq("id", course_id).execute()
-        if not course_res.data:
-            raise HTTPException(status_code=404, detail="Mata kuliah tidak ditemukan.")
-
-        # 1. Ambil data submission untuk mata kuliah ini
-        sub_res = supabase.table("pengumpulan_tugas").select("id").eq("mata_kuliah_id", course_id).execute()
-        if sub_res.data:
-            for sub in sub_res.data:
-                sub_id = sub["id"]
-                
-                # Ambil data lembar jawaban
-                sheets_res = supabase.table("lembar_jawaban").select("id, image_url").eq("pengumpulan_tugas_id", sub_id).execute()
-                if sheets_res.data:
-                    # Hapus file dari Storage bucket 'lembar-jawaban'
-                    files_to_delete = [s["image_url"] for s in sheets_res.data if s.get("image_url")]
-                    if files_to_delete:
-                        logger.info(f"[Delete Course] Removing {len(files_to_delete)} files from storage...")
-                        try:
-                            supabase.storage.from_("lembar-jawaban").remove(files_to_delete)
-                        except Exception as storage_err:
-                            logger.error(f"[Delete Course Warning] Storage deletion failed: {storage_err}")
-
-                    # Hapus hasil_prediksi
-                    sheet_ids = [s["id"] for s in sheets_res.data]
-                    if sheet_ids:
-                        supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", sheet_ids).execute()
-                        logger.info("[Delete Course] Deleted related hasil_prediksi")
-
-                    # Hapus lembar_jawaban rows
-                    supabase.table("lembar_jawaban").delete().eq("pengumpulan_tugas_id", sub_id).execute()
-                    logger.info("[Delete Course] Deleted related lembar_jawaban")
-
-                # Hapus pengumpulan_tugas row
-                supabase.table("pengumpulan_tugas").delete().eq("id", sub_id).execute()
-                logger.info("[Delete Course] Deleted related pengumpulan_tugas")
-
-        # 2. Hapus mahasiswa_mata_kuliah (enrollment)
-        supabase.table("mahasiswa_mata_kuliah").delete().eq("mata_kuliah_id", course_id).execute()
-        logger.info("[Delete Course] Deleted related mahasiswa_mata_kuliah")
-
-        # 3. Hapus dosen_mata_kuliah (assignment)
-        supabase.table("dosen_mata_kuliah").delete().eq("mata_kuliah_id", course_id).execute()
-        logger.info("[Delete Course] Deleted related dosen_mata_kuliah")
-
-        # 4. Hapus mata_kuliah row
-        supabase.table("mata_kuliah").delete().eq("id", course_id).execute()
-        logger.info("[Delete Course] Deleted mata_kuliah successfully")
-
-        return {"success": True, "message": f"Mata kuliah {course_id} berhasil dihapus."}
-
-    except HTTPException as he:
-        raise he
-    except Exception as e:
-        logger.error(f"[Delete Course Error] Exception occurred: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Gagal menghapus mata kuliah. Silakan coba lagi.")
-
-
-def delete_enrollment(enrollment_id: str, admin_user_id: str = Depends(verify_admin_token)):
-    """
-    Endpoint terpusat untuk menghapus enrollment mahasiswa beserta data terkait
-    (submission, lembar jawaban, hasil prediksi, file storage) pada mata kuliah terkait.
-    """
-    import logging
-    logger = logging.getLogger("uvicorn")
-    logger.info(f"[Delete Enrollment Request] Target Enrollment ID: {enrollment_id} requested by Admin: {admin_user_id}")
-
-    try:
-        # Check if enrollment exists
-        enroll_res = supabase.table("mahasiswa_mata_kuliah").select("*").eq("id", enrollment_id).execute()
-        if not enroll_res.data:
-            raise HTTPException(status_code=404, detail="Enrollment tidak ditemukan.")
-
-        enrollment = enroll_res.data[0]
-        mahasiswa_id = enrollment["mahasiswa_id"]
-        mata_kuliah_id = enrollment["mata_kuliah_id"]
-
-        # 1. Ambil data submission untuk mahasiswa di mata kuliah ini
-        sub_res = supabase.table("pengumpulan_tugas").select("id").eq("mahasiswa_id", mahasiswa_id).eq("mata_kuliah_id", mata_kuliah_id).execute()
-        if sub_res.data:
-            for sub in sub_res.data:
-                sub_id = sub["id"]
-                
-                # Ambil data lembar jawaban
-                sheets_res = supabase.table("lembar_jawaban").select("id, image_url").eq("pengumpulan_tugas_id", sub_id).execute()
-                if sheets_res.data:
-                    # Hapus file dari Storage
-                    files_to_delete = [s["image_url"] for s in sheets_res.data if s.get("image_url")]
-                    if files_to_delete:
-                        logger.info(f"[Delete Enrollment] Removing {len(files_to_delete)} files from storage...")
-                        try:
-                            supabase.storage.from_("lembar-jawaban").remove(files_to_delete)
-                        except Exception as storage_err:
-                            logger.error(f"[Delete Enrollment Warning] Storage deletion failed: {storage_err}")
-
-                    # Hapus hasil_prediksi
-                    sheet_ids = [s["id"] for s in sheets_res.data]
-                    if sheet_ids:
-                        supabase.table("hasil_prediksi").delete().in_("lembar_jawaban_id", sheet_ids).execute()
-
-                    # Hapus lembar_jawaban rows
-                    supabase.table("lembar_jawaban").delete().eq("pengumpulan_tugas_id", sub_id).execute()
-
-                # Hapus pengumpulan_tugas row
-                supabase.table("pengumpulan_tugas").delete().eq("id", sub_id).execute()
-
-        # 2. Hapus mahasiswa_mata_kuliah row
-        supabase.table("mahasiswa_mata_kuliah").delete().eq("id", enrollment_id).execute()
-        logger.info("[Delete Enrollment] Deleted mahasiswa_mata_kuliah successfully")
-
-        return {"success": True, "message": f"Enrollment {enrollment_id} berhasil dihapus."}
-
-    except HTTPException as he:
-        raise he
-    except Exception as e:
-        logger.error(f"[Delete Enrollment Error] Exception occurred: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Gagal menghapus enrollment. Silakan coba lagi.")
-
 
 def _queue_cleanup_from_rpc_result(data: object) -> str | None:
     if not isinstance(data, dict):

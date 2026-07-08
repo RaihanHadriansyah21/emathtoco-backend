@@ -1,13 +1,12 @@
-import os
+import gc
 from collections import OrderedDict
 from pathlib import Path
 
-import tensorflow as tf
-
+from config import get_settings
 from services.model_loader import load_mobilenet_model
 from utils.logging_helper import logger
 
-MODEL_ROOT = Path(os.environ.get("MODEL_ROOT", "Models")).expanduser().resolve()
+MODEL_ROOT = Path(get_settings().model_root).expanduser().resolve()
 
 MODEL_CONFIG = {
     "MobileNetV2": {
@@ -84,7 +83,7 @@ def get_model(section_code: str, model_name: str = "MobileNetV2"):
             oldest_key, oldest_model = _loaded_models.popitem(last=False)
             logger.info(f"[Model Cache Eviction] Evicting model {oldest_key} to release memory.")
             del oldest_model
-            tf.keras.backend.clear_session()
+            gc.collect()
             
         _loaded_models[cache_key] = load_mobilenet_model(str(model_path))
 
