@@ -4,6 +4,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
 $envPath = if ([System.IO.Path]::IsPathRooted($EnvFile)) {
     [System.IO.Path]::GetFullPath($EnvFile)
@@ -41,19 +42,64 @@ if ($supabaseUrl -notmatch "^https?://[^/]+$") {
     throw "Format SUPABASE_URL tidak valid."
 }
 
+function Invoke-ContractWebRequest {
+    param(
+        [Parameter(Mandatory)]
+        [string]$Uri,
+        [string]$Method = "Get",
+        [Parameter(Mandatory)]
+        [hashtable]$Headers,
+        [string]$Body,
+        [int]$TimeoutSec = 20
+    )
+
+    $request = @{
+        Uri = $Uri
+        Method = $Method
+        Headers = $Headers
+        TimeoutSec = $TimeoutSec
+        UseBasicParsing = $true
+    }
+    if ($PSBoundParameters.ContainsKey("Body")) {
+        $request["Body"] = $Body
+    }
+
+    try {
+        return Invoke-WebRequest @request
+    } catch {
+        $response = $_.Exception.Response
+        if ($null -eq $response) {
+            throw
+        }
+
+        $content = ""
+        try {
+            $stream = $response.GetResponseStream()
+            if ($null -ne $stream) {
+                $reader = New-Object System.IO.StreamReader($stream)
+                $content = $reader.ReadToEnd()
+            }
+        } catch {
+            $content = ""
+        }
+
+        return [pscustomobject]@{
+            StatusCode = [int]$response.StatusCode
+            Content = $content
+        }
+    }
+}
+
 $headers = @{
     apikey = $supabaseKey
+    Authorization = "Bearer $supabaseKey"
     Accept = "application/json"
-}
-if ($supabaseKey.StartsWith("eyJ")) {
-    $headers["Authorization"] = "Bearer $supabaseKey"
 }
 
 try {
-    $settingsResponse = Invoke-WebRequest `
+    $settingsResponse = Invoke-ContractWebRequest `
         -Uri "$supabaseUrl/rest/v1/system_settings?select=setting_key&limit=1" `
         -Headers $headers `
-        -SkipHttpErrorCheck `
         -TimeoutSec 20
 } catch {
     throw "Koneksi REST Supabase gagal. Periksa URL, secret key, dan internet."
@@ -76,12 +122,11 @@ function Test-RpcExistsWithoutMutation {
 
     $rpcHeaders = $headers.Clone()
     $rpcHeaders["Content-Type"] = "application/json"
-    $rpcResponse = Invoke-WebRequest `
+    $rpcResponse = Invoke-ContractWebRequest `
         -Uri "$supabaseUrl/rest/v1/rpc/$Name" `
         -Method Post `
         -Headers $rpcHeaders `
         -Body ($Body | ConvertTo-Json -Compress) `
-        -SkipHttpErrorCheck `
         -TimeoutSec 20
 
     if ($rpcResponse.StatusCode -eq 404) {
@@ -151,12 +196,12 @@ if ($missingRpcs.Count -gt 0) {
     )
 }
 
-$storageHeaders = @{ apikey = $supabaseKey }
-if ($supabaseKey.StartsWith("eyJ")) {
-    $storageHeaders["Authorization"] = "Bearer $supabaseKey"
+$storageHeaders = @{
+    apikey = $supabaseKey
+    Authorization = "Bearer $supabaseKey"
 }
 try {
-    $bucketResponse = Invoke-WebRequest `
+    $bucketResponse = Invoke-ContractWebRequest `
         -Uri "$supabaseUrl/storage/v1/bucket/lembar-jawaban" `
         -Headers $storageHeaders `
         -TimeoutSec 20
