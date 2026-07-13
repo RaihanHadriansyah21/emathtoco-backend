@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [switch]$WriteGolden,
+    [string]$Image = "emathtoco-worker:local",
     [ValidateRange(0, 71)]
     [int]$StartIndex = 0,
     [ValidateRange(1, 72)]
@@ -23,7 +24,7 @@ foreach ($artifact in $artifacts) {
         "-e", "TF_ENABLE_ONEDNN_OPTS=0",
         "-v", "${projectRoot}:/workspace",
         "-v", "${projectRoot}\Models:/models:ro",
-        "emathtoco-worker:locked",
+        $Image,
         "python", "/workspace/scripts/smoke_model_artifacts.py",
         "--model-root", "/models",
         "--golden", "/workspace/Models/golden_inference.json",

@@ -256,7 +256,24 @@ def queue_readiness() -> dict[str, bool]:
     connection = get_redis()
     redis_ready = bool(connection.ping())
     workers = Worker.all(connection=connection)
-    worker_ready = any(worker.state == "busy" or worker.state == "idle" for worker in workers)
+    now = datetime.now(UTC)
+
+    def is_fresh(worker: Worker) -> bool:
+        raw_state = getattr(worker.state, "value", worker.state)
+        if str(raw_state).lower() not in {"busy", "idle"}:
+            return False
+
+        last_heartbeat = worker.last_heartbeat
+        if last_heartbeat is None:
+            return False
+        if last_heartbeat.tzinfo is None:
+            last_heartbeat = last_heartbeat.replace(tzinfo=UTC)
+
+        worker_ttl = int(getattr(worker, "worker_ttl", 0) or 420)
+        freshness_window = timedelta(seconds=max(worker_ttl, 60))
+        return now - last_heartbeat <= freshness_window
+
+    worker_ready = any(is_fresh(worker) for worker in workers)
     return {"redis": redis_ready, "worker": worker_ready}
 
 

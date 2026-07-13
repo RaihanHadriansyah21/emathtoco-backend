@@ -2,7 +2,54 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(23);
+select plan(30);
+
+select has_column(
+  'public',
+  'class_join_sessions',
+  'token_raw',
+  'join sessions retain the raw token only for authorized QR redisplay'
+);
+select has_column(
+  'public',
+  'class_join_sessions',
+  'current_uses',
+  'join sessions expose the current use counter expected by the UI'
+);
+select has_column(
+  'public',
+  'class_join_sessions',
+  'revoked',
+  'join sessions expose the revocation flag expected by the UI'
+);
+select ok(
+  to_regprocedure(
+    'public.create_class_join_session(uuid,text,timestamptz,integer,text)'
+  ) is not null,
+  'canonical five-argument create join RPC exists'
+);
+select ok(
+  to_regprocedure(
+    'public.create_class_join_session(uuid,text,timestamptz,integer)'
+  ) is null,
+  'legacy create join RPC overload is removed'
+);
+select ok(
+  not has_function_privilege(
+    'anon',
+    'public.create_class_join_session(uuid,text,timestamptz,integer,text)',
+    'execute'
+  ),
+  'anonymous cannot create QR join sessions'
+);
+select ok(
+  has_function_privilege(
+    'authenticated',
+    'public.create_class_join_session(uuid,text,timestamptz,integer,text)',
+    'execute'
+  ),
+  'authenticated lecturers can call the guarded QR join RPC'
+);
 
 select ok(
   not has_table_privilege('anon', 'public.profil_pengguna', 'select'),

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import os
+import socket
+from uuid import uuid4
 
 from rq import Queue, Worker
 from rq.serializers import JSONSerializer
@@ -32,7 +34,14 @@ def main() -> None:
         [queue],
         connection=connection,
         serializer=JSONSerializer,
-        name="emathtoco-ai-worker",
+        worker_ttl=90,
+        # A Docker/host restart can interrupt RQ before it unregisters the
+        # previous worker. A process-unique name prevents that stale key from
+        # blocking the replacement worker until Redis expires it.
+        name=(
+            os.getenv("RQ_WORKER_NAME")
+            or f"emathtoco-ai-worker-{socket.gethostname()}-{uuid4().hex[:12]}"
+        ),
     )
     worker.work(with_scheduler=True)
 

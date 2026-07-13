@@ -1,3 +1,4 @@
+from datetime import UTC, datetime, timedelta
 from types import SimpleNamespace
 from uuid import UUID
 
@@ -157,3 +158,45 @@ def test_finished_rq_enum_is_reported_as_completed(
     assert status["status"] == "completed"
     assert status["completed_ids"] == [submission_id]
     assert status["failed"] == {}
+
+
+def test_queue_readiness_accepts_only_fresh_worker(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    now = datetime.now(UTC)
+    redis = FakeRedis()
+    monkeypatch.setattr(queue_service, "get_redis", lambda: redis)
+    monkeypatch.setattr(
+        queue_service.Worker,
+        "all",
+        lambda **kwargs: [
+            SimpleNamespace(
+                state="idle",
+                last_heartbeat=now - timedelta(seconds=30),
+                worker_ttl=420,
+            ),
+        ],
+    )
+
+    assert queue_service.queue_readiness() == {"redis": True, "worker": True}
+
+
+def test_queue_readiness_rejects_stale_worker(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    now = datetime.now(UTC)
+    redis = FakeRedis()
+    monkeypatch.setattr(queue_service, "get_redis", lambda: redis)
+    monkeypatch.setattr(
+        queue_service.Worker,
+        "all",
+        lambda **kwargs: [
+            SimpleNamespace(
+                state="idle",
+                last_heartbeat=now - timedelta(minutes=10),
+                worker_ttl=420,
+            ),
+        ],
+    )
+
+    assert queue_service.queue_readiness() == {"redis": True, "worker": False}
