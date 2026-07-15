@@ -5,7 +5,7 @@ from collections import defaultdict
 from rq import get_current_job
 
 from domain import SECTION_CODES
-from repositories.lembar_jawaban_repository import get_answer_sheets
+from repositories.lembar_jawaban_repository import get_answer_sheets, reset_review_scores
 from repositories.prediction_repository import delete_predictions_by_submission
 from services.image_service import check_file_exists
 from utils.logging_helper import logger
@@ -91,6 +91,7 @@ def process_batch_job(
                 active_ids.remove(submission_id)
                 _mark_failed(submission_id, "MISSING_IMAGE_OBJECT")
                 continue
+            reset_review_scores(submission_id)
             delete_predictions_by_submission(submission_id)
             sheet_maps[submission_id] = by_section
 

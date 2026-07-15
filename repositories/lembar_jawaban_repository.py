@@ -11,3 +11,17 @@ def get_answer_sheets(submission_id: str):
     )
 
     return response.data
+
+
+def reset_review_scores(submission_id: str) -> None:
+    (
+        supabase.table("lembar_jawaban")
+        .update(
+            {
+                "nilai_dosen": None,
+                "nilai_final": None,
+            }
+        )
+        .eq("pengumpulan_tugas_id", submission_id)
+        .execute()
+    )
