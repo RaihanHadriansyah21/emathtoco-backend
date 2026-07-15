@@ -29,6 +29,15 @@ class FakeRedis:
         self.values[key] = value
         return True
 
+    def get(self, key: str) -> str | None:
+        return self.values.get(key)
+
+    def eval(self, script: str, numkeys: int, key: str, expected_owner: str) -> int:
+        if self.values.get(key) == expected_owner:
+            del self.values[key]
+            return 1
+        return 0
+
 
 class FakeJob:
     def __init__(self, job_id: str) -> None:
@@ -62,6 +71,17 @@ def configure_queue_mocks(monkeypatch: pytest.MonkeyPatch, redis: FakeRedis) -> 
         },
     )
 
+    class ActiveJob:
+        def get_status(self, *, refresh: bool):
+            assert refresh is True
+            return JobStatus.QUEUED
+
+    monkeypatch.setattr(
+        queue_service.Job,
+        "fetch",
+        lambda *args, **kwargs: ActiveJob(),
+    )
+
 
 def test_duplicate_ai_request_is_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
     redis = FakeRedis()
@@ -80,6 +100,30 @@ def test_duplicate_ai_request_is_rejected(monkeypatch: pytest.MonkeyPatch) -> No
     assert first.accepted_ids == [str(submission_id)]
     assert second.accepted_ids == []
     assert second.rejected[str(submission_id)] == "already_queued"
+
+
+def test_stale_ai_lock_is_recovered_when_job_is_missing(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    redis = FakeRedis()
+    configure_queue_mocks(monkeypatch, redis)
+    submission_id = UUID("50000000-0000-0000-0000-000000000001")
+    redis.values[f"{queue_service.LOCK_PREFIX}{submission_id}"] = (
+        "60000000-0000-0000-0000-000000000001"
+    )
+    monkeypatch.setattr(
+        queue_service.Job,
+        "fetch",
+        lambda *args, **kwargs: (_ for _ in ()).throw(KeyError("missing job")),
+    )
+
+    result = queue_service.enqueue_predictions(
+        [submission_id],
+        AIModel.MOBILENET_V2,
+    )
+
+    assert result.accepted_ids == [str(submission_id)]
+    assert result.rejected == {}
 
 
 def test_enqueue_failure_restores_claim_and_lock(

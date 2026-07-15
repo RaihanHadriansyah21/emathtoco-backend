@@ -18,6 +18,7 @@ from utils.supabase_client import get_service_client
 QUEUE_NAME = "ai"
 LOCK_PREFIX = "ai-lock:"
 RECONCILE_LOCK_KEY = "ai-reconcile-stale-lock"
+ACTIVE_RQ_STATUSES = {"queued", "deferred", "scheduled", "started"}
 
 
 @dataclass(frozen=True)
@@ -50,9 +51,44 @@ def _lock_key(submission_id: str) -> str:
     return f"{LOCK_PREFIX}{submission_id}"
 
 
+def _normalize_rq_status(raw_status: object) -> str:
+    raw_status_value = getattr(raw_status, "value", raw_status)
+    return str(raw_status_value).lower()
+
+
+def _decode_lock_owner(raw_owner: object) -> str | None:
+    if raw_owner is None:
+        return None
+    if isinstance(raw_owner, bytes):
+        return raw_owner.decode("utf-8", errors="replace")
+    return str(raw_owner)
+
+
+def _is_job_still_active(connection: Redis, job_id: str) -> bool:
+    try:
+        job = Job.fetch(job_id, connection=connection, serializer=JSONSerializer)
+        return _normalize_rq_status(job.get_status(refresh=True)) in ACTIVE_RQ_STATUSES
+    except Exception:
+        logger.warning(
+            "AI lock owner job is missing or unreadable; treating lock as stale",
+            extra={"job_id": job_id},
+        )
+        return False
+
+
 def _acquire_lock(connection: Redis, submission_id: str, job_id: str) -> bool:
     ttl = get_settings().rq_job_timeout * 2 + 180
-    return bool(connection.set(_lock_key(submission_id), job_id, ex=ttl, nx=True))
+    key = _lock_key(submission_id)
+    if connection.set(key, job_id, ex=ttl, nx=True):
+        return True
+
+    existing_owner = _decode_lock_owner(connection.get(key))
+    if existing_owner and _is_job_still_active(connection, existing_owner):
+        return False
+
+    if existing_owner:
+        _release_lock(connection, submission_id, existing_owner)
+    return bool(connection.set(key, job_id, ex=ttl, nx=True))
 
 
 def _release_lock(connection: Redis, submission_id: str, job_id: str) -> None:
@@ -191,11 +227,7 @@ def get_job_status(job_id: str) -> dict:
     except Exception as exc:
         raise KeyError(job_id) from exc
 
-    raw_status = job.get_status(refresh=True)
-    # RQ 2.x returns JobStatus (an Enum). str(JobStatus.FINISHED) produces
-    # "JobStatus.FINISHED", so always normalize through its wire value.
-    raw_status_value = getattr(raw_status, "value", raw_status)
-    normalized_status = str(raw_status_value).lower()
+    normalized_status = _normalize_rq_status(job.get_status(refresh=True))
     status_map = {
         "queued": "queued",
         "deferred": "queued",
