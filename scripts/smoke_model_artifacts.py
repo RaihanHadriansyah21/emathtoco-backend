@@ -34,6 +34,28 @@ def validate_preprocessing_contract() -> None:
     ):
         raise RuntimeError("preprocessing_contract_mismatch")
 
+    section_photo = np.array(
+        [
+            [[245, 245, 245], [245, 245, 245], [245, 245, 245]],
+            [[245, 245, 245], [15, 15, 15], [245, 245, 245]],
+        ],
+        dtype=np.uint8,
+    )
+    section_actual = preprocess_image(
+        section_photo,
+        (3, 2),
+        "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_DIVIDE_255",
+    )
+    section_pixels = set(np.unique(section_actual).tolist())
+    if (
+        section_actual.dtype != np.float32
+        or section_actual.shape != (1, 2, 3, 3)
+        or not section_pixels.issubset({0.0, 1.0})
+        or not np.array_equal(section_actual[0, :, :, 0], section_actual[0, :, :, 1])
+        or not np.array_equal(section_actual[0, :, :, 1], section_actual[0, :, :, 2])
+    ):
+        raise RuntimeError("section_binary_preprocessing_contract_mismatch")
+
 
 def run_smoke(
     model_root: Path,

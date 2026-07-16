@@ -21,6 +21,7 @@ COPY repositories /app/repositories
 COPY services /app/services
 COPY utils /app/utils
 COPY scripts/smoke_model_artifacts.py /app/scripts/smoke_model_artifacts.py
+COPY scripts/smoke_runtime_preprocessing.py /app/scripts/smoke_runtime_preprocessing.py
 
 USER app
 

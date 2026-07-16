@@ -1,1086 +1,2399 @@
 {
-  "schema_version": 1,
-  "generated_from": "local-artifacts",
+  "schema_version": 2,
+  "manifest_type": "emathtoco-runtime-model-manifest",
+  "generated_at": "2026-07-14T18:35:14.267546+00:00",
+  "generated_from": "Models_New training export + local filesystem checksum",
+  "source_training_manifest": "training_manifest.json",
+  "source_golden_inference": "golden_inference.json",
+  "model_collection": "Models_New",
+  "total_artifacts": 72,
+  "expected_sections": [
+    "S-1A",
+    "S-1B",
+    "S-1C",
+    "S-1D",
+    "S-1E",
+    "S-1F",
+    "S-2A",
+    "S-2B",
+    "S-2C",
+    "S-2D",
+    "S-2E",
+    "S-2F",
+    "S-3A",
+    "S-3B",
+    "S-3C",
+    "S-3D",
+    "S-3E",
+    "S-3F",
+    "S-4A",
+    "S-4B",
+    "S-4C",
+    "S-4D",
+    "S-4E",
+    "S-4F"
+  ],
+  "training_dataset_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset",
+  "training_dataset_preprocessing": {
+    "decision_source": "verified_training_dataset_samples_2026-07-17",
+    "source_notebook_in_repo": "Preprocessing.ipynb",
+    "submitted_reference_notebook": "D:\\Download\\Preprocessing2026_(FIX)_.ipynb",
+    "preprocessing_notebook_status": "non_authoritative_polarity_mismatch_with_training_dataset_artifacts",
+    "evidence": "Two real PNG files from the exact Preprocessed_Dataset used by all training notebooks were verified as single-channel binary images containing only pixel values 0 and 255, with black ink on a white background. Training notebooks load them using ImageDataGenerator default RGB mode and architecture-specific preprocess_input.",
+    "verified_sample_sha256": [
+      "674e82df1629eb1d00fa75f3bc845f2867789a5e152861af94bf87e06193c729",
+      "048227d3d6d961b71bf52145429e1bd0180d09e3de29c5cf95fcb6536bb84c83"
+    ],
+    "steps": [
+      "use the complete section crop produced by the frontend without a second contour crop",
+      "convert to grayscale and apply non-inverted Otsu binary threshold",
+      "replicate the binary image across three RGB channels",
+      "resize according to architecture input_shape with nearest-neighbor interpolation",
+      "apply Keras application preprocess_input according to architecture"
+    ]
+  },
+  "runtime_policy": {
+    "no_frontend_flow_change": true,
+    "model_root_switchable": true,
+    "recommended_default_architecture": "MobileNetV2",
+    "keep_old_models_until_vps_smoke_passes": true
+  },
+  "architectures": {
+    "MobileNetV2": {
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "total_sections": 24
+    },
+    "DenseNet121": {
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "total_sections": 24
+    },
+    "InceptionV3": {
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "total_sections": 24
+    }
+  },
   "artifacts": [
     {
       "architecture": "MobileNetV2",
       "section": "S-1A",
-      "path": "MobilenetV2/model_1a.h5",
-      "size_bytes": 32059200,
-      "sha256": "c1aed41b776ac28c6154dc1853bfb61bdea55a01190d01f051d323e40999007b",
+      "path": "MobileNetV2/model_1a.h5",
+      "size_bytes": 14196712,
+      "sha256": "2600ed7188d346b06f0d65feb2fea744fadd5cba2823de168dfa8f7ef923517d",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1a.h5",
+      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-1B",
-      "path": "MobilenetV2/model_1b.h5",
-      "size_bytes": 32060736,
-      "sha256": "068f72b3ae6a4349e23c28fa34130b9f910eb2cadd285a66db190a8c44161043",
+      "path": "MobileNetV2/model_1b.h5",
+      "size_bytes": 14197224,
+      "sha256": "38c1159c202c0c84922fc424f94ad06fdd7d55094ed2044b40575ac768cec5b6",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1b.h5",
+      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-1C",
-      "path": "MobilenetV2/model_1c.h5",
-      "size_bytes": 32060736,
-      "sha256": "accfbeeb215f86238aa79f150e9a404b731f33b382f7a7f06b4cf8c00b5a8368",
+      "path": "MobileNetV2/model_1c.h5",
+      "size_bytes": 14197224,
+      "sha256": "fb024a40ec1a2e9d03297873bb5890ce0f5b0ea6038bdab47e16c002d45d186c",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1c.h5",
+      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-1D",
-      "path": "MobilenetV2/model_1d.h5",
-      "size_bytes": 32060736,
-      "sha256": "cb2ac24ddfc8a7bf29ffe9c16831cbb008e7b56f773ecef3293771b637664c0c",
+      "path": "MobileNetV2/model_1d.h5",
+      "size_bytes": 14197224,
+      "sha256": "2fd090ff0e758442c2f573ad087b0769d392561a5a5cee3084d2cdbec14feea9",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1d.h5",
+      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-1E",
-      "path": "MobilenetV2/model_1e.h5",
-      "size_bytes": 32060736,
-      "sha256": "c2065d06fe74eeb1dd2f8dc67db08b93d3bc63d1f6bad52712da6e5920ab5fc9",
+      "path": "MobileNetV2/model_1e.h5",
+      "size_bytes": 14197224,
+      "sha256": "3ed85077166e76069a840ba7892e50ac0ebfe7e137df32fcc14b39b75cda9272",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1e.h5",
+      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-1F",
-      "path": "MobilenetV2/model_1f.h5",
-      "size_bytes": 32062272,
-      "sha256": "abed6216aaee88793160b15a130440f50e4b7e8d23ad1ccb7cf2bcf6ea79add0",
+      "path": "MobileNetV2/model_1f.h5",
+      "size_bytes": 14197736,
+      "sha256": "29e5bd1dd01cae33948396360e5f02945584d4436ea31620f6c4f23c969579f7",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1f.h5",
+      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-2A",
-      "path": "MobilenetV2/model_2a.h5",
-      "size_bytes": 32060736,
-      "sha256": "b8200eae9bdbd7236b399be4683973f2f6f98ef54f43f8e8728226e60f98b9b8",
+      "path": "MobileNetV2/model_2a.h5",
+      "size_bytes": 14197224,
+      "sha256": "d07db42ca83fe04f2230016cc78e85cc9332145ec247209167daf2dcccaec30b",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2a.h5",
+      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-2B",
-      "path": "MobilenetV2/model_2b.h5",
-      "size_bytes": 32059200,
-      "sha256": "f853b53260b9def8cb2af28c2a72f9d17c9acfbc7babfdc06987f2f55910bab9",
+      "path": "MobileNetV2/model_2b.h5",
+      "size_bytes": 14196712,
+      "sha256": "04c1bbbb3401042167bf8acad628352476e93d374b276e07ae05480b8a66ce72",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2b.h5",
+      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-2C",
-      "path": "MobilenetV2/model_2c.h5",
-      "size_bytes": 32060736,
-      "sha256": "974f7da64766bb1162e1d88d648eacaf1fc0e5e386c999b2eff14fd02203c472",
+      "path": "MobileNetV2/model_2c.h5",
+      "size_bytes": 14197224,
+      "sha256": "416c55708b82e7b78bb1768c647ccfb9f52ccfd25e4cdb1e1cb1c01c27a72ce2",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2c.h5",
+      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-2D",
-      "path": "MobilenetV2/model_2d.h5",
-      "size_bytes": 32060736,
-      "sha256": "4964fa23d1bb449ba58ba7bb0612a7366cc548e4affae44a9ddecd1c6eecb917",
+      "path": "MobileNetV2/model_2d.h5",
+      "size_bytes": 14197224,
+      "sha256": "b72944d6e932634134270ddfd8f4fe7ba58ff14ed32d3057ba42763abb098ea1",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2d.h5",
+      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-2E",
-      "path": "MobilenetV2/model_2e.h5",
-      "size_bytes": 32060736,
-      "sha256": "f4b25414c56a77b42e8183308ca09230ac2f312ad7c273afbcb57f763ba2ce33",
+      "path": "MobileNetV2/model_2e.h5",
+      "size_bytes": 14197224,
+      "sha256": "7d1754e3d25d7a77ccf1238a22e1935ac1423ef85a158bd06754f806ad8987e1",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2e.h5",
+      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-2F",
-      "path": "MobilenetV2/model_2f.h5",
-      "size_bytes": 32062272,
-      "sha256": "8e8caa4e0e64f36c188dc6b71947047eccb61f1f2b4d3b3df3b0fd0e8bbc4c3b",
+      "path": "MobileNetV2/model_2f.h5",
+      "size_bytes": 14197736,
+      "sha256": "e131de5af8f3741c1697f27ec9c635cce2dd583670385e7c1e18e814fd960603",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2f.h5",
+      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-3A",
-      "path": "MobilenetV2/model_3a.h5",
-      "size_bytes": 32060736,
-      "sha256": "c0a2ad275afda9b404c79130f161dbd4d7260cc0a3c2a9b5757bb59ab94a2ea1",
+      "path": "MobileNetV2/model_3a.h5",
+      "size_bytes": 14197224,
+      "sha256": "d2f3781bca09bca422539979077cc4be96c864343a2208b590e4b035f967d60f",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3a.h5",
+      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-3B",
-      "path": "MobilenetV2/model_3b.h5",
-      "size_bytes": 32060736,
-      "sha256": "cf9f7fb265ce5fa078fd0c5871d5024587db367d8525bb7d34f38c2a49a2d3d2",
+      "path": "MobileNetV2/model_3b.h5",
+      "size_bytes": 14197224,
+      "sha256": "abbe78bd445edf6cf7c213a08b59e68c1c6f328c81e6ee13f6184a1d60bcbb91",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3b.h5",
+      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-3C",
-      "path": "MobilenetV2/model_3c.h5",
-      "size_bytes": 32060736,
-      "sha256": "258fef5ed2df6f7b67bc8533fcbd18c1d8c14ecf2aa14d71dc32e487a9f34c2a",
+      "path": "MobileNetV2/model_3c.h5",
+      "size_bytes": 14197224,
+      "sha256": "44abfab5b0b6042f5c29020411499a3d0f2eaae8b5f70f0e3f0bda63d50f7843",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3c.h5",
+      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-3D",
-      "path": "MobilenetV2/model_3d.h5",
-      "size_bytes": 32060736,
-      "sha256": "61a78b982513a69e169eed79ca342e71bf63703d3bcd2a24d152c2be20c565f8",
+      "path": "MobileNetV2/model_3d.h5",
+      "size_bytes": 14197224,
+      "sha256": "cb9bcb7e60d3b9eac2faabb9396070514744eace59776e8a5a09de5444619782",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3d.h5",
+      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-3E",
-      "path": "MobilenetV2/model_3e.h5",
-      "size_bytes": 32060736,
-      "sha256": "3513dc052525787ed130c86ff0ba46bc57c528772107599ac0fa942fc9e4fea6",
+      "path": "MobileNetV2/model_3e.h5",
+      "size_bytes": 14197224,
+      "sha256": "76da58c3010172b1114672d4d244431ed04c77cbad72a6e87f755a84cb1b9781",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3e.h5",
+      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-3F",
-      "path": "MobilenetV2/model_3f.h5",
-      "size_bytes": 32060736,
-      "sha256": "3562574d8a8d5ee0a1dbb854ce70763adb21af987d5c16544bc2e63a1d05178a",
+      "path": "MobileNetV2/model_3f.h5",
+      "size_bytes": 14197224,
+      "sha256": "23058c473359baf78b4ff849373a5e4ab70b8172e9ba2e320db63ca9ef52933a",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3f.h5",
+      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-4A",
-      "path": "MobilenetV2/model_4a.h5",
-      "size_bytes": 32060736,
-      "sha256": "048e097c6f4dfdf7e59ca56dbf94c023eb5ea05a5c714de0038f818c423bd2f3",
+      "path": "MobileNetV2/model_4a.h5",
+      "size_bytes": 14197224,
+      "sha256": "1814b962b023153f226d93d4ddfe719ebcb700d3586c80d623bef47c038c2d43",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4a.h5",
+      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-4B",
-      "path": "MobilenetV2/model_4b.h5",
-      "size_bytes": 32060736,
-      "sha256": "b117c10b515f02769145e7b652db08f1df0601f346d76a31aab23536c395b68a",
+      "path": "MobileNetV2/model_4b.h5",
+      "size_bytes": 14197224,
+      "sha256": "8093fedad5d659151635f7d97d373f03cc7f6e248c0df0e24497c90b86336082",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4b.h5",
+      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-4C",
-      "path": "MobilenetV2/model_4c.h5",
-      "size_bytes": 32060736,
-      "sha256": "1b2e7f13b0218809684c0135026f51a46775a478f7a5ebfdc6454987afe4fe04",
+      "path": "MobileNetV2/model_4c.h5",
+      "size_bytes": 14197224,
+      "sha256": "8f8c3f9e3c6a7f05424e7902b4aefcf4d878ff252fe735b87030011784acd437",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4c.h5",
+      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-4D",
-      "path": "MobilenetV2/model_4d.h5",
-      "size_bytes": 32060736,
-      "sha256": "20eb3cd3dc30455c7d1b0b1bb6aae49602f3b005676954e7cc39809f495b6b5f",
+      "path": "MobileNetV2/model_4d.h5",
+      "size_bytes": 14197224,
+      "sha256": "1813f82cd70690c56edf5d3016c12f7665d262ffcb43de4b05657ba18028b4af",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4d.h5",
+      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-4E",
-      "path": "MobilenetV2/model_4e.h5",
-      "size_bytes": 32060736,
-      "sha256": "75dbcb3d3d97eb19169d0fee0d7e7391b2a9592eb5359ee616525da4b5cf189c",
+      "path": "MobileNetV2/model_4e.h5",
+      "size_bytes": 14197224,
+      "sha256": "8ec0bf0c98f5fd23435d171e8f697d67141b08c81daeee62804b70ee3e042ca7",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4e.h5",
+      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa"
     },
     {
       "architecture": "MobileNetV2",
       "section": "S-4F",
-      "path": "MobilenetV2/model_4f.h5",
-      "size_bytes": 32062272,
-      "sha256": "b2083daa561630fb0abc22f8448ad8eabd2c56b830e20d1bf2a7efbd62c7a503",
+      "path": "MobileNetV2/model_4f.h5",
+      "size_bytes": 14197736,
+      "sha256": "5dba14221a49107b81c9bb33f1548f1b9b92cb7df7bc22f7dea22143fb2c42d3",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/Section_4f.h5",
+      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1A",
       "path": "DenseNet121/model_1a.h5",
-      "size_bytes": 45947752,
-      "sha256": "de05ba8e34fec8bbf438fe9da4f56c8d5bce5c26c70801c0134484793ae655e7",
+      "size_bytes": 33852192,
+      "sha256": "c1c856721ba18a0315e4358cc56346e01b6492a79fae93644b84f4fed211db6c",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1a.h5",
+      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1B",
       "path": "DenseNet121/model_1b.h5",
-      "size_bytes": 45949288,
-      "sha256": "7bc50358050bfa8df3ca6b453977df2f30b2c1197e9cdff022f59433466b698a",
+      "size_bytes": 33852704,
+      "sha256": "e2abc14ccf6d1f81ec51ab11c85f43b62a0bcc2832afba19596c819e5e441061",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1b.h5",
+      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1C",
       "path": "DenseNet121/model_1c.h5",
-      "size_bytes": 45949288,
-      "sha256": "92354c4798a51510e15dc7873addecf46b32fb27eb8b4b3c4c1261d14dfa2fc6",
+      "size_bytes": 33852704,
+      "sha256": "36e498e04e34c1291850f7059ce60afb0887db2c7aea51092ab3a9c4ab1f2842",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1c.h5",
+      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1D",
       "path": "DenseNet121/model_1d.h5",
-      "size_bytes": 45949288,
-      "sha256": "83d291d87cb1e18a107b74c732aafd3a2e09f7f41f74beb62e2dae1161f90dcb",
+      "size_bytes": 33852704,
+      "sha256": "a0ee7e0f35c92825c1a8a0c749c8b584bb45acfd7452318c1743564147ae7978",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1d.h5",
+      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1E",
       "path": "DenseNet121/model_1e.h5",
-      "size_bytes": 45949288,
-      "sha256": "35fb0ad8e728e3f286e6c02587386d66e3713025b09d9fd5cbc7f9c99600d794",
+      "size_bytes": 33852704,
+      "sha256": "c325447ea83d693ee508d6b67616b9e61dc541a32e3fff636c78d1e201cb8c75",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1e.h5",
+      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1F",
       "path": "DenseNet121/model_1f.h5",
-      "size_bytes": 45950824,
-      "sha256": "164d1302d1ea2ca2cdc5f99396d7ba54b7c3476309260d5512aa74d97cc5e941",
+      "size_bytes": 33853216,
+      "sha256": "9829dd6db55b3e94479fefb00932038e898d9366dc690a46d57b9939edf41eb0",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1f.h5",
+      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2A",
       "path": "DenseNet121/model_2a.h5",
-      "size_bytes": 45949288,
-      "sha256": "7de96adb1657ade7e3883b968b72fe45712d7de866c7b505f8c226de77669312",
+      "size_bytes": 33852704,
+      "sha256": "c9ec912410ab194f17bcc7d422dc9e69624ee26b6207f87f40c35cfbb6735ce4",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2a.h5",
+      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2B",
       "path": "DenseNet121/model_2b.h5",
-      "size_bytes": 45947752,
-      "sha256": "b4d41781caf75e393a411ccf27ceeab819db20107a827318d07d492b6d0184f3",
+      "size_bytes": 33852192,
+      "sha256": "124399807c78b999eec4c7c6c0679a120e0ba5d126a141f17353a7149bc50693",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2b.h5",
+      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2C",
       "path": "DenseNet121/model_2c.h5",
-      "size_bytes": 45949288,
-      "sha256": "64e57fd6bcb0cd60ff752712341736b258eca2cf27bed04ea797a89e8fd91071",
+      "size_bytes": 33852704,
+      "sha256": "0d41da53e4d02aa1963e3ee4eade6a9304d95b9f79823a73b0e3ea485df116c6",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2c.h5",
+      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2D",
       "path": "DenseNet121/model_2d.h5",
-      "size_bytes": 45949288,
-      "sha256": "5b5a48e968c8b22e5caaa45a48ac1cb829258f320a25acd5c8ed6c8d615f1c9f",
+      "size_bytes": 33852704,
+      "sha256": "a67b7532a353abc2b61a78eba0af1883dc0f90c61f6a7780d290a2afe3bf83e4",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2d.h5",
+      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2E",
       "path": "DenseNet121/model_2e.h5",
-      "size_bytes": 45949288,
-      "sha256": "492148101d23f5f809b40b7280172333cf4bb4d272a9930a070cab9a870ee6cb",
+      "size_bytes": 33852704,
+      "sha256": "77c57f81b70ec2fff391652f5caf78b0a89d8a2146a6f2d1f9538c412648195c",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2e.h5",
+      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2F",
       "path": "DenseNet121/model_2f.h5",
-      "size_bytes": 45950824,
-      "sha256": "5db24f8ea770521bcb7ea011e21da977193f51b7b03f2195d6abfe64df55ca36",
+      "size_bytes": 33853216,
+      "sha256": "3c22d30d15c3e8d0f67609f77d1f902b70e2d5288a6412bfd5ebdae6c8a826bc",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2f.h5",
+      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3A",
       "path": "DenseNet121/model_3a.h5",
-      "size_bytes": 45949288,
-      "sha256": "9d6ed143cee7ee727a8b5be958b19b7496ab0b6753e5e841697ad741cab85967",
+      "size_bytes": 33852704,
+      "sha256": "ee2380784787ef931a82c65babf0cf30f5af6a324401b316ab70bd2bf0d21ea0",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3a.h5",
+      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3B",
       "path": "DenseNet121/model_3b.h5",
-      "size_bytes": 45949288,
-      "sha256": "c8a82594a7a20766ec06ab5d70efc8cc8026a0f2563ecf647e5f461148e69fbc",
+      "size_bytes": 33852704,
+      "sha256": "9ce2652b62e9ea7fce9abbf231ee9f69bf0f4e62b01b86975a579a82048b4212",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3b.h5",
+      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3C",
       "path": "DenseNet121/model_3c.h5",
-      "size_bytes": 45949288,
-      "sha256": "ebbc4120b3a980d90cabfa9dadab20ef840abffe6d24c61a7417175f6e6c280e",
+      "size_bytes": 33852704,
+      "sha256": "8e12ed4d573adee5cc3cef6eb827c2baf7d4d4e1cad88bd23c6613438bec0cec",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3c.h5",
+      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3D",
       "path": "DenseNet121/model_3d.h5",
-      "size_bytes": 45949288,
-      "sha256": "35d2ef53a35f924d2f9d667790e15d7dcdd29aed5fec15b318b040ed7ea4dac4",
+      "size_bytes": 33852704,
+      "sha256": "c34f0679a892b43a3114d691b05f63ca524af1a53cc3d283e178153e686b749e",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3d.h5",
+      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3E",
       "path": "DenseNet121/model_3e.h5",
-      "size_bytes": 45949288,
-      "sha256": "43dbce1bdfea132e4f8c74e8ec22e5699b505dfc3e773456a5763ed0caac0b56",
+      "size_bytes": 33852704,
+      "sha256": "f764b48cd5ba8cb50b49775f847b421809ccdd5ebaf5470a5b2e6408fbd3ece4",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3e.h5",
+      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3F",
       "path": "DenseNet121/model_3f.h5",
-      "size_bytes": 45949288,
-      "sha256": "ba3ebba8bc596f2eb10a5b3eaf94627e085bd2aa7e020f2f15a9b18ede225b53",
+      "size_bytes": 33852704,
+      "sha256": "29b57197d7c5d4cdbf9052a8645b53f0af7a1df09baf67327a485f21ef0b3290",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3f.h5",
+      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4A",
       "path": "DenseNet121/model_4a.h5",
-      "size_bytes": 45949288,
-      "sha256": "4683f83c0a89eed3716edcdadb1584e7e9c2d8851ee37e8f9e7cbb986274e691",
+      "size_bytes": 33852704,
+      "sha256": "9422fa36dcb8f298072bb37d71391956a69d6ec78e2e946af2ea7d0d56ad32d7",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4a.h5",
+      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4B",
       "path": "DenseNet121/model_4b.h5",
-      "size_bytes": 45949288,
-      "sha256": "a1ad2db61aa86375f2a93a4cc3966107cc6d44b0e6a21a476a28ee587b64f7cc",
+      "size_bytes": 33852704,
+      "sha256": "a0fdf3fee80b04999d82f42dc6bd68a9d4876618ae67e1a07f01e4d6e58c0d1e",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4b.h5",
+      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4C",
       "path": "DenseNet121/model_4c.h5",
-      "size_bytes": 45949288,
-      "sha256": "20edb13565b8e1dfc46cefb79151591ac38b278a2aeb5461cff7be17b7f106a0",
+      "size_bytes": 33852704,
+      "sha256": "261eada52fd205196ad413768cf0cb4884261124993534332230c56c7ad9e05f",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4c.h5",
+      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4D",
       "path": "DenseNet121/model_4d.h5",
-      "size_bytes": 45949288,
-      "sha256": "310ff82d36f17a86c9c2c39c8e9d975cd8661c3b8b206a3ddf9f23272823ef98",
+      "size_bytes": 33852704,
+      "sha256": "1cd561078f5aed01bd27c17d6b923e2aaa53c4d40e52a17f9164a7e81b06d5a4",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4d.h5",
+      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4E",
       "path": "DenseNet121/model_4e.h5",
-      "size_bytes": 45949288,
-      "sha256": "e649b255c1e7a653b7e2efd5838a3264c24498ae05e47875b06d93429989aea6",
+      "size_bytes": 33852704,
+      "sha256": "2cf8a59945e06a3997595ac74dda5d0c3789b57fc563418bcf13e57b9270233b",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4e.h5",
+      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa"
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4F",
       "path": "DenseNet121/model_4f.h5",
-      "size_bytes": 45950824,
-      "sha256": "d26924ccd1430984a23abf071e98903fb40fc76f178ed9abbbf4ccaa88ac321c",
+      "size_bytes": 33853216,
+      "sha256": "a49310e3aeaeab66f3f3aad2b675478be3ea72635818d16f6cd43e2d714f0954",
       "format": "keras-h5",
       "input_shape": [
-        128,
-        128,
+        224,
+        224,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4f.h5",
+      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-1A",
       "path": "InceptionV3/model_1a.h5",
-      "size_bytes": 120121000,
-      "sha256": "5d4141ab750e17fdd3398206b416d20efbf21645a2c7b4b9e7eb5a857f849c24",
+      "size_bytes": 93608680,
+      "sha256": "576791fdb7063e5d519caeae11d2fa9d60acd243c88a6acca72a3e5cbc1d108b",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1a.h5",
+      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-1B",
       "path": "InceptionV3/model_1b.h5",
-      "size_bytes": 120122536,
-      "sha256": "1e003a8c74754cfd6cdcd45969476f26d1f2a5d7b10dfea4f831c25378750c21",
+      "size_bytes": 93609192,
+      "sha256": "c9839dd924818c5e8567c31e04d97815fe46b05c581082a3c111453e0b1649bd",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1b.h5",
+      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-1C",
       "path": "InceptionV3/model_1c.h5",
-      "size_bytes": 120122536,
-      "sha256": "20ab01250df5dafc378951c64c2ed82a6e721fc54394a04d6a9ce40ff6f80c85",
+      "size_bytes": 93609192,
+      "sha256": "5919a3f55325e4279d8df5b5873fd6575a3400ed044af7c6b80ce51c6437299f",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1c.h5",
+      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-1D",
       "path": "InceptionV3/model_1d.h5",
-      "size_bytes": 120122536,
-      "sha256": "4f5656c519db88258f9a23b3aef66e2530cf3e193ec619f465b22929917885b7",
+      "size_bytes": 93609192,
+      "sha256": "8b916c8100a0ca0cdc3f19279f4cc8d10dd5bac0c70cf065bb6537808d5e8ac7",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1d.h5",
+      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-1E",
       "path": "InceptionV3/model_1e.h5",
-      "size_bytes": 120122536,
-      "sha256": "c84b0b23a6c2db2532693016a061aa80bf941dcca228f8af82edb6a2c6218363",
+      "size_bytes": 93609192,
+      "sha256": "688bd632e5c3f59ff04b8a646e10f3751817e2af8e00eef0a98696a56d9baeb8",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1e.h5",
+      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-1F",
       "path": "InceptionV3/model_1f.h5",
-      "size_bytes": 120124072,
-      "sha256": "5945dec14b4d44cc984fa9bcea0c684c8b32b5f277913cdb01d8625509421159",
+      "size_bytes": 93609704,
+      "sha256": "285a4fdf147a5cf6b1e63a114b8f6f7260c8b462e3d46075ac8132c01c066645",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1f.h5",
+      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-2A",
       "path": "InceptionV3/model_2a.h5",
-      "size_bytes": 120122536,
-      "sha256": "1320d4710cab6eabba77467de6d9732054212a1c8a6c3d892784a9dd4eb1c94a",
+      "size_bytes": 93609192,
+      "sha256": "f4e215f31d7c8a5b1b8939b6a605e6bb7d06c53b4a20f206ea81952dd2ae11a4",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2a.h5",
+      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-2B",
       "path": "InceptionV3/model_2b.h5",
-      "size_bytes": 120121000,
-      "sha256": "e2584601fe86c75b88146528d91b601603a0611050ae43ba7b32cc02d1d4d30a",
+      "size_bytes": 93608680,
+      "sha256": "9bd423d0996d3c7e6f0d61e2683ade31eec79ad809a1688d52bf5ebc9e69ac63",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2b.h5",
+      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-2C",
       "path": "InceptionV3/model_2c.h5",
-      "size_bytes": 120122536,
-      "sha256": "63dfb65670de01ff96e188b1fd98b8e2f93cf6421b6e91397cc212e6faa62b56",
+      "size_bytes": 93609192,
+      "sha256": "4c69d4ce5b61782d1c60410002218702c592dc8297428f3a87af0aa6715d9b7f",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2c.h5",
+      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-2D",
       "path": "InceptionV3/model_2d.h5",
-      "size_bytes": 120122536,
-      "sha256": "529d41d61d325e5ecb4dc7fd96fb4bed985aef791d6255f2cb715acc30fb447f",
+      "size_bytes": 93609192,
+      "sha256": "72c31befb72a26683f4ae45ac59d6149a3c36e49692c2c1222af1aead085857c",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2d.h5",
+      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-2E",
       "path": "InceptionV3/model_2e.h5",
-      "size_bytes": 120122536,
-      "sha256": "77f6f1e71150b6478928bca28e85d7060e5759a35213aa844335a059aec787a6",
+      "size_bytes": 93609192,
+      "sha256": "276c92a226213809b887d3b1cf17ad2f6e6e090f12dc1d370113b6d4a3de77e6",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2e.h5",
+      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-2F",
       "path": "InceptionV3/model_2f.h5",
-      "size_bytes": 120124072,
-      "sha256": "21d38cd3e8b7da0c84afeefdac9e26bba66c38f3e3e86048d9ba657f696b0c0c",
+      "size_bytes": 93609704,
+      "sha256": "110146592d6413b153236f97b945a2ce97ecb7d5a5536c29c82e807234fcd754",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2f.h5",
+      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-3A",
       "path": "InceptionV3/model_3a.h5",
-      "size_bytes": 120122536,
-      "sha256": "67cc4a4f73f6fe7614156f498cbb9b77b2c00f8ceef68a92dddf7ff76ccbf90a",
+      "size_bytes": 93609192,
+      "sha256": "72b4c4219e9685d2307a10f2122a4302263023e37848738b7e3b5f1e72c5ef2a",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3a.h5",
+      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-3B",
       "path": "InceptionV3/model_3b.h5",
-      "size_bytes": 120122536,
-      "sha256": "bc84f579722372749997f6db246eb3af2dec6b2c56efd21bce733b2615309922",
+      "size_bytes": 93609192,
+      "sha256": "7cbcdf42b8024b869e0050a91a4553f237fc8ea95669944aed7cdd301fc96fc2",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3b.h5",
+      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-3C",
       "path": "InceptionV3/model_3c.h5",
-      "size_bytes": 120122536,
-      "sha256": "0c195b35324ece48e1cef674b181680de23be8d1fe28fdec305553723c03bc56",
+      "size_bytes": 93609192,
+      "sha256": "30eb64bd17fc0814995751600aa12c6fcba12eef61f8f42331f6aa981d8f0335",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3c.h5",
+      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-3D",
       "path": "InceptionV3/model_3d.h5",
-      "size_bytes": 120122536,
-      "sha256": "137b4dfe8942453b479bed93d47a0844e022a3c09057a1a90255c17f2e7af256",
+      "size_bytes": 93609192,
+      "sha256": "e6ba68dd6ed38d9872452fa36eaae5fc61474b34c153e0aa5468921ba38bad02",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3d.h5",
+      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-3E",
       "path": "InceptionV3/model_3e.h5",
-      "size_bytes": 120122536,
-      "sha256": "692ef647f796a3066cd1a17abd32175699ad279e95edb077360aae6a11f6f824",
+      "size_bytes": 93609192,
+      "sha256": "6966f9ab3f46c57cf78705520d3d7b7248480ae6c5d3b15d01b6dc571be40acc",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3e.h5",
+      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-3F",
       "path": "InceptionV3/model_3f.h5",
-      "size_bytes": 120122536,
-      "sha256": "3b12bc8b2d8b3fdebfd1bf402795e96d42141c0ed6ab3a01ae6d7d90fb96f651",
+      "size_bytes": 93609192,
+      "sha256": "4be7ed158444e47159a7682e9356c6bacfa11c9294a60257778d8352350604e5",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3f.h5",
+      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-4A",
       "path": "InceptionV3/model_4a.h5",
-      "size_bytes": 120122536,
-      "sha256": "e123ffac47309ed56793c62dbd91acb01a56254a852de3bb35374d3ff8763f4f",
+      "size_bytes": 93609192,
+      "sha256": "61cf1bc5243a84661e2a1d6dfd5699a2c34a6e8034b3197815a45be61077e752",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4a.h5",
+      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-4B",
       "path": "InceptionV3/model_4b.h5",
-      "size_bytes": 120122536,
-      "sha256": "128d7082df3b98449ca7c534f0ba12899cea0b5b576f3ed681c9222a876f71a3",
+      "size_bytes": 93609192,
+      "sha256": "3d72fd709073421abdcde3f37f14a703a923ce7eead23f89d0b90c5c185409dc",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4b.h5",
+      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-4C",
       "path": "InceptionV3/model_4c.h5",
-      "size_bytes": 120122536,
-      "sha256": "3654f197b21cf918265805de2a36db0e55b66430b3729029b78924118e54b563",
+      "size_bytes": 93609192,
+      "sha256": "ab4540134786ae80f931229cafefc56850ed049ecabae1e6bd61bf6c31885479",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4c.h5",
+      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-4D",
       "path": "InceptionV3/model_4d.h5",
-      "size_bytes": 120122536,
-      "sha256": "20f3dff7c6b050c3179ea1a01d12d209488124316a3847e2bf0f54f340497ddc",
+      "size_bytes": 93609192,
+      "sha256": "6de387549895773659bd2e6021269ede6f0b1f8cd4d5dc3eee7792be421f1094",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4d.h5",
+      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-4E",
       "path": "InceptionV3/model_4e.h5",
-      "size_bytes": 120122536,
-      "sha256": "22e064228f395c15ba9496b1916e121475b1bed9eddd922a9adc68e1ccbe1055",
+      "size_bytes": 93609192,
+      "sha256": "5e0284d78b76e97ab965d7805f3d4608e01b5cda47a5fd46a43bc81a9d1c1a44",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4e.h5",
+      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa"
     },
     {
       "architecture": "InceptionV3",
       "section": "S-4F",
       "path": "InceptionV3/model_4f.h5",
-      "size_bytes": 120124072,
-      "sha256": "019f578e42cd32076305422f95cd945bed5a087316cb6a84859287ea2e47cd09",
+      "size_bytes": 93609704,
+      "sha256": "bae983e4b2674335b3b36a0cfd0d14b22afda94e39c67a9ae24c73f3fac3fa08",
       "format": "keras-h5",
       "input_shape": [
         299,
         299,
         3
       ],
-      "preprocessing": "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
-      "version": "1"
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4f.h5",
+      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f"
     }
   ]
 }

@@ -67,8 +67,13 @@ def process_single_sheet(sheet: dict, model_name: str = MODEL_AI) -> dict:
             img.shape,
         )
 
-    input_size = MODEL_CONFIG[normalized_model_name]["input_size"]
-    processed = preprocess_image(img, input_size)
+    model_config = MODEL_CONFIG[normalized_model_name]
+    input_size = model_config["input_size"]
+    processed = preprocess_image(
+        img,
+        input_size,
+        model_config.get("preprocessing", "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255"),
+    )
     model = get_model(section_code, normalized_model_name)
 
     output = model.predict(processed, verbose=0)

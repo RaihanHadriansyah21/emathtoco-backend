@@ -1,6 +1,8 @@
 from uuid import UUID
 import time
 from collections import defaultdict, deque
+from urllib.error import HTTPError, URLError
+from urllib.request import Request as UrlRequest, urlopen
 
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
@@ -35,6 +37,14 @@ runtime_settings = load_runtime_settings()
 app = FastAPI(title="EMATHTOCO AI Backend Versi 1.0.0")
 
 _rate_limit_buckets: dict[str, deque[float]] = defaultdict(deque)
+_supabase_readiness_cache = {
+    "checked_at": 0.0,
+    "ready": False,
+    "last_success_at": 0.0,
+}
+SUPABASE_READINESS_CACHE_SECONDS = 15
+SUPABASE_READINESS_STALE_GRACE_SECONDS = 180
+SUPABASE_READINESS_TIMEOUT_SECONDS = 2.5
 
 
 def enforce_rate_limit(scope: str, actor_id: str, limit: int, window_seconds: int) -> None:
@@ -701,15 +711,77 @@ def domain_contract():
     return get_domain_contract()
 
 
+def _check_supabase_rest_ready() -> bool:
+    """
+    Fast, bounded readiness probe for Supabase.
+
+    The Supabase Python/PostgREST client can block long enough for browser
+    health polling to abort when Supabase/Cloudflare returns a transient 522.
+    For readiness we only need a cheap bounded probe, so use urllib with an
+    explicit timeout and service-role headers.
+    """
+    base_url = str(runtime_settings.supabase_url).rstrip("/")
+    request = UrlRequest(
+        f"{base_url}/rest/v1/system_settings?select=id&limit=1",
+        headers={
+            "Accept": "application/json",
+            "apikey": runtime_settings.supabase_secret_key,
+            "Authorization": f"Bearer {runtime_settings.supabase_secret_key}",
+        },
+        method="GET",
+    )
+    try:
+        with urlopen(request, timeout=SUPABASE_READINESS_TIMEOUT_SECONDS) as response:
+            return 200 <= response.status < 300
+    except HTTPError as exc:
+        logger.warning(
+            "Supabase readiness HTTP failure",
+            extra={"status_code": exc.code},
+        )
+        return False
+    except (TimeoutError, URLError, OSError):
+        logger.warning("Supabase readiness network timeout")
+        return False
+
+
+def _cached_supabase_readiness() -> tuple[bool, bool]:
+    """
+    Return (ready, stale).
+
+    If Supabase briefly times out after a recent success, keep readiness in a
+    degraded-but-usable state for a short grace period. This prevents one
+    transient 522 from making the frontend mark the entire AI backend offline.
+    """
+    now = time.monotonic()
+    cache_age = now - float(_supabase_readiness_cache["checked_at"])
+    if cache_age < SUPABASE_READINESS_CACHE_SECONDS:
+        return bool(_supabase_readiness_cache["ready"]), False
+
+    ready = _check_supabase_rest_ready()
+    _supabase_readiness_cache["checked_at"] = now
+    _supabase_readiness_cache["ready"] = ready
+    if ready:
+        _supabase_readiness_cache["last_success_at"] = now
+        return True, False
+
+    last_success_age = now - float(_supabase_readiness_cache["last_success_at"])
+    if last_success_age < SUPABASE_READINESS_STALE_GRACE_SECONDS:
+        return True, True
+    return False, False
+
+
 def _readiness_response() -> JSONResponse:
     dependencies = {
         "supabase": False,
         "redis": False,
         "worker": False,
     }
+    stale_dependencies: list[str] = []
     try:
-        supabase.table("system_settings").select("id").limit(1).execute()
-        dependencies["supabase"] = True
+        supabase_ready, supabase_stale = _cached_supabase_readiness()
+        dependencies["supabase"] = supabase_ready
+        if supabase_stale:
+            stale_dependencies.append("supabase")
     except Exception:
         logger.exception("Supabase readiness check failed")
 
@@ -721,11 +793,13 @@ def _readiness_response() -> JSONResponse:
         logger.exception("Queue readiness check failed")
 
     ready = all(dependencies.values())
+    degraded = bool(stale_dependencies) or not ready
     return JSONResponse(
         status_code=200 if ready else 503,
         content={
-            "status": "healthy" if ready else "degraded",
+            "status": "degraded" if degraded else "healthy",
             "dependencies": dependencies,
+            "stale_dependencies": stale_dependencies,
         },
     )
 
@@ -743,12 +817,21 @@ def health():
 def _model_manifest_summary() -> list[dict]:
     import json
 
+    from services.model_manifest import ManifestValidationError, normalize_model_manifest
+
     manifest_path = runtime_settings.model_root / "manifest.json"
     if not manifest_path.is_file():
         raise HTTPException(status_code=503, detail="MODEL_MANIFEST_UNAVAILABLE")
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
+        raise HTTPException(
+            status_code=503,
+            detail="MODEL_MANIFEST_INVALID",
+        ) from exc
+    try:
+        manifest = normalize_model_manifest(manifest)
+    except ManifestValidationError as exc:
         raise HTTPException(
             status_code=503,
             detail="MODEL_MANIFEST_INVALID",

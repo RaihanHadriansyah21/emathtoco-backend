@@ -115,6 +115,10 @@ def main() -> int:
             processed = preprocess_image(
                 image,
                 MODEL_CONFIG[args.architecture]["input_size"],
+                MODEL_CONFIG[args.architecture].get(
+                    "preprocessing",
+                    "BGR_TO_RGB_RESIZE_FLOAT32_DIVIDE_255",
+                ),
             )
             model = get_model(section, args.architecture)
             output = model.predict(processed, verbose=0)
