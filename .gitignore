@@ -28,3 +28,8 @@ tmp/
 Models/*
 !Models/manifest.json
 !Models/golden_inference.json
+
+!Models_New/
+Models_New/*
+!Models_New/manifest.json
+!Models_New/golden_inference.json

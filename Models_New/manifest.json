@@ -1,0 +1,781 @@
+{
+  "manifest_name": "manifest_3models",
+  "created_at": "2026-07-18T21:14:05.983208",
+  "model_collection_root": "/content/drive/MyDrive/models_emathtoco",
+  "dataset_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset",
+  "ratio": "80:20",
+  "note": "Semua file .h5 di folder model merupakan model fixed 80:20 yang telah diverifikasi terhadap notebook dan checksum aktual.",
+  "total_models": 3,
+  "expected_sections": [
+    "1a",
+    "1b",
+    "1c",
+    "1d",
+    "1e",
+    "1f",
+    "2a",
+    "2b",
+    "2c",
+    "2d",
+    "2e",
+    "2f",
+    "3a",
+    "3b",
+    "3c",
+    "3d",
+    "3e",
+    "3f",
+    "4a",
+    "4b",
+    "4c",
+    "4d",
+    "4e",
+    "4f"
+  ],
+  "models": {
+    "DenseNet121": {
+      "model_name": "DenseNet121",
+      "model_dir": "/content/drive/MyDrive/models_emathtoco/DenseNet121",
+      "ratio": "80:20",
+      "total_sections": 24,
+      "sections": {
+        "1a": {
+          "section_id": "1a",
+          "model_section_h5": "model_1a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1a.h5",
+          "file_size_bytes": 33838104,
+          "sha256": "2f68ae4d7f4d3fbcd16f2c796f49a23e1bd732bc487ef078cf97bfd4780ab11f",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1b": {
+          "section_id": "1b",
+          "model_section_h5": "model_1b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1b.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "6315bc4c9986773428970d5fcacf8881f43cf655cd1c14e87fb4c0dec275fdbf",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1c": {
+          "section_id": "1c",
+          "model_section_h5": "model_1c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1c.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "0e1a2724ed31d284ee32b8ef3b0515619d2187d2bed0e2eefc604955c9215cb7",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1d": {
+          "section_id": "1d",
+          "model_section_h5": "model_1d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1d.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "2af53609d96b5fb8a678e2fa1d919b2cb479fa62e6bfd761c298726721b8e421",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1e": {
+          "section_id": "1e",
+          "model_section_h5": "model_1e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1e.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "4f3923d5a16a40fbf68ff62474f2d8939d1d4bb3278896b842997ee675bff528",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1f": {
+          "section_id": "1f",
+          "model_section_h5": "model_1f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1f.h5",
+          "file_size_bytes": 33839128,
+          "sha256": "a237ee079e42eb25f11e294184e3fcc3c892c581d1f6ccd85524e47a7178fe2f",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2a": {
+          "section_id": "2a",
+          "model_section_h5": "model_2a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2a.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "c90b5863431b342c3f3f3bf4e268935c40c599ce0881973a0f107a0b3cafc6cc",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2b": {
+          "section_id": "2b",
+          "model_section_h5": "model_2b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2b.h5",
+          "file_size_bytes": 33838104,
+          "sha256": "a1371fcde957f6f19dcd4e320af57bbe055481544a937c26a11b72370469bfb5",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2c": {
+          "section_id": "2c",
+          "model_section_h5": "model_2c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2c.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "03e451225b88a850df7a8e77f70393b90d2b231e366ab2ddb1f4ffcf7775d08a",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2d": {
+          "section_id": "2d",
+          "model_section_h5": "model_2d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2d.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "2577688415b289c01464baa3f8621d73377af3909b30dc9402f003b4863c7fd4",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2e": {
+          "section_id": "2e",
+          "model_section_h5": "model_2e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2e.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "9052be9a11efe1c32db4409d374b44cc5ae7d7450adbe45281911d0d9622c1af",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2f": {
+          "section_id": "2f",
+          "model_section_h5": "model_2f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2f.h5",
+          "file_size_bytes": 33839128,
+          "sha256": "2ee861b8adc3e482401733ecc3d94f300f7450fe79156c271679e94df4e5b2f0",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3a": {
+          "section_id": "3a",
+          "model_section_h5": "model_3a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3a.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "9a35b9021f20fa05ca262cd86c7a2e48a7075403018975cb5855acff8570a26b",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3b": {
+          "section_id": "3b",
+          "model_section_h5": "model_3b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3b.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "86dfd49c701f8a9014391b397a52cf3d250f97bbb26e388820753f3653616845",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3c": {
+          "section_id": "3c",
+          "model_section_h5": "model_3c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3c.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "228df7c15a24149c894cf9ee65743bb8614431c632995c70d4e59e2fb0d1b262",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3d": {
+          "section_id": "3d",
+          "model_section_h5": "model_3d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3d.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "7f47a20ce96f2228d060333e3b1f1da787123e0c2b4d997c12b9c6ebcf747ac4",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3e": {
+          "section_id": "3e",
+          "model_section_h5": "model_3e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3e.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "2236bcbf0c17d6932f8fe681aa457150f1e903eed38b386df4af16a1a6c428be",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3f": {
+          "section_id": "3f",
+          "model_section_h5": "model_3f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3f.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "8bbcbd1732c36fa9c27f52f4da2cbf9d74e179a167ec359d658cef7f902a6a28",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4a": {
+          "section_id": "4a",
+          "model_section_h5": "model_4a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4a.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "abc8729cfbac84869d6927c69a92571328d7030c7a66d39ffb4418baa1d69d4d",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4b": {
+          "section_id": "4b",
+          "model_section_h5": "model_4b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4b.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "98429a66268f1651bc1bdfa7fc8116540622cfd4124c02e97450d4b533656aa7",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4c": {
+          "section_id": "4c",
+          "model_section_h5": "model_4c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4c.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "21e5ba738584eb92393f8c351e2de6dad099cb3eda28e3be509d996c0012030c",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4d": {
+          "section_id": "4d",
+          "model_section_h5": "model_4d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4d.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "d7e1bc53e4c60f8f042098a868b78b062107dad74b8d85712801cfe2d76742ee",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4e": {
+          "section_id": "4e",
+          "model_section_h5": "model_4e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4e.h5",
+          "file_size_bytes": 33838616,
+          "sha256": "7afc6f78e750ece2a85046ffb3941774c41896f04a3d534d7705d7360150c290",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4f": {
+          "section_id": "4f",
+          "model_section_h5": "model_4f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4f.h5",
+          "file_size_bytes": 33839128,
+          "sha256": "d5e79a91d443b86cd7d0f18efad0a893c91a39422e300c87e7116021640d0850",
+          "ratio": "80:20",
+          "format": "h5"
+        }
+      }
+    },
+    "InceptionV3": {
+      "model_name": "InceptionV3",
+      "model_dir": "/content/drive/MyDrive/models_emathtoco/InceptionV3",
+      "ratio": "80:20",
+      "total_sections": 24,
+      "sections": {
+        "1a": {
+          "section_id": "1a",
+          "model_section_h5": "model_1a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1a.h5",
+          "file_size_bytes": 93608680,
+          "sha256": "576791fdb7063e5d519caeae11d2fa9d60acd243c88a6acca72a3e5cbc1d108b",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1b": {
+          "section_id": "1b",
+          "model_section_h5": "model_1b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1b.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "c9839dd924818c5e8567c31e04d97815fe46b05c581082a3c111453e0b1649bd",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1c": {
+          "section_id": "1c",
+          "model_section_h5": "model_1c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1c.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "5919a3f55325e4279d8df5b5873fd6575a3400ed044af7c6b80ce51c6437299f",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1d": {
+          "section_id": "1d",
+          "model_section_h5": "model_1d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1d.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "8b916c8100a0ca0cdc3f19279f4cc8d10dd5bac0c70cf065bb6537808d5e8ac7",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1e": {
+          "section_id": "1e",
+          "model_section_h5": "model_1e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1e.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "688bd632e5c3f59ff04b8a646e10f3751817e2af8e00eef0a98696a56d9baeb8",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1f": {
+          "section_id": "1f",
+          "model_section_h5": "model_1f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1f.h5",
+          "file_size_bytes": 93609704,
+          "sha256": "285a4fdf147a5cf6b1e63a114b8f6f7260c8b462e3d46075ac8132c01c066645",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2a": {
+          "section_id": "2a",
+          "model_section_h5": "model_2a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2a.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "f4e215f31d7c8a5b1b8939b6a605e6bb7d06c53b4a20f206ea81952dd2ae11a4",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2b": {
+          "section_id": "2b",
+          "model_section_h5": "model_2b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2b.h5",
+          "file_size_bytes": 93608680,
+          "sha256": "9bd423d0996d3c7e6f0d61e2683ade31eec79ad809a1688d52bf5ebc9e69ac63",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2c": {
+          "section_id": "2c",
+          "model_section_h5": "model_2c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2c.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "4c69d4ce5b61782d1c60410002218702c592dc8297428f3a87af0aa6715d9b7f",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2d": {
+          "section_id": "2d",
+          "model_section_h5": "model_2d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2d.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "72c31befb72a26683f4ae45ac59d6149a3c36e49692c2c1222af1aead085857c",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2e": {
+          "section_id": "2e",
+          "model_section_h5": "model_2e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2e.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "276c92a226213809b887d3b1cf17ad2f6e6e090f12dc1d370113b6d4a3de77e6",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2f": {
+          "section_id": "2f",
+          "model_section_h5": "model_2f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2f.h5",
+          "file_size_bytes": 93609704,
+          "sha256": "110146592d6413b153236f97b945a2ce97ecb7d5a5536c29c82e807234fcd754",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3a": {
+          "section_id": "3a",
+          "model_section_h5": "model_3a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3a.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "72b4c4219e9685d2307a10f2122a4302263023e37848738b7e3b5f1e72c5ef2a",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3b": {
+          "section_id": "3b",
+          "model_section_h5": "model_3b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3b.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "7cbcdf42b8024b869e0050a91a4553f237fc8ea95669944aed7cdd301fc96fc2",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3c": {
+          "section_id": "3c",
+          "model_section_h5": "model_3c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3c.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "30eb64bd17fc0814995751600aa12c6fcba12eef61f8f42331f6aa981d8f0335",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3d": {
+          "section_id": "3d",
+          "model_section_h5": "model_3d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3d.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "e6ba68dd6ed38d9872452fa36eaae5fc61474b34c153e0aa5468921ba38bad02",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3e": {
+          "section_id": "3e",
+          "model_section_h5": "model_3e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3e.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "6966f9ab3f46c57cf78705520d3d7b7248480ae6c5d3b15d01b6dc571be40acc",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3f": {
+          "section_id": "3f",
+          "model_section_h5": "model_3f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3f.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "4be7ed158444e47159a7682e9356c6bacfa11c9294a60257778d8352350604e5",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4a": {
+          "section_id": "4a",
+          "model_section_h5": "model_4a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4a.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "61cf1bc5243a84661e2a1d6dfd5699a2c34a6e8034b3197815a45be61077e752",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4b": {
+          "section_id": "4b",
+          "model_section_h5": "model_4b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4b.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "3d72fd709073421abdcde3f37f14a703a923ce7eead23f89d0b90c5c185409dc",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4c": {
+          "section_id": "4c",
+          "model_section_h5": "model_4c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4c.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "ab4540134786ae80f931229cafefc56850ed049ecabae1e6bd61bf6c31885479",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4d": {
+          "section_id": "4d",
+          "model_section_h5": "model_4d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4d.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "6de387549895773659bd2e6021269ede6f0b1f8cd4d5dc3eee7792be421f1094",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4e": {
+          "section_id": "4e",
+          "model_section_h5": "model_4e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4e.h5",
+          "file_size_bytes": 93609192,
+          "sha256": "5e0284d78b76e97ab965d7805f3d4608e01b5cda47a5fd46a43bc81a9d1c1a44",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4f": {
+          "section_id": "4f",
+          "model_section_h5": "model_4f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4f.h5",
+          "file_size_bytes": 93609704,
+          "sha256": "bae983e4b2674335b3b36a0cfd0d14b22afda94e39c67a9ae24c73f3fac3fa08",
+          "ratio": "80:20",
+          "format": "h5"
+        }
+      }
+    },
+    "MobileNetV2": {
+      "model_name": "MobileNetV2",
+      "model_dir": "/content/drive/MyDrive/models_emathtoco/MobileNetV2",
+      "ratio": "80:20",
+      "total_sections": 24,
+      "sections": {
+        "1a": {
+          "section_id": "1a",
+          "model_section_h5": "model_1a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1a.h5",
+          "file_size_bytes": 14196712,
+          "sha256": "2600ed7188d346b06f0d65feb2fea744fadd5cba2823de168dfa8f7ef923517d",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1b": {
+          "section_id": "1b",
+          "model_section_h5": "model_1b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1b.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "38c1159c202c0c84922fc424f94ad06fdd7d55094ed2044b40575ac768cec5b6",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1c": {
+          "section_id": "1c",
+          "model_section_h5": "model_1c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1c.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "fb024a40ec1a2e9d03297873bb5890ce0f5b0ea6038bdab47e16c002d45d186c",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1d": {
+          "section_id": "1d",
+          "model_section_h5": "model_1d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1d.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "2fd090ff0e758442c2f573ad087b0769d392561a5a5cee3084d2cdbec14feea9",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1e": {
+          "section_id": "1e",
+          "model_section_h5": "model_1e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1e.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "3ed85077166e76069a840ba7892e50ac0ebfe7e137df32fcc14b39b75cda9272",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "1f": {
+          "section_id": "1f",
+          "model_section_h5": "model_1f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1f.h5",
+          "file_size_bytes": 14197736,
+          "sha256": "29e5bd1dd01cae33948396360e5f02945584d4436ea31620f6c4f23c969579f7",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2a": {
+          "section_id": "2a",
+          "model_section_h5": "model_2a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2a.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "d07db42ca83fe04f2230016cc78e85cc9332145ec247209167daf2dcccaec30b",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2b": {
+          "section_id": "2b",
+          "model_section_h5": "model_2b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2b.h5",
+          "file_size_bytes": 14196712,
+          "sha256": "04c1bbbb3401042167bf8acad628352476e93d374b276e07ae05480b8a66ce72",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2c": {
+          "section_id": "2c",
+          "model_section_h5": "model_2c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2c.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "416c55708b82e7b78bb1768c647ccfb9f52ccfd25e4cdb1e1cb1c01c27a72ce2",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2d": {
+          "section_id": "2d",
+          "model_section_h5": "model_2d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2d.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "b72944d6e932634134270ddfd8f4fe7ba58ff14ed32d3057ba42763abb098ea1",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2e": {
+          "section_id": "2e",
+          "model_section_h5": "model_2e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2e.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "7d1754e3d25d7a77ccf1238a22e1935ac1423ef85a158bd06754f806ad8987e1",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "2f": {
+          "section_id": "2f",
+          "model_section_h5": "model_2f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2f.h5",
+          "file_size_bytes": 14197736,
+          "sha256": "e131de5af8f3741c1697f27ec9c635cce2dd583670385e7c1e18e814fd960603",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3a": {
+          "section_id": "3a",
+          "model_section_h5": "model_3a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3a.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "d2f3781bca09bca422539979077cc4be96c864343a2208b590e4b035f967d60f",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3b": {
+          "section_id": "3b",
+          "model_section_h5": "model_3b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3b.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "abbe78bd445edf6cf7c213a08b59e68c1c6f328c81e6ee13f6184a1d60bcbb91",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3c": {
+          "section_id": "3c",
+          "model_section_h5": "model_3c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3c.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "44abfab5b0b6042f5c29020411499a3d0f2eaae8b5f70f0e3f0bda63d50f7843",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3d": {
+          "section_id": "3d",
+          "model_section_h5": "model_3d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3d.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "cb9bcb7e60d3b9eac2faabb9396070514744eace59776e8a5a09de5444619782",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3e": {
+          "section_id": "3e",
+          "model_section_h5": "model_3e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3e.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "76da58c3010172b1114672d4d244431ed04c77cbad72a6e87f755a84cb1b9781",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "3f": {
+          "section_id": "3f",
+          "model_section_h5": "model_3f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3f.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "23058c473359baf78b4ff849373a5e4ab70b8172e9ba2e320db63ca9ef52933a",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4a": {
+          "section_id": "4a",
+          "model_section_h5": "model_4a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4a.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "1814b962b023153f226d93d4ddfe719ebcb700d3586c80d623bef47c038c2d43",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4b": {
+          "section_id": "4b",
+          "model_section_h5": "model_4b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4b.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "8093fedad5d659151635f7d97d373f03cc7f6e248c0df0e24497c90b86336082",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4c": {
+          "section_id": "4c",
+          "model_section_h5": "model_4c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4c.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "8f8c3f9e3c6a7f05424e7902b4aefcf4d878ff252fe735b87030011784acd437",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4d": {
+          "section_id": "4d",
+          "model_section_h5": "model_4d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4d.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "1813f82cd70690c56edf5d3016c12f7665d262ffcb43de4b05657ba18028b4af",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4e": {
+          "section_id": "4e",
+          "model_section_h5": "model_4e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4e.h5",
+          "file_size_bytes": 14197224,
+          "sha256": "8ec0bf0c98f5fd23435d171e8f697d67141b08c81daeee62804b70ee3e042ca7",
+          "ratio": "80:20",
+          "format": "h5"
+        },
+        "4f": {
+          "section_id": "4f",
+          "model_section_h5": "model_4f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4f.h5",
+          "file_size_bytes": 14197736,
+          "sha256": "5dba14221a49107b81c9bb33f1548f1b9b92cb7df7bc22f7dea22143fb2c42d3",
+          "ratio": "80:20",
+          "format": "h5"
+        }
+      }
+    }
+  }
+}

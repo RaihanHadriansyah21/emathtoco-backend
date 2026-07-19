@@ -1,0 +1,2943 @@
+{
+  "golden_name": "golden_inference_3models",
+  "created_at": "2026-07-18T21:14:05.983208",
+  "model_collection_root": "/content/drive/MyDrive/models_emathtoco",
+  "manifest_path": "/content/drive/MyDrive/models_emathtoco/manifest_3models.json",
+  "dataset_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset",
+  "ratio": "80:20",
+  "expected_sections": [
+    "1a",
+    "1b",
+    "1c",
+    "1d",
+    "1e",
+    "1f",
+    "2a",
+    "2b",
+    "2c",
+    "2d",
+    "2e",
+    "2f",
+    "3a",
+    "3b",
+    "3c",
+    "3d",
+    "3e",
+    "3f",
+    "4a",
+    "4b",
+    "4c",
+    "4d",
+    "4e",
+    "4f"
+  ],
+  "models": {
+    "DenseNet121": {
+      "model_name": "DenseNet121",
+      "ratio": "80:20",
+      "sections": {
+        "1a": {
+          "section_id": "1a",
+          "model_section_h5": "model_1a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1a.h5",
+          "model_sha256": "2f68ae4d7f4d3fbcd16f2c796f49a23e1bd732bc487ef078cf97bfd4780ab11f",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1a_4.png",
+          "sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 3,
+          "confidence": 0.6616722941398621,
+          "probabilities": {
+            "1": 0.17300614714622498,
+            "2": 0.0463954322040081,
+            "3": 0.11892610788345337,
+            "4": 0.6616722941398621
+          },
+          "section_class_labels": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 4,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            4
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "1b": {
+          "section_id": "1b",
+          "model_section_h5": "model_1b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1b.h5",
+          "model_sha256": "6315bc4c9986773428970d5fcacf8881f43cf655cd1c14e87fb4c0dec275fdbf",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1b_4.png",
+          "sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.5918288230895996,
+          "probabilities": {
+            "0": 0.04793570935726166,
+            "1": 0.06685173511505127,
+            "2": 0.03608246520161629,
+            "3": 0.2573012411594391,
+            "4": 0.5918288230895996
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "1c": {
+          "section_id": "1c",
+          "model_section_h5": "model_1c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1c.h5",
+          "model_sha256": "0e1a2724ed31d284ee32b8ef3b0515619d2187d2bed0e2eefc604955c9215cb7",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1c_4.png",
+          "sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.6818879842758179,
+          "probabilities": {
+            "0": 0.10371122509241104,
+            "1": 0.07999451458454132,
+            "2": 0.05856037884950638,
+            "3": 0.0758458599448204,
+            "4": 0.6818879842758179
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "1d": {
+          "section_id": "1d",
+          "model_section_h5": "model_1d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1d.h5",
+          "model_sha256": "2af53609d96b5fb8a678e2fa1d919b2cb479fa62e6bfd761c298726721b8e421",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1d_4.png",
+          "sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.5923583507537842,
+          "probabilities": {
+            "0": 0.1847519427537918,
+            "1": 0.04385318607091904,
+            "2": 0.139018714427948,
+            "3": 0.04001781716942787,
+            "4": 0.5923583507537842
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "1e": {
+          "section_id": "1e",
+          "model_section_h5": "model_1e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1e.h5",
+          "model_sha256": "4f3923d5a16a40fbf68ff62474f2d8939d1d4bb3278896b842997ee675bff528",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1e_4.png",
+          "sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.4289613664150238,
+          "probabilities": {
+            "0": 0.024585429579019547,
+            "1": 0.029256464913487434,
+            "2": 0.31286516785621643,
+            "3": 0.20433157682418823,
+            "4": 0.4289613664150238
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "1f": {
+          "section_id": "1f",
+          "model_section_h5": "model_1f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1f.h5",
+          "model_sha256": "a237ee079e42eb25f11e294184e3fcc3c892c581d1f6ccd85524e47a7178fe2f",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1f_5.png",
+          "sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1",
+          "true_label": "5",
+          "predicted_label": "2",
+          "predicted_index": 2,
+          "confidence": 0.22322364151477814,
+          "probabilities": {
+            "0": 0.09783750027418137,
+            "1": 0.06476529687643051,
+            "2": 0.22322364151477814,
+            "3": 0.22028526663780212,
+            "4": 0.222612202167511,
+            "5": 0.1712760478258133
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "num_output_classes": 6,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            6
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "2a": {
+          "section_id": "2a",
+          "model_section_h5": "model_2a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2a.h5",
+          "model_sha256": "c90b5863431b342c3f3f3bf4e268935c40c599ce0881973a0f107a0b3cafc6cc",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2a_4.png",
+          "sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.6566637754440308,
+          "probabilities": {
+            "0": 0.16565153002738953,
+            "1": 0.06978494673967361,
+            "2": 0.0676421970129013,
+            "3": 0.040257565677165985,
+            "4": 0.6566637754440308
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "2b": {
+          "section_id": "2b",
+          "model_section_h5": "model_2b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2b.h5",
+          "model_sha256": "a1371fcde957f6f19dcd4e320af57bbe055481544a937c26a11b72370469bfb5",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2b_4.png",
+          "sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 3,
+          "confidence": 0.31765416264533997,
+          "probabilities": {
+            "0": 0.26937729120254517,
+            "1": 0.20860424637794495,
+            "2": 0.20436428487300873,
+            "4": 0.31765416264533997
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "4"
+          ],
+          "num_output_classes": 4,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            4
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "2c": {
+          "section_id": "2c",
+          "model_section_h5": "model_2c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2c.h5",
+          "model_sha256": "03e451225b88a850df7a8e77f70393b90d2b231e366ab2ddb1f4ffcf7775d08a",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2c_4.png",
+          "sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.46021875739097595,
+          "probabilities": {
+            "0": 0.046474285423755646,
+            "1": 0.16343335807323456,
+            "2": 0.2229362428188324,
+            "3": 0.10693729668855667,
+            "4": 0.46021875739097595
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "2d": {
+          "section_id": "2d",
+          "model_section_h5": "model_2d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2d.h5",
+          "model_sha256": "2577688415b289c01464baa3f8621d73377af3909b30dc9402f003b4863c7fd4",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2d_4.png",
+          "sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4",
+          "true_label": "4",
+          "predicted_label": "1",
+          "predicted_index": 1,
+          "confidence": 0.264744371175766,
+          "probabilities": {
+            "0": 0.06285355240106583,
+            "1": 0.264744371175766,
+            "2": 0.25634658336639404,
+            "3": 0.17590108513832092,
+            "4": 0.24015431106090546
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "2e": {
+          "section_id": "2e",
+          "model_section_h5": "model_2e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2e.h5",
+          "model_sha256": "9052be9a11efe1c32db4409d374b44cc5ae7d7450adbe45281911d0d9622c1af",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2e_4.png",
+          "sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.3804997205734253,
+          "probabilities": {
+            "0": 0.10971680283546448,
+            "1": 0.1664222776889801,
+            "2": 0.21186111867427826,
+            "3": 0.13150011003017426,
+            "4": 0.3804997205734253
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "2f": {
+          "section_id": "2f",
+          "model_section_h5": "model_2f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2f.h5",
+          "model_sha256": "2ee861b8adc3e482401733ecc3d94f300f7450fe79156c271679e94df4e5b2f0",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2f_5.png",
+          "sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab",
+          "true_label": "5",
+          "predicted_label": "5",
+          "predicted_index": 5,
+          "confidence": 0.772537887096405,
+          "probabilities": {
+            "0": 0.10951192677021027,
+            "1": 0.01926591619849205,
+            "2": 0.041652046144008636,
+            "3": 0.031106868758797646,
+            "4": 0.025925343856215477,
+            "5": 0.772537887096405
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "num_output_classes": 6,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            6
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "3a": {
+          "section_id": "3a",
+          "model_section_h5": "model_3a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3a.h5",
+          "model_sha256": "9a35b9021f20fa05ca262cd86c7a2e48a7075403018975cb5855acff8570a26b",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3a_4.png",
+          "sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.6630373597145081,
+          "probabilities": {
+            "0": 0.07456528395414352,
+            "1": 0.04950400069355965,
+            "2": 0.1454351544380188,
+            "3": 0.06745816767215729,
+            "4": 0.6630373597145081
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "3b": {
+          "section_id": "3b",
+          "model_section_h5": "model_3b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3b.h5",
+          "model_sha256": "86dfd49c701f8a9014391b397a52cf3d250f97bbb26e388820753f3653616845",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3b_4.png",
+          "sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9",
+          "true_label": "4",
+          "predicted_label": "2",
+          "predicted_index": 2,
+          "confidence": 0.29985666275024414,
+          "probabilities": {
+            "0": 0.0631646066904068,
+            "1": 0.15022262930870056,
+            "2": 0.29985666275024414,
+            "3": 0.29585936665534973,
+            "4": 0.19089676439762115
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "3c": {
+          "section_id": "3c",
+          "model_section_h5": "model_3c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3c.h5",
+          "model_sha256": "228df7c15a24149c894cf9ee65743bb8614431c632995c70d4e59e2fb0d1b262",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3c_4.png",
+          "sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.38381269574165344,
+          "probabilities": {
+            "0": 0.08946584910154343,
+            "1": 0.07680469751358032,
+            "2": 0.08134237676858902,
+            "3": 0.3685743510723114,
+            "4": 0.38381269574165344
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "3d": {
+          "section_id": "3d",
+          "model_section_h5": "model_3d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3d.h5",
+          "model_sha256": "7f47a20ce96f2228d060333e3b1f1da787123e0c2b4d997c12b9c6ebcf747ac4",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3d_4.png",
+          "sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.5872805118560791,
+          "probabilities": {
+            "0": 0.09346121549606323,
+            "1": 0.13986265659332275,
+            "2": 0.132280170917511,
+            "3": 0.047115474939346313,
+            "4": 0.5872805118560791
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "3e": {
+          "section_id": "3e",
+          "model_section_h5": "model_3e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3e.h5",
+          "model_sha256": "2236bcbf0c17d6932f8fe681aa457150f1e903eed38b386df4af16a1a6c428be",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3e_4.png",
+          "sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.5884029865264893,
+          "probabilities": {
+            "0": 0.06262534111738205,
+            "1": 0.12893052399158478,
+            "2": 0.19005338847637177,
+            "3": 0.02998780831694603,
+            "4": 0.5884029865264893
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "3f": {
+          "section_id": "3f",
+          "model_section_h5": "model_3f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3f.h5",
+          "model_sha256": "8bbcbd1732c36fa9c27f52f4da2cbf9d74e179a167ec359d658cef7f902a6a28",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3f_5.png",
+          "sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748",
+          "true_label": "5",
+          "predicted_label": "5",
+          "predicted_index": 4,
+          "confidence": 0.755183219909668,
+          "probabilities": {
+            "0": 0.16493986546993256,
+            "1": 0.027783935889601707,
+            "2": 0.029881050810217857,
+            "3": 0.022211896255612373,
+            "5": 0.755183219909668
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "5"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "4a": {
+          "section_id": "4a",
+          "model_section_h5": "model_4a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4a.h5",
+          "model_sha256": "abc8729cfbac84869d6927c69a92571328d7030c7a66d39ffb4418baa1d69d4d",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4a_4.png",
+          "sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.5972515940666199,
+          "probabilities": {
+            "0": 0.041343942284584045,
+            "1": 0.019895412027835846,
+            "2": 0.24488817155361176,
+            "3": 0.0966208353638649,
+            "4": 0.5972515940666199
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "4b": {
+          "section_id": "4b",
+          "model_section_h5": "model_4b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4b.h5",
+          "model_sha256": "98429a66268f1651bc1bdfa7fc8116540622cfd4124c02e97450d4b533656aa7",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4b_4.png",
+          "sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.517076849937439,
+          "probabilities": {
+            "0": 0.14371752738952637,
+            "1": 0.07627907395362854,
+            "2": 0.1912773698568344,
+            "3": 0.07164914160966873,
+            "4": 0.517076849937439
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "4c": {
+          "section_id": "4c",
+          "model_section_h5": "model_4c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4c.h5",
+          "model_sha256": "21e5ba738584eb92393f8c351e2de6dad099cb3eda28e3be509d996c0012030c",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4c_4.png",
+          "sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.755730152130127,
+          "probabilities": {
+            "0": 0.05870728939771652,
+            "1": 0.07910514622926712,
+            "2": 0.031183190643787384,
+            "3": 0.07527421414852142,
+            "4": 0.755730152130127
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "4d": {
+          "section_id": "4d",
+          "model_section_h5": "model_4d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4d.h5",
+          "model_sha256": "d7e1bc53e4c60f8f042098a868b78b062107dad74b8d85712801cfe2d76742ee",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4d_4.png",
+          "sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e",
+          "true_label": "4",
+          "predicted_label": "1",
+          "predicted_index": 1,
+          "confidence": 0.42055606842041016,
+          "probabilities": {
+            "0": 0.07110719382762909,
+            "1": 0.42055606842041016,
+            "2": 0.16004300117492676,
+            "3": 0.09021428227424622,
+            "4": 0.25807949900627136
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "4e": {
+          "section_id": "4e",
+          "model_section_h5": "model_4e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4e.h5",
+          "model_sha256": "7afc6f78e750ece2a85046ffb3941774c41896f04a3d534d7705d7360150c290",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4e_4.png",
+          "sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.4882640540599823,
+          "probabilities": {
+            "0": 0.08568103611469269,
+            "1": 0.3471686840057373,
+            "2": 0.04001045972108841,
+            "3": 0.0388757698237896,
+            "4": 0.4882640540599823
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        },
+        "4f": {
+          "section_id": "4f",
+          "model_section_h5": "model_4f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4f.h5",
+          "model_sha256": "d5e79a91d443b86cd7d0f18efad0a893c91a39422e300c87e7116021640d0850",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4f_5.png",
+          "sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f",
+          "true_label": "5",
+          "predicted_label": "5",
+          "predicted_index": 5,
+          "confidence": 0.5501746535301208,
+          "probabilities": {
+            "0": 0.02823772095143795,
+            "1": 0.08467340469360352,
+            "2": 0.0229958388954401,
+            "3": 0.2606464624404907,
+            "4": 0.05327187851071358,
+            "5": 0.5501746535301208
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "num_output_classes": 6,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            6
+          ],
+          "preprocess": "DenseNet121",
+          "status": "success"
+        }
+      }
+    },
+    "InceptionV3": {
+      "model_name": "InceptionV3",
+      "ratio": "80:20",
+      "sections": {
+        "1a": {
+          "section_id": "1a",
+          "model_section_h5": "model_1a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1a.h5",
+          "model_sha256": "576791fdb7063e5d519caeae11d2fa9d60acd243c88a6acca72a3e5cbc1d108b",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1a_4.png",
+          "sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 3,
+          "confidence": 0.880620002746582,
+          "probabilities": {
+            "1": 0.03361925482749939,
+            "2": 0.06266975402832031,
+            "3": 0.023091040551662445,
+            "4": 0.880620002746582
+          },
+          "section_class_labels": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 4,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            4
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "1b": {
+          "section_id": "1b",
+          "model_section_h5": "model_1b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1b.h5",
+          "model_sha256": "c9839dd924818c5e8567c31e04d97815fe46b05c581082a3c111453e0b1649bd",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1b_4.png",
+          "sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.5429455637931824,
+          "probabilities": {
+            "0": 0.03680333495140076,
+            "1": 0.11205874383449554,
+            "2": 0.04130201041698456,
+            "3": 0.26689034700393677,
+            "4": 0.5429455637931824
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "1c": {
+          "section_id": "1c",
+          "model_section_h5": "model_1c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1c.h5",
+          "model_sha256": "5919a3f55325e4279d8df5b5873fd6575a3400ed044af7c6b80ce51c6437299f",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1c_4.png",
+          "sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.48341166973114014,
+          "probabilities": {
+            "0": 0.0687565803527832,
+            "1": 0.15832442045211792,
+            "2": 0.12894363701343536,
+            "3": 0.16056370735168457,
+            "4": 0.48341166973114014
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "1d": {
+          "section_id": "1d",
+          "model_section_h5": "model_1d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1d.h5",
+          "model_sha256": "8b916c8100a0ca0cdc3f19279f4cc8d10dd5bac0c70cf065bb6537808d5e8ac7",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1d_4.png",
+          "sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.9315504431724548,
+          "probabilities": {
+            "0": 0.030510133132338524,
+            "1": 0.013041590340435505,
+            "2": 0.016044965013861656,
+            "3": 0.00885277520865202,
+            "4": 0.9315504431724548
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "1e": {
+          "section_id": "1e",
+          "model_section_h5": "model_1e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1e.h5",
+          "model_sha256": "688bd632e5c3f59ff04b8a646e10f3751817e2af8e00eef0a98696a56d9baeb8",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1e_4.png",
+          "sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89",
+          "true_label": "4",
+          "predicted_label": "2",
+          "predicted_index": 2,
+          "confidence": 0.45110249519348145,
+          "probabilities": {
+            "0": 0.05796438455581665,
+            "1": 0.02019626647233963,
+            "2": 0.45110249519348145,
+            "3": 0.11739130318164825,
+            "4": 0.3533455431461334
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "1f": {
+          "section_id": "1f",
+          "model_section_h5": "model_1f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1f.h5",
+          "model_sha256": "285a4fdf147a5cf6b1e63a114b8f6f7260c8b462e3d46075ac8132c01c066645",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1f_5.png",
+          "sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1",
+          "true_label": "5",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.18752755224704742,
+          "probabilities": {
+            "0": 0.1814892590045929,
+            "1": 0.1531626284122467,
+            "2": 0.17407479882240295,
+            "3": 0.1283968836069107,
+            "4": 0.18752755224704742,
+            "5": 0.1753488928079605
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "num_output_classes": 6,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            6
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "2a": {
+          "section_id": "2a",
+          "model_section_h5": "model_2a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2a.h5",
+          "model_sha256": "f4e215f31d7c8a5b1b8939b6a605e6bb7d06c53b4a20f206ea81952dd2ae11a4",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2a_4.png",
+          "sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc",
+          "true_label": "4",
+          "predicted_label": "1",
+          "predicted_index": 1,
+          "confidence": 0.4864407777786255,
+          "probabilities": {
+            "0": 0.21319741010665894,
+            "1": 0.4864407777786255,
+            "2": 0.11828961223363876,
+            "3": 0.060878802090883255,
+            "4": 0.12119336426258087
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "2b": {
+          "section_id": "2b",
+          "model_section_h5": "model_2b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2b.h5",
+          "model_sha256": "9bd423d0996d3c7e6f0d61e2683ade31eec79ad809a1688d52bf5ebc9e69ac63",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2b_4.png",
+          "sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 3,
+          "confidence": 0.3097703158855438,
+          "probabilities": {
+            "0": 0.2262416034936905,
+            "1": 0.27362480759620667,
+            "2": 0.19036327302455902,
+            "4": 0.3097703158855438
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "4"
+          ],
+          "num_output_classes": 4,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            4
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "2c": {
+          "section_id": "2c",
+          "model_section_h5": "model_2c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2c.h5",
+          "model_sha256": "4c69d4ce5b61782d1c60410002218702c592dc8297428f3a87af0aa6715d9b7f",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2c_4.png",
+          "sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d",
+          "true_label": "4",
+          "predicted_label": "1",
+          "predicted_index": 1,
+          "confidence": 0.6397033333778381,
+          "probabilities": {
+            "0": 0.08862379193305969,
+            "1": 0.6397033333778381,
+            "2": 0.1498844176530838,
+            "3": 0.020166750997304916,
+            "4": 0.10162173211574554
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "2d": {
+          "section_id": "2d",
+          "model_section_h5": "model_2d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2d.h5",
+          "model_sha256": "72c31befb72a26683f4ae45ac59d6149a3c36e49692c2c1222af1aead085857c",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2d_4.png",
+          "sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.23244592547416687,
+          "probabilities": {
+            "0": 0.2237783670425415,
+            "1": 0.212528795003891,
+            "2": 0.1737331748008728,
+            "3": 0.15751372277736664,
+            "4": 0.23244592547416687
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "2e": {
+          "section_id": "2e",
+          "model_section_h5": "model_2e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2e.h5",
+          "model_sha256": "276c92a226213809b887d3b1cf17ad2f6e6e090f12dc1d370113b6d4a3de77e6",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2e_4.png",
+          "sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d",
+          "true_label": "4",
+          "predicted_label": "0",
+          "predicted_index": 0,
+          "confidence": 0.48605114221572876,
+          "probabilities": {
+            "0": 0.48605114221572876,
+            "1": 0.10923019796609879,
+            "2": 0.23658032715320587,
+            "3": 0.06673075258731842,
+            "4": 0.10140760987997055
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "2f": {
+          "section_id": "2f",
+          "model_section_h5": "model_2f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2f.h5",
+          "model_sha256": "110146592d6413b153236f97b945a2ce97ecb7d5a5536c29c82e807234fcd754",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2f_5.png",
+          "sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab",
+          "true_label": "5",
+          "predicted_label": "5",
+          "predicted_index": 5,
+          "confidence": 0.7409579753875732,
+          "probabilities": {
+            "0": 0.05937885493040085,
+            "1": 0.12847772240638733,
+            "2": 0.01921360194683075,
+            "3": 0.03588159754872322,
+            "4": 0.016090333461761475,
+            "5": 0.7409579753875732
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "num_output_classes": 6,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            6
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "3a": {
+          "section_id": "3a",
+          "model_section_h5": "model_3a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3a.h5",
+          "model_sha256": "72b4c4219e9685d2307a10f2122a4302263023e37848738b7e3b5f1e72c5ef2a",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3a_4.png",
+          "sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.5881123542785645,
+          "probabilities": {
+            "0": 0.12239229679107666,
+            "1": 0.024836985394358635,
+            "2": 0.23197081685066223,
+            "3": 0.0326874777674675,
+            "4": 0.5881123542785645
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "3b": {
+          "section_id": "3b",
+          "model_section_h5": "model_3b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3b.h5",
+          "model_sha256": "7cbcdf42b8024b869e0050a91a4553f237fc8ea95669944aed7cdd301fc96fc2",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3b_4.png",
+          "sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9",
+          "true_label": "4",
+          "predicted_label": "3",
+          "predicted_index": 3,
+          "confidence": 0.24239885807037354,
+          "probabilities": {
+            "0": 0.15606805682182312,
+            "1": 0.18995556235313416,
+            "2": 0.2226518839597702,
+            "3": 0.24239885807037354,
+            "4": 0.1889255791902542
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "3c": {
+          "section_id": "3c",
+          "model_section_h5": "model_3c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3c.h5",
+          "model_sha256": "30eb64bd17fc0814995751600aa12c6fcba12eef61f8f42331f6aa981d8f0335",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3c_4.png",
+          "sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.40114450454711914,
+          "probabilities": {
+            "0": 0.1936681866645813,
+            "1": 0.0824764221906662,
+            "2": 0.05251508578658104,
+            "3": 0.2701958417892456,
+            "4": 0.40114450454711914
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "3d": {
+          "section_id": "3d",
+          "model_section_h5": "model_3d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3d.h5",
+          "model_sha256": "e6ba68dd6ed38d9872452fa36eaae5fc61474b34c153e0aa5468921ba38bad02",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3d_4.png",
+          "sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0",
+          "true_label": "4",
+          "predicted_label": "2",
+          "predicted_index": 2,
+          "confidence": 0.6767524480819702,
+          "probabilities": {
+            "0": 0.03010798990726471,
+            "1": 0.18833957612514496,
+            "2": 0.6767524480819702,
+            "3": 0.027638830244541168,
+            "4": 0.07716110348701477
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "3e": {
+          "section_id": "3e",
+          "model_section_h5": "model_3e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3e.h5",
+          "model_sha256": "6966f9ab3f46c57cf78705520d3d7b7248480ae6c5d3b15d01b6dc571be40acc",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3e_4.png",
+          "sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.7978048324584961,
+          "probabilities": {
+            "0": 0.022015903145074844,
+            "1": 0.028972428292036057,
+            "2": 0.08874497562646866,
+            "3": 0.06246189773082733,
+            "4": 0.7978048324584961
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "3f": {
+          "section_id": "3f",
+          "model_section_h5": "model_3f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3f.h5",
+          "model_sha256": "4be7ed158444e47159a7682e9356c6bacfa11c9294a60257778d8352350604e5",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3f_5.png",
+          "sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748",
+          "true_label": "5",
+          "predicted_label": "5",
+          "predicted_index": 4,
+          "confidence": 0.6452392935752869,
+          "probabilities": {
+            "0": 0.22652290761470795,
+            "1": 0.05139283090829849,
+            "2": 0.045069921761751175,
+            "3": 0.03177507221698761,
+            "5": 0.6452392935752869
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "5"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "4a": {
+          "section_id": "4a",
+          "model_section_h5": "model_4a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4a.h5",
+          "model_sha256": "61cf1bc5243a84661e2a1d6dfd5699a2c34a6e8034b3197815a45be61077e752",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4a_4.png",
+          "sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.9244043231010437,
+          "probabilities": {
+            "0": 0.018479742109775543,
+            "1": 0.014288065955042839,
+            "2": 0.01951698213815689,
+            "3": 0.023310890421271324,
+            "4": 0.9244043231010437
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "4b": {
+          "section_id": "4b",
+          "model_section_h5": "model_4b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4b.h5",
+          "model_sha256": "3d72fd709073421abdcde3f37f14a703a923ce7eead23f89d0b90c5c185409dc",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4b_4.png",
+          "sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.7049086689949036,
+          "probabilities": {
+            "0": 0.04213620722293854,
+            "1": 0.0753820464015007,
+            "2": 0.12076909095048904,
+            "3": 0.05680393427610397,
+            "4": 0.7049086689949036
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "4c": {
+          "section_id": "4c",
+          "model_section_h5": "model_4c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4c.h5",
+          "model_sha256": "ab4540134786ae80f931229cafefc56850ed049ecabae1e6bd61bf6c31885479",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4c_4.png",
+          "sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.8561850190162659,
+          "probabilities": {
+            "0": 0.046961184591054916,
+            "1": 0.03580167517066002,
+            "2": 0.022949283942580223,
+            "3": 0.03810284286737442,
+            "4": 0.8561850190162659
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "4d": {
+          "section_id": "4d",
+          "model_section_h5": "model_4d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4d.h5",
+          "model_sha256": "6de387549895773659bd2e6021269ede6f0b1f8cd4d5dc3eee7792be421f1094",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4d_4.png",
+          "sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e",
+          "true_label": "4",
+          "predicted_label": "2",
+          "predicted_index": 2,
+          "confidence": 0.692126452922821,
+          "probabilities": {
+            "0": 0.07025952637195587,
+            "1": 0.04820595309138298,
+            "2": 0.692126452922821,
+            "3": 0.06249779835343361,
+            "4": 0.1269102394580841
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "4e": {
+          "section_id": "4e",
+          "model_section_h5": "model_4e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4e.h5",
+          "model_sha256": "5e0284d78b76e97ab965d7805f3d4608e01b5cda47a5fd46a43bc81a9d1c1a44",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4e_4.png",
+          "sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.9105944037437439,
+          "probabilities": {
+            "0": 0.01885703019797802,
+            "1": 0.03971933200955391,
+            "2": 0.01598210632801056,
+            "3": 0.014847087673842907,
+            "4": 0.9105944037437439
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        },
+        "4f": {
+          "section_id": "4f",
+          "model_section_h5": "model_4f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4f.h5",
+          "model_sha256": "bae983e4b2674335b3b36a0cfd0d14b22afda94e39c67a9ae24c73f3fac3fa08",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4f_5.png",
+          "sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f",
+          "true_label": "5",
+          "predicted_label": "5",
+          "predicted_index": 5,
+          "confidence": 0.41470450162887573,
+          "probabilities": {
+            "0": 0.06271428614854813,
+            "1": 0.11688989400863647,
+            "2": 0.03738785162568092,
+            "3": 0.22917287051677704,
+            "4": 0.13913054764270782,
+            "5": 0.41470450162887573
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "num_output_classes": 6,
+          "input_shape": [
+            null,
+            299,
+            299,
+            3
+          ],
+          "output_shape": [
+            null,
+            6
+          ],
+          "preprocess": "InceptionV3",
+          "status": "success"
+        }
+      }
+    },
+    "MobileNetV2": {
+      "model_name": "MobileNetV2",
+      "ratio": "80:20",
+      "sections": {
+        "1a": {
+          "section_id": "1a",
+          "model_section_h5": "model_1a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1a.h5",
+          "model_sha256": "2600ed7188d346b06f0d65feb2fea744fadd5cba2823de168dfa8f7ef923517d",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1a_4.png",
+          "sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 3,
+          "confidence": 0.8253636956214905,
+          "probabilities": {
+            "1": 0.10155073553323746,
+            "2": 0.03094428963959217,
+            "3": 0.042141322046518326,
+            "4": 0.8253636956214905
+          },
+          "section_class_labels": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 4,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            4
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "1b": {
+          "section_id": "1b",
+          "model_section_h5": "model_1b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1b.h5",
+          "model_sha256": "38c1159c202c0c84922fc424f94ad06fdd7d55094ed2044b40575ac768cec5b6",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1b_4.png",
+          "sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.7260649800300598,
+          "probabilities": {
+            "0": 0.022143086418509483,
+            "1": 0.019732482731342316,
+            "2": 0.02740303799510002,
+            "3": 0.20465631783008575,
+            "4": 0.7260649800300598
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "1c": {
+          "section_id": "1c",
+          "model_section_h5": "model_1c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1c.h5",
+          "model_sha256": "fb024a40ec1a2e9d03297873bb5890ce0f5b0ea6038bdab47e16c002d45d186c",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1c_4.png",
+          "sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9",
+          "true_label": "4",
+          "predicted_label": "3",
+          "predicted_index": 3,
+          "confidence": 0.436369925737381,
+          "probabilities": {
+            "0": 0.07661613076925278,
+            "1": 0.10936722159385681,
+            "2": 0.22895273566246033,
+            "3": 0.436369925737381,
+            "4": 0.14869394898414612
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "1d": {
+          "section_id": "1d",
+          "model_section_h5": "model_1d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1d.h5",
+          "model_sha256": "2fd090ff0e758442c2f573ad087b0769d392561a5a5cee3084d2cdbec14feea9",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1d_4.png",
+          "sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.6074833869934082,
+          "probabilities": {
+            "0": 0.24970115721225739,
+            "1": 0.04397653788328171,
+            "2": 0.06440000236034393,
+            "3": 0.034438930451869965,
+            "4": 0.6074833869934082
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "1e": {
+          "section_id": "1e",
+          "model_section_h5": "model_1e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1e.h5",
+          "model_sha256": "3ed85077166e76069a840ba7892e50ac0ebfe7e137df32fcc14b39b75cda9272",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1e_4.png",
+          "sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.46104034781455994,
+          "probabilities": {
+            "0": 0.027641020715236664,
+            "1": 0.01972118206322193,
+            "2": 0.32123807072639465,
+            "3": 0.17035940289497375,
+            "4": 0.46104034781455994
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "1f": {
+          "section_id": "1f",
+          "model_section_h5": "model_1f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1f.h5",
+          "model_sha256": "29e5bd1dd01cae33948396360e5f02945584d4436ea31620f6c4f23c969579f7",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/1/08780030_1f_5.png",
+          "sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1",
+          "true_label": "5",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.3401152491569519,
+          "probabilities": {
+            "0": 0.07811328023672104,
+            "1": 0.0668814405798912,
+            "2": 0.22174295783042908,
+            "3": 0.12030980736017227,
+            "4": 0.3401152491569519,
+            "5": 0.1728373020887375
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "num_output_classes": 6,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            6
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "2a": {
+          "section_id": "2a",
+          "model_section_h5": "model_2a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2a.h5",
+          "model_sha256": "d07db42ca83fe04f2230016cc78e85cc9332145ec247209167daf2dcccaec30b",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2a_4.png",
+          "sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.49248069524765015,
+          "probabilities": {
+            "0": 0.18665450811386108,
+            "1": 0.10480745136737823,
+            "2": 0.1597382128238678,
+            "3": 0.05631911754608154,
+            "4": 0.49248069524765015
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "2b": {
+          "section_id": "2b",
+          "model_section_h5": "model_2b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2b.h5",
+          "model_sha256": "04c1bbbb3401042167bf8acad628352476e93d374b276e07ae05480b8a66ce72",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2b_4.png",
+          "sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913",
+          "true_label": "4",
+          "predicted_label": "1",
+          "predicted_index": 1,
+          "confidence": 0.33492252230644226,
+          "probabilities": {
+            "0": 0.2572316825389862,
+            "1": 0.33492252230644226,
+            "2": 0.12150212377309799,
+            "4": 0.28634363412857056
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "4"
+          ],
+          "num_output_classes": 4,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            4
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "2c": {
+          "section_id": "2c",
+          "model_section_h5": "model_2c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2c.h5",
+          "model_sha256": "416c55708b82e7b78bb1768c647ccfb9f52ccfd25e4cdb1e1cb1c01c27a72ce2",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2c_4.png",
+          "sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.45642217993736267,
+          "probabilities": {
+            "0": 0.05889701843261719,
+            "1": 0.193556010723114,
+            "2": 0.19219177961349487,
+            "3": 0.09893295913934708,
+            "4": 0.45642217993736267
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "2d": {
+          "section_id": "2d",
+          "model_section_h5": "model_2d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2d.h5",
+          "model_sha256": "b72944d6e932634134270ddfd8f4fe7ba58ff14ed32d3057ba42763abb098ea1",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2d_4.png",
+          "sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.2508333921432495,
+          "probabilities": {
+            "0": 0.19517143070697784,
+            "1": 0.21177944540977478,
+            "2": 0.17458628118038177,
+            "3": 0.1676294207572937,
+            "4": 0.2508333921432495
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "2e": {
+          "section_id": "2e",
+          "model_section_h5": "model_2e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2e.h5",
+          "model_sha256": "7d1754e3d25d7a77ccf1238a22e1935ac1423ef85a158bd06754f806ad8987e1",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2e_4.png",
+          "sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d",
+          "true_label": "4",
+          "predicted_label": "2",
+          "predicted_index": 2,
+          "confidence": 0.3115898370742798,
+          "probabilities": {
+            "0": 0.10922045260667801,
+            "1": 0.2748607099056244,
+            "2": 0.3115898370742798,
+            "3": 0.04716979339718819,
+            "4": 0.25715911388397217
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "2f": {
+          "section_id": "2f",
+          "model_section_h5": "model_2f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2f.h5",
+          "model_sha256": "e131de5af8f3741c1697f27ec9c635cce2dd583670385e7c1e18e814fd960603",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/2/08780030_2f_5.png",
+          "sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab",
+          "true_label": "5",
+          "predicted_label": "1",
+          "predicted_index": 1,
+          "confidence": 0.4863142669200897,
+          "probabilities": {
+            "0": 0.12609675526618958,
+            "1": 0.4863142669200897,
+            "2": 0.024066301062703133,
+            "3": 0.03593355044722557,
+            "4": 0.0311852116137743,
+            "5": 0.2964039146900177
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "num_output_classes": 6,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            6
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "3a": {
+          "section_id": "3a",
+          "model_section_h5": "model_3a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3a.h5",
+          "model_sha256": "d2f3781bca09bca422539979077cc4be96c864343a2208b590e4b035f967d60f",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3a_4.png",
+          "sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.632737934589386,
+          "probabilities": {
+            "0": 0.07827150076627731,
+            "1": 0.10812526196241379,
+            "2": 0.13468565046787262,
+            "3": 0.04617966711521149,
+            "4": 0.632737934589386
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "3b": {
+          "section_id": "3b",
+          "model_section_h5": "model_3b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3b.h5",
+          "model_sha256": "abbe78bd445edf6cf7c213a08b59e68c1c6f328c81e6ee13f6184a1d60bcbb91",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3b_4.png",
+          "sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.35374051332473755,
+          "probabilities": {
+            "0": 0.10148850083351135,
+            "1": 0.17565448582172394,
+            "2": 0.14909759163856506,
+            "3": 0.2200188934803009,
+            "4": 0.35374051332473755
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "3c": {
+          "section_id": "3c",
+          "model_section_h5": "model_3c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3c.h5",
+          "model_sha256": "44abfab5b0b6042f5c29020411499a3d0f2eaae8b5f70f0e3f0bda63d50f7843",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3c_4.png",
+          "sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.2951601445674896,
+          "probabilities": {
+            "0": 0.1543312966823578,
+            "1": 0.2946297526359558,
+            "2": 0.15023265779018402,
+            "3": 0.10564613342285156,
+            "4": 0.2951601445674896
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "3d": {
+          "section_id": "3d",
+          "model_section_h5": "model_3d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3d.h5",
+          "model_sha256": "cb9bcb7e60d3b9eac2faabb9396070514744eace59776e8a5a09de5444619782",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3d_4.png",
+          "sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0",
+          "true_label": "4",
+          "predicted_label": "1",
+          "predicted_index": 1,
+          "confidence": 0.4666287899017334,
+          "probabilities": {
+            "0": 0.014099174179136753,
+            "1": 0.4666287899017334,
+            "2": 0.35011026263237,
+            "3": 0.012064074166119099,
+            "4": 0.157097727060318
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "3e": {
+          "section_id": "3e",
+          "model_section_h5": "model_3e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3e.h5",
+          "model_sha256": "76da58c3010172b1114672d4d244431ed04c77cbad72a6e87f755a84cb1b9781",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3e_4.png",
+          "sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.4847816228866577,
+          "probabilities": {
+            "0": 0.054501745849847794,
+            "1": 0.09178712218999863,
+            "2": 0.3387365937232971,
+            "3": 0.030192863196134567,
+            "4": 0.4847816228866577
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "3f": {
+          "section_id": "3f",
+          "model_section_h5": "model_3f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3f.h5",
+          "model_sha256": "23058c473359baf78b4ff849373a5e4ab70b8172e9ba2e320db63ca9ef52933a",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/3/08780030_3f_5.png",
+          "sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748",
+          "true_label": "5",
+          "predicted_label": "5",
+          "predicted_index": 4,
+          "confidence": 0.8309188485145569,
+          "probabilities": {
+            "0": 0.12455826997756958,
+            "1": 0.020295219495892525,
+            "2": 0.011091191321611404,
+            "3": 0.01313641108572483,
+            "5": 0.8309188485145569
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "5"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "4a": {
+          "section_id": "4a",
+          "model_section_h5": "model_4a.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4a.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4a.h5",
+          "model_sha256": "1814b962b023153f226d93d4ddfe719ebcb700d3586c80d623bef47c038c2d43",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4a_4.png",
+          "sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52",
+          "true_label": "4",
+          "predicted_label": "3",
+          "predicted_index": 3,
+          "confidence": 0.545976996421814,
+          "probabilities": {
+            "0": 0.04865513741970062,
+            "1": 0.023641785606741905,
+            "2": 0.05549267306923866,
+            "3": 0.545976996421814,
+            "4": 0.3262333571910858
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "4b": {
+          "section_id": "4b",
+          "model_section_h5": "model_4b.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4b.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4b.h5",
+          "model_sha256": "8093fedad5d659151635f7d97d373f03cc7f6e248c0df0e24497c90b86336082",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4b_4.png",
+          "sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8",
+          "true_label": "4",
+          "predicted_label": "2",
+          "predicted_index": 2,
+          "confidence": 0.2698458433151245,
+          "probabilities": {
+            "0": 0.06035185232758522,
+            "1": 0.2066870927810669,
+            "2": 0.2698458433151245,
+            "3": 0.2250378578901291,
+            "4": 0.23807738721370697
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "4c": {
+          "section_id": "4c",
+          "model_section_h5": "model_4c.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4c.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4c.h5",
+          "model_sha256": "8f8c3f9e3c6a7f05424e7902b4aefcf4d878ff252fe735b87030011784acd437",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4c_4.png",
+          "sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e",
+          "true_label": "4",
+          "predicted_label": "4",
+          "predicted_index": 4,
+          "confidence": 0.3164175748825073,
+          "probabilities": {
+            "0": 0.07234928011894226,
+            "1": 0.2672249376773834,
+            "2": 0.04133325442671776,
+            "3": 0.30267491936683655,
+            "4": 0.3164175748825073
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "4d": {
+          "section_id": "4d",
+          "model_section_h5": "model_4d.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4d.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4d.h5",
+          "model_sha256": "1813f82cd70690c56edf5d3016c12f7665d262ffcb43de4b05657ba18028b4af",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4d_4.png",
+          "sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e",
+          "true_label": "4",
+          "predicted_label": "3",
+          "predicted_index": 3,
+          "confidence": 0.46020013093948364,
+          "probabilities": {
+            "0": 0.07091844826936722,
+            "1": 0.2034369856119156,
+            "2": 0.07895093411207199,
+            "3": 0.46020013093948364,
+            "4": 0.18649348616600037
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "4e": {
+          "section_id": "4e",
+          "model_section_h5": "model_4e.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4e.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4e.h5",
+          "model_sha256": "8ec0bf0c98f5fd23435d171e8f697d67141b08c81daeee62804b70ee3e042ca7",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4e_4.png",
+          "sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa",
+          "true_label": "4",
+          "predicted_label": "1",
+          "predicted_index": 1,
+          "confidence": 0.38279667496681213,
+          "probabilities": {
+            "0": 0.0485440194606781,
+            "1": 0.38279667496681213,
+            "2": 0.15052102506160736,
+            "3": 0.11698398739099503,
+            "4": 0.3011541962623596
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "num_output_classes": 5,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            5
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        },
+        "4f": {
+          "section_id": "4f",
+          "model_section_h5": "model_4f.h5",
+          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4f.h5",
+          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4f.h5",
+          "model_sha256": "5dba14221a49107b81c9bb33f1548f1b9b92cb7df7bc22f7dea22143fb2c42d3",
+          "sample_image_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset/08780030/4/08780030_4f_5.png",
+          "sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f",
+          "true_label": "5",
+          "predicted_label": "5",
+          "predicted_index": 5,
+          "confidence": 0.8812562823295593,
+          "probabilities": {
+            "0": 0.010720443911850452,
+            "1": 0.02584466151893139,
+            "2": 0.007977264933288097,
+            "3": 0.0383591428399086,
+            "4": 0.03584223985671997,
+            "5": 0.8812562823295593
+          },
+          "section_class_labels": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "num_output_classes": 6,
+          "input_shape": [
+            null,
+            224,
+            224,
+            3
+          ],
+          "output_shape": [
+            null,
+            6
+          ],
+          "preprocess": "MobileNetV2",
+          "status": "success"
+        }
+      }
+    }
+  },
+  "failed_items": [],
+  "failed_count": 0,
+  "success_count": 72
+}
