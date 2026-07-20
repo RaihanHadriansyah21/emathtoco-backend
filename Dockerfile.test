@@ -17,5 +17,7 @@ COPY utils /app/utils
 COPY tests /app/tests
 RUN mkdir -p /app/Models
 COPY Models/manifest.json Models/golden_inference.json /app/Models/
+RUN mkdir -p /app/Models_New
+COPY Models_New/manifest.json Models_New/golden_inference.json /app/Models_New/
 
 CMD ["pytest"]

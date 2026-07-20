@@ -16,7 +16,7 @@ COPY repositories /app/repositories
 COPY services /app/services
 COPY utils /app/utils
 RUN mkdir -p /models
-COPY Models/manifest.json /models/manifest.json
+COPY Models_New/manifest.json /models/manifest.json
 
 USER app
 EXPOSE 8000

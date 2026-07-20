@@ -1,363 +1,363 @@
 {
   "artifacts": {
     "DenseNet121:S-1A": {
-      "argmax": 1,
-      "confidence": 0.331664,
+      "argmax": 3,
+      "confidence": 0.678285,
       "output_size": 4
     },
     "DenseNet121:S-1B": {
-      "argmax": 4,
-      "confidence": 0.380457,
+      "argmax": 0,
+      "confidence": 0.291871,
       "output_size": 5
     },
     "DenseNet121:S-1C": {
-      "argmax": 3,
-      "confidence": 0.31471,
+      "argmax": 0,
+      "confidence": 0.299042,
       "output_size": 5
     },
     "DenseNet121:S-1D": {
-      "argmax": 1,
-      "confidence": 0.297498,
+      "argmax": 0,
+      "confidence": 0.340174,
       "output_size": 5
     },
     "DenseNet121:S-1E": {
-      "argmax": 4,
-      "confidence": 0.303716,
+      "argmax": 1,
+      "confidence": 0.645074,
       "output_size": 5
     },
     "DenseNet121:S-1F": {
-      "argmax": 3,
-      "confidence": 0.24902,
+      "argmax": 0,
+      "confidence": 0.335561,
       "output_size": 6
     },
     "DenseNet121:S-2A": {
-      "argmax": 1,
-      "confidence": 0.412066,
+      "argmax": 0,
+      "confidence": 0.761721,
       "output_size": 5
     },
     "DenseNet121:S-2B": {
       "argmax": 0,
-      "confidence": 0.468379,
+      "confidence": 0.298945,
       "output_size": 4
     },
     "DenseNet121:S-2C": {
-      "argmax": 2,
-      "confidence": 0.358207,
+      "argmax": 1,
+      "confidence": 0.24331,
       "output_size": 5
     },
     "DenseNet121:S-2D": {
-      "argmax": 4,
-      "confidence": 0.4799,
+      "argmax": 0,
+      "confidence": 0.421553,
       "output_size": 5
     },
     "DenseNet121:S-2E": {
       "argmax": 0,
-      "confidence": 0.429677,
+      "confidence": 0.649898,
       "output_size": 5
     },
     "DenseNet121:S-2F": {
-      "argmax": 5,
-      "confidence": 0.319758,
+      "argmax": 0,
+      "confidence": 0.782267,
       "output_size": 6
     },
     "DenseNet121:S-3A": {
-      "argmax": 3,
-      "confidence": 0.253133,
+      "argmax": 0,
+      "confidence": 0.405829,
       "output_size": 5
     },
     "DenseNet121:S-3B": {
-      "argmax": 3,
-      "confidence": 0.316793,
+      "argmax": 0,
+      "confidence": 0.391989,
       "output_size": 5
     },
     "DenseNet121:S-3C": {
-      "argmax": 3,
-      "confidence": 0.284554,
+      "argmax": 2,
+      "confidence": 0.33036,
       "output_size": 5
     },
     "DenseNet121:S-3D": {
-      "argmax": 2,
-      "confidence": 0.298701,
+      "argmax": 0,
+      "confidence": 0.716056,
       "output_size": 5
     },
     "DenseNet121:S-3E": {
-      "argmax": 1,
-      "confidence": 0.285262,
+      "argmax": 0,
+      "confidence": 0.557132,
       "output_size": 5
     },
     "DenseNet121:S-3F": {
-      "argmax": 4,
-      "confidence": 0.288556,
+      "argmax": 0,
+      "confidence": 0.522674,
       "output_size": 5
     },
     "DenseNet121:S-4A": {
-      "argmax": 1,
-      "confidence": 0.297374,
+      "argmax": 0,
+      "confidence": 0.671294,
       "output_size": 5
     },
     "DenseNet121:S-4B": {
       "argmax": 4,
-      "confidence": 0.309468,
+      "confidence": 0.497094,
       "output_size": 5
     },
     "DenseNet121:S-4C": {
-      "argmax": 0,
-      "confidence": 0.269277,
+      "argmax": 1,
+      "confidence": 0.40468,
       "output_size": 5
     },
     "DenseNet121:S-4D": {
-      "argmax": 0,
-      "confidence": 0.264702,
+      "argmax": 4,
+      "confidence": 0.342437,
       "output_size": 5
     },
     "DenseNet121:S-4E": {
       "argmax": 0,
-      "confidence": 0.235244,
+      "confidence": 0.570751,
       "output_size": 5
     },
     "DenseNet121:S-4F": {
       "argmax": 0,
-      "confidence": 0.192523,
+      "confidence": 0.318878,
       "output_size": 6
     },
     "InceptionV3:S-1A": {
-      "argmax": 1,
-      "confidence": 0.561327,
+      "argmax": 3,
+      "confidence": 0.488711,
       "output_size": 4
     },
     "InceptionV3:S-1B": {
-      "argmax": 0,
-      "confidence": 0.973826,
+      "argmax": 4,
+      "confidence": 0.541456,
       "output_size": 5
     },
     "InceptionV3:S-1C": {
-      "argmax": 0,
-      "confidence": 0.933674,
+      "argmax": 4,
+      "confidence": 0.281882,
       "output_size": 5
     },
     "InceptionV3:S-1D": {
-      "argmax": 0,
-      "confidence": 0.946403,
+      "argmax": 2,
+      "confidence": 0.362754,
       "output_size": 5
     },
     "InceptionV3:S-1E": {
-      "argmax": 0,
-      "confidence": 0.515923,
+      "argmax": 1,
+      "confidence": 0.313323,
       "output_size": 5
     },
     "InceptionV3:S-1F": {
-      "argmax": 0,
-      "confidence": 0.947009,
+      "argmax": 2,
+      "confidence": 0.193829,
       "output_size": 6
     },
     "InceptionV3:S-2A": {
-      "argmax": 0,
-      "confidence": 0.996899,
+      "argmax": 3,
+      "confidence": 0.436892,
       "output_size": 5
     },
     "InceptionV3:S-2B": {
-      "argmax": 3,
-      "confidence": 0.922934,
+      "argmax": 0,
+      "confidence": 0.281678,
       "output_size": 4
     },
     "InceptionV3:S-2C": {
-      "argmax": 0,
-      "confidence": 0.992993,
+      "argmax": 1,
+      "confidence": 0.353693,
       "output_size": 5
     },
     "InceptionV3:S-2D": {
       "argmax": 0,
-      "confidence": 0.96454,
+      "confidence": 0.49791,
       "output_size": 5
     },
     "InceptionV3:S-2E": {
       "argmax": 0,
-      "confidence": 0.968098,
+      "confidence": 0.812395,
       "output_size": 5
     },
     "InceptionV3:S-2F": {
       "argmax": 0,
-      "confidence": 0.98401,
+      "confidence": 0.672221,
       "output_size": 6
     },
     "InceptionV3:S-3A": {
-      "argmax": 4,
-      "confidence": 0.77073,
+      "argmax": 2,
+      "confidence": 0.314325,
       "output_size": 5
     },
     "InceptionV3:S-3B": {
       "argmax": 0,
-      "confidence": 0.99911,
+      "confidence": 0.436343,
       "output_size": 5
     },
     "InceptionV3:S-3C": {
       "argmax": 2,
-      "confidence": 0.908587,
+      "confidence": 0.829326,
       "output_size": 5
     },
     "InceptionV3:S-3D": {
       "argmax": 0,
-      "confidence": 0.997375,
+      "confidence": 0.790405,
       "output_size": 5
     },
     "InceptionV3:S-3E": {
       "argmax": 0,
-      "confidence": 0.999634,
+      "confidence": 0.437337,
       "output_size": 5
     },
     "InceptionV3:S-3F": {
-      "argmax": 0,
-      "confidence": 0.763185,
+      "argmax": 1,
+      "confidence": 0.337719,
       "output_size": 5
     },
     "InceptionV3:S-4A": {
       "argmax": 0,
-      "confidence": 0.999256,
+      "confidence": 0.73493,
       "output_size": 5
     },
     "InceptionV3:S-4B": {
       "argmax": 4,
-      "confidence": 0.946491,
+      "confidence": 0.813764,
       "output_size": 5
     },
     "InceptionV3:S-4C": {
       "argmax": 1,
-      "confidence": 0.898605,
+      "confidence": 0.724464,
       "output_size": 5
     },
     "InceptionV3:S-4D": {
       "argmax": 4,
-      "confidence": 0.743397,
+      "confidence": 0.913943,
       "output_size": 5
     },
     "InceptionV3:S-4E": {
       "argmax": 0,
-      "confidence": 0.999717,
+      "confidence": 0.808641,
       "output_size": 5
     },
     "InceptionV3:S-4F": {
       "argmax": 0,
-      "confidence": 0.994484,
+      "confidence": 0.260347,
       "output_size": 6
     },
     "MobileNetV2:S-1A": {
-      "argmax": 1,
-      "confidence": 0.587344,
+      "argmax": 3,
+      "confidence": 0.655348,
       "output_size": 4
     },
     "MobileNetV2:S-1B": {
-      "argmax": 0,
-      "confidence": 0.883083,
+      "argmax": 1,
+      "confidence": 0.27892,
       "output_size": 5
     },
     "MobileNetV2:S-1C": {
-      "argmax": 0,
-      "confidence": 0.65835,
+      "argmax": 1,
+      "confidence": 0.360471,
       "output_size": 5
     },
     "MobileNetV2:S-1D": {
-      "argmax": 0,
-      "confidence": 0.908638,
+      "argmax": 1,
+      "confidence": 0.280407,
       "output_size": 5
     },
     "MobileNetV2:S-1E": {
       "argmax": 1,
-      "confidence": 0.468166,
+      "confidence": 0.83239,
       "output_size": 5
     },
     "MobileNetV2:S-1F": {
       "argmax": 0,
-      "confidence": 0.976188,
+      "confidence": 0.419257,
       "output_size": 6
     },
     "MobileNetV2:S-2A": {
       "argmax": 0,
-      "confidence": 0.788023,
+      "confidence": 0.782549,
       "output_size": 5
     },
     "MobileNetV2:S-2B": {
-      "argmax": 0,
-      "confidence": 0.531,
+      "argmax": 1,
+      "confidence": 0.388293,
       "output_size": 4
     },
     "MobileNetV2:S-2C": {
       "argmax": 0,
-      "confidence": 0.973536,
+      "confidence": 0.645313,
       "output_size": 5
     },
     "MobileNetV2:S-2D": {
       "argmax": 0,
-      "confidence": 0.908383,
+      "confidence": 0.358117,
       "output_size": 5
     },
     "MobileNetV2:S-2E": {
       "argmax": 0,
-      "confidence": 0.992569,
+      "confidence": 0.682172,
       "output_size": 5
     },
     "MobileNetV2:S-2F": {
-      "argmax": 0,
-      "confidence": 0.953487,
+      "argmax": 4,
+      "confidence": 0.267711,
       "output_size": 6
     },
     "MobileNetV2:S-3A": {
       "argmax": 4,
-      "confidence": 0.85904,
+      "confidence": 0.511459,
       "output_size": 5
     },
     "MobileNetV2:S-3B": {
       "argmax": 0,
-      "confidence": 0.98912,
+      "confidence": 0.74097,
       "output_size": 5
     },
     "MobileNetV2:S-3C": {
-      "argmax": 0,
-      "confidence": 0.685401,
+      "argmax": 2,
+      "confidence": 0.334335,
       "output_size": 5
     },
     "MobileNetV2:S-3D": {
       "argmax": 0,
-      "confidence": 0.987263,
+      "confidence": 0.843427,
       "output_size": 5
     },
     "MobileNetV2:S-3E": {
       "argmax": 0,
-      "confidence": 0.95129,
+      "confidence": 0.810022,
       "output_size": 5
     },
     "MobileNetV2:S-3F": {
       "argmax": 0,
-      "confidence": 0.966401,
+      "confidence": 0.501954,
       "output_size": 5
     },
     "MobileNetV2:S-4A": {
       "argmax": 0,
-      "confidence": 0.95879,
+      "confidence": 0.666915,
       "output_size": 5
     },
     "MobileNetV2:S-4B": {
       "argmax": 4,
-      "confidence": 0.703735,
+      "confidence": 0.476674,
       "output_size": 5
     },
     "MobileNetV2:S-4C": {
-      "argmax": 0,
-      "confidence": 0.792273,
+      "argmax": 1,
+      "confidence": 0.471902,
       "output_size": 5
     },
     "MobileNetV2:S-4D": {
-      "argmax": 0,
-      "confidence": 0.640295,
+      "argmax": 4,
+      "confidence": 0.406413,
       "output_size": 5
     },
     "MobileNetV2:S-4E": {
       "argmax": 0,
-      "confidence": 0.998601,
+      "confidence": 0.300977,
       "output_size": 5
     },
     "MobileNetV2:S-4F": {
       "argmax": 0,
-      "confidence": 0.99105,
+      "confidence": 0.477946,
       "output_size": 6
     }
   },

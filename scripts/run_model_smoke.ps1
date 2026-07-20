@@ -2,6 +2,7 @@
 param(
     [switch]$WriteGolden,
     [string]$Image = "emathtoco-worker:local",
+    [string]$ModelDirectory = "Models_New",
     [ValidateRange(0, 71)]
     [int]$StartIndex = 0,
     [ValidateRange(1, 72)]
@@ -10,7 +11,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$manifestPath = Join-Path $projectRoot "Models\manifest.json"
+$modelRoot = Join-Path $projectRoot $ModelDirectory
+$manifestPath = Join-Path $modelRoot "manifest.json"
 $goldenPath = Join-Path $projectRoot "Models\golden_inference.json"
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
 $artifacts = @($manifest.artifacts) |
@@ -23,7 +25,7 @@ foreach ($artifact in $artifacts) {
         "-e", "TF_CPP_MIN_LOG_LEVEL=3",
         "-e", "TF_ENABLE_ONEDNN_OPTS=0",
         "-v", "${projectRoot}:/workspace",
-        "-v", "${projectRoot}\Models:/models:ro",
+        "-v", "${modelRoot}:/models:ro",
         $Image,
         "python", "/workspace/scripts/smoke_model_artifacts.py",
         "--model-root", "/models",

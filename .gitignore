@@ -33,3 +33,4 @@ Models/*
 Models_New/*
 !Models_New/manifest.json
 !Models_New/golden_inference.json
+!Models_New/training_manifest_export.json

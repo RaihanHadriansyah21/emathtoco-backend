@@ -1,781 +1,2475 @@
 {
-  "manifest_name": "manifest_3models",
-  "created_at": "2026-07-18T21:14:05.983208",
-  "model_collection_root": "/content/drive/MyDrive/models_emathtoco",
-  "dataset_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset",
-  "ratio": "80:20",
-  "note": "Semua file .h5 di folder model merupakan model fixed 80:20 yang telah diverifikasi terhadap notebook dan checksum aktual.",
-  "total_models": 3,
+  "schema_version": 2,
+  "manifest_type": "emathtoco-runtime-model-manifest",
+  "generated_at": "2026-07-20T07:46:46.293Z",
+  "generated_from": "Models_New training manifest, training golden inference, and local H5 checksums",
+  "source_training_manifest": "training_manifest_export.json",
+  "source_golden_inference": "golden_inference.json",
+  "model_collection": "Models_New",
+  "model_release": "models-new-densenet-bn-policy-aligned-2026-07-19",
+  "total_artifacts": 72,
   "expected_sections": [
-    "1a",
-    "1b",
-    "1c",
-    "1d",
-    "1e",
-    "1f",
-    "2a",
-    "2b",
-    "2c",
-    "2d",
-    "2e",
-    "2f",
-    "3a",
-    "3b",
-    "3c",
-    "3d",
-    "3e",
-    "3f",
-    "4a",
-    "4b",
-    "4c",
-    "4d",
-    "4e",
-    "4f"
+    "S-1A",
+    "S-1B",
+    "S-1C",
+    "S-1D",
+    "S-1E",
+    "S-1F",
+    "S-2A",
+    "S-2B",
+    "S-2C",
+    "S-2D",
+    "S-2E",
+    "S-2F",
+    "S-3A",
+    "S-3B",
+    "S-3C",
+    "S-3D",
+    "S-3E",
+    "S-3F",
+    "S-4A",
+    "S-4B",
+    "S-4C",
+    "S-4D",
+    "S-4E",
+    "S-4F"
   ],
-  "models": {
+  "artifact_contract_sha256": "abd9ccbe33a93bbedc9f374e74b22495413cb291e79e52116313e79a384126c8",
+  "training_dataset_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset",
+  "training_dataset_preprocessing": {
+    "decision_source": "verified_training_dataset_samples_2026-07-17",
+    "source_notebook_in_repo": "Models_New/Preprocessing.ipynb",
+    "preprocessing_notebook_status": "non_authoritative_polarity_mismatch_with_training_dataset_artifacts",
+    "evidence": "Verified training PNGs are binary black ink on white background. Training loaders use RGB mode and architecture-specific Keras preprocess_input.",
+    "steps": [
+      "use the complete section crop produced by the frontend without a second contour crop",
+      "convert to grayscale and apply non-inverted Otsu binary threshold",
+      "replicate the binary image across three RGB channels",
+      "resize with nearest-neighbor interpolation to the architecture input shape",
+      "apply the matching Keras application preprocess_input function"
+    ]
+  },
+  "runtime_policy": {
+    "no_frontend_flow_change": true,
+    "model_root_switchable": true,
+    "recommended_default_architecture": "MobileNetV2",
+    "exactly_one_rq_worker": true,
+    "manifest_required_for_readiness": true
+  },
+  "architecture_comparison_policy": {
+    "shared_classification_head_protocol": true,
+    "shared_batch_normalization_policy": true,
+    "backbone_architectures_are_identical": false,
+    "note": "The three backbones remain architecturally different. Comparable means the fine-tuning, BatchNormalization freeze policy, head protocol, split, and optimization settings are aligned; it does not mean identical layer counts."
+  },
+  "architectures": {
+    "MobileNetV2": {
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "total_sections": 24
+    },
     "DenseNet121": {
-      "model_name": "DenseNet121",
-      "model_dir": "/content/drive/MyDrive/models_emathtoco/DenseNet121",
-      "ratio": "80:20",
-      "total_sections": 24,
-      "sections": {
-        "1a": {
-          "section_id": "1a",
-          "model_section_h5": "model_1a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1a.h5",
-          "file_size_bytes": 33838104,
-          "sha256": "2f68ae4d7f4d3fbcd16f2c796f49a23e1bd732bc487ef078cf97bfd4780ab11f",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1b": {
-          "section_id": "1b",
-          "model_section_h5": "model_1b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1b.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "6315bc4c9986773428970d5fcacf8881f43cf655cd1c14e87fb4c0dec275fdbf",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1c": {
-          "section_id": "1c",
-          "model_section_h5": "model_1c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1c.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "0e1a2724ed31d284ee32b8ef3b0515619d2187d2bed0e2eefc604955c9215cb7",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1d": {
-          "section_id": "1d",
-          "model_section_h5": "model_1d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1d.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "2af53609d96b5fb8a678e2fa1d919b2cb479fa62e6bfd761c298726721b8e421",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1e": {
-          "section_id": "1e",
-          "model_section_h5": "model_1e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1e.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "4f3923d5a16a40fbf68ff62474f2d8939d1d4bb3278896b842997ee675bff528",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1f": {
-          "section_id": "1f",
-          "model_section_h5": "model_1f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1f.h5",
-          "file_size_bytes": 33839128,
-          "sha256": "a237ee079e42eb25f11e294184e3fcc3c892c581d1f6ccd85524e47a7178fe2f",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2a": {
-          "section_id": "2a",
-          "model_section_h5": "model_2a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2a.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "c90b5863431b342c3f3f3bf4e268935c40c599ce0881973a0f107a0b3cafc6cc",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2b": {
-          "section_id": "2b",
-          "model_section_h5": "model_2b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2b.h5",
-          "file_size_bytes": 33838104,
-          "sha256": "a1371fcde957f6f19dcd4e320af57bbe055481544a937c26a11b72370469bfb5",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2c": {
-          "section_id": "2c",
-          "model_section_h5": "model_2c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2c.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "03e451225b88a850df7a8e77f70393b90d2b231e366ab2ddb1f4ffcf7775d08a",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2d": {
-          "section_id": "2d",
-          "model_section_h5": "model_2d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2d.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "2577688415b289c01464baa3f8621d73377af3909b30dc9402f003b4863c7fd4",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2e": {
-          "section_id": "2e",
-          "model_section_h5": "model_2e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2e.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "9052be9a11efe1c32db4409d374b44cc5ae7d7450adbe45281911d0d9622c1af",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2f": {
-          "section_id": "2f",
-          "model_section_h5": "model_2f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2f.h5",
-          "file_size_bytes": 33839128,
-          "sha256": "2ee861b8adc3e482401733ecc3d94f300f7450fe79156c271679e94df4e5b2f0",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3a": {
-          "section_id": "3a",
-          "model_section_h5": "model_3a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3a.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "9a35b9021f20fa05ca262cd86c7a2e48a7075403018975cb5855acff8570a26b",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3b": {
-          "section_id": "3b",
-          "model_section_h5": "model_3b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3b.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "86dfd49c701f8a9014391b397a52cf3d250f97bbb26e388820753f3653616845",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3c": {
-          "section_id": "3c",
-          "model_section_h5": "model_3c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3c.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "228df7c15a24149c894cf9ee65743bb8614431c632995c70d4e59e2fb0d1b262",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3d": {
-          "section_id": "3d",
-          "model_section_h5": "model_3d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3d.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "7f47a20ce96f2228d060333e3b1f1da787123e0c2b4d997c12b9c6ebcf747ac4",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3e": {
-          "section_id": "3e",
-          "model_section_h5": "model_3e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3e.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "2236bcbf0c17d6932f8fe681aa457150f1e903eed38b386df4af16a1a6c428be",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3f": {
-          "section_id": "3f",
-          "model_section_h5": "model_3f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3f.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "8bbcbd1732c36fa9c27f52f4da2cbf9d74e179a167ec359d658cef7f902a6a28",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4a": {
-          "section_id": "4a",
-          "model_section_h5": "model_4a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4a.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "abc8729cfbac84869d6927c69a92571328d7030c7a66d39ffb4418baa1d69d4d",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4b": {
-          "section_id": "4b",
-          "model_section_h5": "model_4b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4b.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "98429a66268f1651bc1bdfa7fc8116540622cfd4124c02e97450d4b533656aa7",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4c": {
-          "section_id": "4c",
-          "model_section_h5": "model_4c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4c.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "21e5ba738584eb92393f8c351e2de6dad099cb3eda28e3be509d996c0012030c",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4d": {
-          "section_id": "4d",
-          "model_section_h5": "model_4d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4d.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "d7e1bc53e4c60f8f042098a868b78b062107dad74b8d85712801cfe2d76742ee",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4e": {
-          "section_id": "4e",
-          "model_section_h5": "model_4e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4e.h5",
-          "file_size_bytes": 33838616,
-          "sha256": "7afc6f78e750ece2a85046ffb3941774c41896f04a3d534d7705d7360150c290",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4f": {
-          "section_id": "4f",
-          "model_section_h5": "model_4f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4f.h5",
-          "file_size_bytes": 33839128,
-          "sha256": "d5e79a91d443b86cd7d0f18efad0a893c91a39422e300c87e7116021640d0850",
-          "ratio": "80:20",
-          "format": "h5"
-        }
-      }
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "total_sections": 24
     },
     "InceptionV3": {
-      "model_name": "InceptionV3",
-      "model_dir": "/content/drive/MyDrive/models_emathtoco/InceptionV3",
-      "ratio": "80:20",
-      "total_sections": 24,
-      "sections": {
-        "1a": {
-          "section_id": "1a",
-          "model_section_h5": "model_1a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1a.h5",
-          "file_size_bytes": 93608680,
-          "sha256": "576791fdb7063e5d519caeae11d2fa9d60acd243c88a6acca72a3e5cbc1d108b",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1b": {
-          "section_id": "1b",
-          "model_section_h5": "model_1b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1b.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "c9839dd924818c5e8567c31e04d97815fe46b05c581082a3c111453e0b1649bd",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1c": {
-          "section_id": "1c",
-          "model_section_h5": "model_1c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1c.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "5919a3f55325e4279d8df5b5873fd6575a3400ed044af7c6b80ce51c6437299f",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1d": {
-          "section_id": "1d",
-          "model_section_h5": "model_1d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1d.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "8b916c8100a0ca0cdc3f19279f4cc8d10dd5bac0c70cf065bb6537808d5e8ac7",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1e": {
-          "section_id": "1e",
-          "model_section_h5": "model_1e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1e.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "688bd632e5c3f59ff04b8a646e10f3751817e2af8e00eef0a98696a56d9baeb8",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1f": {
-          "section_id": "1f",
-          "model_section_h5": "model_1f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1f.h5",
-          "file_size_bytes": 93609704,
-          "sha256": "285a4fdf147a5cf6b1e63a114b8f6f7260c8b462e3d46075ac8132c01c066645",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2a": {
-          "section_id": "2a",
-          "model_section_h5": "model_2a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2a.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "f4e215f31d7c8a5b1b8939b6a605e6bb7d06c53b4a20f206ea81952dd2ae11a4",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2b": {
-          "section_id": "2b",
-          "model_section_h5": "model_2b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2b.h5",
-          "file_size_bytes": 93608680,
-          "sha256": "9bd423d0996d3c7e6f0d61e2683ade31eec79ad809a1688d52bf5ebc9e69ac63",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2c": {
-          "section_id": "2c",
-          "model_section_h5": "model_2c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2c.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "4c69d4ce5b61782d1c60410002218702c592dc8297428f3a87af0aa6715d9b7f",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2d": {
-          "section_id": "2d",
-          "model_section_h5": "model_2d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2d.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "72c31befb72a26683f4ae45ac59d6149a3c36e49692c2c1222af1aead085857c",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2e": {
-          "section_id": "2e",
-          "model_section_h5": "model_2e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2e.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "276c92a226213809b887d3b1cf17ad2f6e6e090f12dc1d370113b6d4a3de77e6",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2f": {
-          "section_id": "2f",
-          "model_section_h5": "model_2f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2f.h5",
-          "file_size_bytes": 93609704,
-          "sha256": "110146592d6413b153236f97b945a2ce97ecb7d5a5536c29c82e807234fcd754",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3a": {
-          "section_id": "3a",
-          "model_section_h5": "model_3a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3a.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "72b4c4219e9685d2307a10f2122a4302263023e37848738b7e3b5f1e72c5ef2a",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3b": {
-          "section_id": "3b",
-          "model_section_h5": "model_3b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3b.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "7cbcdf42b8024b869e0050a91a4553f237fc8ea95669944aed7cdd301fc96fc2",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3c": {
-          "section_id": "3c",
-          "model_section_h5": "model_3c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3c.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "30eb64bd17fc0814995751600aa12c6fcba12eef61f8f42331f6aa981d8f0335",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3d": {
-          "section_id": "3d",
-          "model_section_h5": "model_3d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3d.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "e6ba68dd6ed38d9872452fa36eaae5fc61474b34c153e0aa5468921ba38bad02",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3e": {
-          "section_id": "3e",
-          "model_section_h5": "model_3e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3e.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "6966f9ab3f46c57cf78705520d3d7b7248480ae6c5d3b15d01b6dc571be40acc",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3f": {
-          "section_id": "3f",
-          "model_section_h5": "model_3f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3f.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "4be7ed158444e47159a7682e9356c6bacfa11c9294a60257778d8352350604e5",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4a": {
-          "section_id": "4a",
-          "model_section_h5": "model_4a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4a.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "61cf1bc5243a84661e2a1d6dfd5699a2c34a6e8034b3197815a45be61077e752",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4b": {
-          "section_id": "4b",
-          "model_section_h5": "model_4b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4b.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "3d72fd709073421abdcde3f37f14a703a923ce7eead23f89d0b90c5c185409dc",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4c": {
-          "section_id": "4c",
-          "model_section_h5": "model_4c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4c.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "ab4540134786ae80f931229cafefc56850ed049ecabae1e6bd61bf6c31885479",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4d": {
-          "section_id": "4d",
-          "model_section_h5": "model_4d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4d.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "6de387549895773659bd2e6021269ede6f0b1f8cd4d5dc3eee7792be421f1094",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4e": {
-          "section_id": "4e",
-          "model_section_h5": "model_4e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4e.h5",
-          "file_size_bytes": 93609192,
-          "sha256": "5e0284d78b76e97ab965d7805f3d4608e01b5cda47a5fd46a43bc81a9d1c1a44",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4f": {
-          "section_id": "4f",
-          "model_section_h5": "model_4f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4f.h5",
-          "file_size_bytes": 93609704,
-          "sha256": "bae983e4b2674335b3b36a0cfd0d14b22afda94e39c67a9ae24c73f3fac3fa08",
-          "ratio": "80:20",
-          "format": "h5"
-        }
-      }
-    },
-    "MobileNetV2": {
-      "model_name": "MobileNetV2",
-      "model_dir": "/content/drive/MyDrive/models_emathtoco/MobileNetV2",
-      "ratio": "80:20",
-      "total_sections": 24,
-      "sections": {
-        "1a": {
-          "section_id": "1a",
-          "model_section_h5": "model_1a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1a.h5",
-          "file_size_bytes": 14196712,
-          "sha256": "2600ed7188d346b06f0d65feb2fea744fadd5cba2823de168dfa8f7ef923517d",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1b": {
-          "section_id": "1b",
-          "model_section_h5": "model_1b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1b.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "38c1159c202c0c84922fc424f94ad06fdd7d55094ed2044b40575ac768cec5b6",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1c": {
-          "section_id": "1c",
-          "model_section_h5": "model_1c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1c.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "fb024a40ec1a2e9d03297873bb5890ce0f5b0ea6038bdab47e16c002d45d186c",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1d": {
-          "section_id": "1d",
-          "model_section_h5": "model_1d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1d.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "2fd090ff0e758442c2f573ad087b0769d392561a5a5cee3084d2cdbec14feea9",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1e": {
-          "section_id": "1e",
-          "model_section_h5": "model_1e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1e.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "3ed85077166e76069a840ba7892e50ac0ebfe7e137df32fcc14b39b75cda9272",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "1f": {
-          "section_id": "1f",
-          "model_section_h5": "model_1f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1f.h5",
-          "file_size_bytes": 14197736,
-          "sha256": "29e5bd1dd01cae33948396360e5f02945584d4436ea31620f6c4f23c969579f7",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2a": {
-          "section_id": "2a",
-          "model_section_h5": "model_2a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2a.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "d07db42ca83fe04f2230016cc78e85cc9332145ec247209167daf2dcccaec30b",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2b": {
-          "section_id": "2b",
-          "model_section_h5": "model_2b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2b.h5",
-          "file_size_bytes": 14196712,
-          "sha256": "04c1bbbb3401042167bf8acad628352476e93d374b276e07ae05480b8a66ce72",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2c": {
-          "section_id": "2c",
-          "model_section_h5": "model_2c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2c.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "416c55708b82e7b78bb1768c647ccfb9f52ccfd25e4cdb1e1cb1c01c27a72ce2",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2d": {
-          "section_id": "2d",
-          "model_section_h5": "model_2d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2d.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "b72944d6e932634134270ddfd8f4fe7ba58ff14ed32d3057ba42763abb098ea1",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2e": {
-          "section_id": "2e",
-          "model_section_h5": "model_2e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2e.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "7d1754e3d25d7a77ccf1238a22e1935ac1423ef85a158bd06754f806ad8987e1",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "2f": {
-          "section_id": "2f",
-          "model_section_h5": "model_2f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2f.h5",
-          "file_size_bytes": 14197736,
-          "sha256": "e131de5af8f3741c1697f27ec9c635cce2dd583670385e7c1e18e814fd960603",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3a": {
-          "section_id": "3a",
-          "model_section_h5": "model_3a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3a.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "d2f3781bca09bca422539979077cc4be96c864343a2208b590e4b035f967d60f",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3b": {
-          "section_id": "3b",
-          "model_section_h5": "model_3b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3b.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "abbe78bd445edf6cf7c213a08b59e68c1c6f328c81e6ee13f6184a1d60bcbb91",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3c": {
-          "section_id": "3c",
-          "model_section_h5": "model_3c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3c.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "44abfab5b0b6042f5c29020411499a3d0f2eaae8b5f70f0e3f0bda63d50f7843",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3d": {
-          "section_id": "3d",
-          "model_section_h5": "model_3d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3d.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "cb9bcb7e60d3b9eac2faabb9396070514744eace59776e8a5a09de5444619782",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3e": {
-          "section_id": "3e",
-          "model_section_h5": "model_3e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3e.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "76da58c3010172b1114672d4d244431ed04c77cbad72a6e87f755a84cb1b9781",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "3f": {
-          "section_id": "3f",
-          "model_section_h5": "model_3f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3f.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "23058c473359baf78b4ff849373a5e4ab70b8172e9ba2e320db63ca9ef52933a",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4a": {
-          "section_id": "4a",
-          "model_section_h5": "model_4a.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4a.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4a.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "1814b962b023153f226d93d4ddfe719ebcb700d3586c80d623bef47c038c2d43",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4b": {
-          "section_id": "4b",
-          "model_section_h5": "model_4b.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4b.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4b.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "8093fedad5d659151635f7d97d373f03cc7f6e248c0df0e24497c90b86336082",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4c": {
-          "section_id": "4c",
-          "model_section_h5": "model_4c.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4c.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4c.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "8f8c3f9e3c6a7f05424e7902b4aefcf4d878ff252fe735b87030011784acd437",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4d": {
-          "section_id": "4d",
-          "model_section_h5": "model_4d.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4d.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4d.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "1813f82cd70690c56edf5d3016c12f7665d262ffcb43de4b05657ba18028b4af",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4e": {
-          "section_id": "4e",
-          "model_section_h5": "model_4e.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4e.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4e.h5",
-          "file_size_bytes": 14197224,
-          "sha256": "8ec0bf0c98f5fd23435d171e8f697d67141b08c81daeee62804b70ee3e042ca7",
-          "ratio": "80:20",
-          "format": "h5"
-        },
-        "4f": {
-          "section_id": "4f",
-          "model_section_h5": "model_4f.h5",
-          "model_section_h5_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4f.h5",
-          "model_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4f.h5",
-          "file_size_bytes": 14197736,
-          "sha256": "5dba14221a49107b81c9bb33f1548f1b9b92cb7df7bc22f7dea22143fb2c42d3",
-          "ratio": "80:20",
-          "format": "h5"
-        }
-      }
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "total_sections": 24
     }
-  }
+  },
+  "artifacts": [
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1A",
+      "path": "MobileNetV2/model_1a.h5",
+      "size_bytes": 14196712,
+      "sha256": "2600ed7188d346b06f0d65feb2fea744fadd5cba2823de168dfa8f7ef923517d",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.8253636956214905
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1B",
+      "path": "MobileNetV2/model_1b.h5",
+      "size_bytes": 14197224,
+      "sha256": "38c1159c202c0c84922fc424f94ad06fdd7d55094ed2044b40575ac768cec5b6",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.7260649800300598
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1C",
+      "path": "MobileNetV2/model_1c.h5",
+      "size_bytes": 14197224,
+      "sha256": "fb024a40ec1a2e9d03297873bb5890ce0f5b0ea6038bdab47e16c002d45d186c",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.436369925737381
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1D",
+      "path": "MobileNetV2/model_1d.h5",
+      "size_bytes": 14197224,
+      "sha256": "2fd090ff0e758442c2f573ad087b0769d392561a5a5cee3084d2cdbec14feea9",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.6074833869934082
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1E",
+      "path": "MobileNetV2/model_1e.h5",
+      "size_bytes": 14197224,
+      "sha256": "3ed85077166e76069a840ba7892e50ac0ebfe7e137df32fcc14b39b75cda9272",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.46104034781455994
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-1F",
+      "path": "MobileNetV2/model_1f.h5",
+      "size_bytes": 14197736,
+      "sha256": "29e5bd1dd01cae33948396360e5f02945584d4436ea31620f6c4f23c969579f7",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.3401152491569519
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2A",
+      "path": "MobileNetV2/model_2a.h5",
+      "size_bytes": 14197224,
+      "sha256": "d07db42ca83fe04f2230016cc78e85cc9332145ec247209167daf2dcccaec30b",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.49248069524765015
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2B",
+      "path": "MobileNetV2/model_2b.h5",
+      "size_bytes": 14196712,
+      "sha256": "04c1bbbb3401042167bf8acad628352476e93d374b276e07ae05480b8a66ce72",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.33492252230644226
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2C",
+      "path": "MobileNetV2/model_2c.h5",
+      "size_bytes": 14197224,
+      "sha256": "416c55708b82e7b78bb1768c647ccfb9f52ccfd25e4cdb1e1cb1c01c27a72ce2",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.45642217993736267
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2D",
+      "path": "MobileNetV2/model_2d.h5",
+      "size_bytes": 14197224,
+      "sha256": "b72944d6e932634134270ddfd8f4fe7ba58ff14ed32d3057ba42763abb098ea1",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.2508333921432495
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2E",
+      "path": "MobileNetV2/model_2e.h5",
+      "size_bytes": 14197224,
+      "sha256": "7d1754e3d25d7a77ccf1238a22e1935ac1423ef85a158bd06754f806ad8987e1",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.3115898370742798
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-2F",
+      "path": "MobileNetV2/model_2f.h5",
+      "size_bytes": 14197736,
+      "sha256": "e131de5af8f3741c1697f27ec9c635cce2dd583670385e7c1e18e814fd960603",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.4863142669200897
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3A",
+      "path": "MobileNetV2/model_3a.h5",
+      "size_bytes": 14197224,
+      "sha256": "d2f3781bca09bca422539979077cc4be96c864343a2208b590e4b035f967d60f",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.632737934589386
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3B",
+      "path": "MobileNetV2/model_3b.h5",
+      "size_bytes": 14197224,
+      "sha256": "abbe78bd445edf6cf7c213a08b59e68c1c6f328c81e6ee13f6184a1d60bcbb91",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.35374051332473755
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3C",
+      "path": "MobileNetV2/model_3c.h5",
+      "size_bytes": 14197224,
+      "sha256": "44abfab5b0b6042f5c29020411499a3d0f2eaae8b5f70f0e3f0bda63d50f7843",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.2951601445674896
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3D",
+      "path": "MobileNetV2/model_3d.h5",
+      "size_bytes": 14197224,
+      "sha256": "cb9bcb7e60d3b9eac2faabb9396070514744eace59776e8a5a09de5444619782",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.4666287899017334
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3E",
+      "path": "MobileNetV2/model_3e.h5",
+      "size_bytes": 14197224,
+      "sha256": "76da58c3010172b1114672d4d244431ed04c77cbad72a6e87f755a84cb1b9781",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.4847816228866577
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-3F",
+      "path": "MobileNetV2/model_3f.h5",
+      "size_bytes": 14197224,
+      "sha256": "23058c473359baf78b4ff849373a5e4ab70b8172e9ba2e320db63ca9ef52933a",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.8309188485145569
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4A",
+      "path": "MobileNetV2/model_4a.h5",
+      "size_bytes": 14197224,
+      "sha256": "1814b962b023153f226d93d4ddfe719ebcb700d3586c80d623bef47c038c2d43",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.545976996421814
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4B",
+      "path": "MobileNetV2/model_4b.h5",
+      "size_bytes": 14197224,
+      "sha256": "8093fedad5d659151635f7d97d373f03cc7f6e248c0df0e24497c90b86336082",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.2698458433151245
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4C",
+      "path": "MobileNetV2/model_4c.h5",
+      "size_bytes": 14197224,
+      "sha256": "8f8c3f9e3c6a7f05424e7902b4aefcf4d878ff252fe735b87030011784acd437",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.3164175748825073
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4D",
+      "path": "MobileNetV2/model_4d.h5",
+      "size_bytes": 14197224,
+      "sha256": "1813f82cd70690c56edf5d3016c12f7665d262ffcb43de4b05657ba18028b4af",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.46020013093948364
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4E",
+      "path": "MobileNetV2/model_4e.h5",
+      "size_bytes": 14197224,
+      "sha256": "8ec0bf0c98f5fd23435d171e8f697d67141b08c81daeee62804b70ee3e042ca7",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.38279667496681213
+    },
+    {
+      "architecture": "MobileNetV2",
+      "section": "S-4F",
+      "path": "MobileNetV2/model_4f.h5",
+      "size_bytes": 14197736,
+      "sha256": "5dba14221a49107b81c9bb33f1548f1b9b92cb7df7bc22f7dea22143fb2c42d3",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f",
+      "golden_predicted_index": 5,
+      "golden_confidence": 0.8812562823295593
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1A",
+      "path": "DenseNet121/model_1a.h5",
+      "size_bytes": 33838104,
+      "sha256": "2f68ae4d7f4d3fbcd16f2c796f49a23e1bd732bc487ef078cf97bfd4780ab11f",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.6616722941398621
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1B",
+      "path": "DenseNet121/model_1b.h5",
+      "size_bytes": 33838616,
+      "sha256": "6315bc4c9986773428970d5fcacf8881f43cf655cd1c14e87fb4c0dec275fdbf",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5918288230895996
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1C",
+      "path": "DenseNet121/model_1c.h5",
+      "size_bytes": 33838616,
+      "sha256": "0e1a2724ed31d284ee32b8ef3b0515619d2187d2bed0e2eefc604955c9215cb7",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.6818879842758179
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1D",
+      "path": "DenseNet121/model_1d.h5",
+      "size_bytes": 33838616,
+      "sha256": "2af53609d96b5fb8a678e2fa1d919b2cb479fa62e6bfd761c298726721b8e421",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5923583507537842
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1E",
+      "path": "DenseNet121/model_1e.h5",
+      "size_bytes": 33838616,
+      "sha256": "4f3923d5a16a40fbf68ff62474f2d8939d1d4bb3278896b842997ee675bff528",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.4289613664150238
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-1F",
+      "path": "DenseNet121/model_1f.h5",
+      "size_bytes": 33839128,
+      "sha256": "a237ee079e42eb25f11e294184e3fcc3c892c581d1f6ccd85524e47a7178fe2f",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.22322364151477814
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2A",
+      "path": "DenseNet121/model_2a.h5",
+      "size_bytes": 33838616,
+      "sha256": "c90b5863431b342c3f3f3bf4e268935c40c599ce0881973a0f107a0b3cafc6cc",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.6566637754440308
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2B",
+      "path": "DenseNet121/model_2b.h5",
+      "size_bytes": 33838104,
+      "sha256": "a1371fcde957f6f19dcd4e320af57bbe055481544a937c26a11b72370469bfb5",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.31765416264533997
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2C",
+      "path": "DenseNet121/model_2c.h5",
+      "size_bytes": 33838616,
+      "sha256": "03e451225b88a850df7a8e77f70393b90d2b231e366ab2ddb1f4ffcf7775d08a",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.46021875739097595
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2D",
+      "path": "DenseNet121/model_2d.h5",
+      "size_bytes": 33838616,
+      "sha256": "2577688415b289c01464baa3f8621d73377af3909b30dc9402f003b4863c7fd4",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.264744371175766
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2E",
+      "path": "DenseNet121/model_2e.h5",
+      "size_bytes": 33838616,
+      "sha256": "9052be9a11efe1c32db4409d374b44cc5ae7d7450adbe45281911d0d9622c1af",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.3804997205734253
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-2F",
+      "path": "DenseNet121/model_2f.h5",
+      "size_bytes": 33839128,
+      "sha256": "2ee861b8adc3e482401733ecc3d94f300f7450fe79156c271679e94df4e5b2f0",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab",
+      "golden_predicted_index": 5,
+      "golden_confidence": 0.772537887096405
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3A",
+      "path": "DenseNet121/model_3a.h5",
+      "size_bytes": 33838616,
+      "sha256": "9a35b9021f20fa05ca262cd86c7a2e48a7075403018975cb5855acff8570a26b",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.6630373597145081
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3B",
+      "path": "DenseNet121/model_3b.h5",
+      "size_bytes": 33838616,
+      "sha256": "86dfd49c701f8a9014391b397a52cf3d250f97bbb26e388820753f3653616845",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.29985666275024414
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3C",
+      "path": "DenseNet121/model_3c.h5",
+      "size_bytes": 33838616,
+      "sha256": "228df7c15a24149c894cf9ee65743bb8614431c632995c70d4e59e2fb0d1b262",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.38381269574165344
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3D",
+      "path": "DenseNet121/model_3d.h5",
+      "size_bytes": 33838616,
+      "sha256": "7f47a20ce96f2228d060333e3b1f1da787123e0c2b4d997c12b9c6ebcf747ac4",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5872805118560791
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3E",
+      "path": "DenseNet121/model_3e.h5",
+      "size_bytes": 33838616,
+      "sha256": "2236bcbf0c17d6932f8fe681aa457150f1e903eed38b386df4af16a1a6c428be",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5884029865264893
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-3F",
+      "path": "DenseNet121/model_3f.h5",
+      "size_bytes": 33838616,
+      "sha256": "8bbcbd1732c36fa9c27f52f4da2cbf9d74e179a167ec359d658cef7f902a6a28",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.755183219909668
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4A",
+      "path": "DenseNet121/model_4a.h5",
+      "size_bytes": 33838616,
+      "sha256": "abc8729cfbac84869d6927c69a92571328d7030c7a66d39ffb4418baa1d69d4d",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5972515940666199
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4B",
+      "path": "DenseNet121/model_4b.h5",
+      "size_bytes": 33838616,
+      "sha256": "98429a66268f1651bc1bdfa7fc8116540622cfd4124c02e97450d4b533656aa7",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.517076849937439
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4C",
+      "path": "DenseNet121/model_4c.h5",
+      "size_bytes": 33838616,
+      "sha256": "21e5ba738584eb92393f8c351e2de6dad099cb3eda28e3be509d996c0012030c",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.755730152130127
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4D",
+      "path": "DenseNet121/model_4d.h5",
+      "size_bytes": 33838616,
+      "sha256": "d7e1bc53e4c60f8f042098a868b78b062107dad74b8d85712801cfe2d76742ee",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.42055606842041016
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4E",
+      "path": "DenseNet121/model_4e.h5",
+      "size_bytes": 33838616,
+      "sha256": "7afc6f78e750ece2a85046ffb3941774c41896f04a3d534d7705d7360150c290",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.4882640540599823
+    },
+    {
+      "architecture": "DenseNet121",
+      "section": "S-4F",
+      "path": "DenseNet121/model_4f.h5",
+      "size_bytes": 33839128,
+      "sha256": "d5e79a91d443b86cd7d0f18efad0a893c91a39422e300c87e7116021640d0850",
+      "format": "keras-h5",
+      "input_shape": [
+        224,
+        224,
+        3
+      ],
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_DENSENET121_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f",
+      "golden_predicted_index": 5,
+      "golden_confidence": 0.5501746535301208
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1A",
+      "path": "InceptionV3/model_1a.h5",
+      "size_bytes": 93608680,
+      "sha256": "576791fdb7063e5d519caeae11d2fa9d60acd243c88a6acca72a3e5cbc1d108b",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.880620002746582
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1B",
+      "path": "InceptionV3/model_1b.h5",
+      "size_bytes": 93609192,
+      "sha256": "c9839dd924818c5e8567c31e04d97815fe46b05c581082a3c111453e0b1649bd",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5429455637931824
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1C",
+      "path": "InceptionV3/model_1c.h5",
+      "size_bytes": 93609192,
+      "sha256": "5919a3f55325e4279d8df5b5873fd6575a3400ed044af7c6b80ce51c6437299f",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.48341166973114014
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1D",
+      "path": "InceptionV3/model_1d.h5",
+      "size_bytes": 93609192,
+      "sha256": "8b916c8100a0ca0cdc3f19279f4cc8d10dd5bac0c70cf065bb6537808d5e8ac7",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.9315504431724548
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1E",
+      "path": "InceptionV3/model_1e.h5",
+      "size_bytes": 93609192,
+      "sha256": "688bd632e5c3f59ff04b8a646e10f3751817e2af8e00eef0a98696a56d9baeb8",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.45110249519348145
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-1F",
+      "path": "InceptionV3/model_1f.h5",
+      "size_bytes": 93609704,
+      "sha256": "285a4fdf147a5cf6b1e63a114b8f6f7260c8b462e3d46075ac8132c01c066645",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.18752755224704742
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2A",
+      "path": "InceptionV3/model_2a.h5",
+      "size_bytes": 93609192,
+      "sha256": "f4e215f31d7c8a5b1b8939b6a605e6bb7d06c53b4a20f206ea81952dd2ae11a4",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.4864407777786255
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2B",
+      "path": "InceptionV3/model_2b.h5",
+      "size_bytes": 93608680,
+      "sha256": "9bd423d0996d3c7e6f0d61e2683ade31eec79ad809a1688d52bf5ebc9e69ac63",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        4
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.3097703158855438
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2C",
+      "path": "InceptionV3/model_2c.h5",
+      "size_bytes": 93609192,
+      "sha256": "4c69d4ce5b61782d1c60410002218702c592dc8297428f3a87af0aa6715d9b7f",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.6397033333778381
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2D",
+      "path": "InceptionV3/model_2d.h5",
+      "size_bytes": 93609192,
+      "sha256": "72c31befb72a26683f4ae45ac59d6149a3c36e49692c2c1222af1aead085857c",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.23244592547416687
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2E",
+      "path": "InceptionV3/model_2e.h5",
+      "size_bytes": 93609192,
+      "sha256": "276c92a226213809b887d3b1cf17ad2f6e6e090f12dc1d370113b6d4a3de77e6",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d",
+      "golden_predicted_index": 0,
+      "golden_confidence": 0.48605114221572876
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-2F",
+      "path": "InceptionV3/model_2f.h5",
+      "size_bytes": 93609704,
+      "sha256": "110146592d6413b153236f97b945a2ce97ecb7d5a5536c29c82e807234fcd754",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab",
+      "golden_predicted_index": 5,
+      "golden_confidence": 0.7409579753875732
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3A",
+      "path": "InceptionV3/model_3a.h5",
+      "size_bytes": 93609192,
+      "sha256": "72b4c4219e9685d2307a10f2122a4302263023e37848738b7e3b5f1e72c5ef2a",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5881123542785645
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3B",
+      "path": "InceptionV3/model_3b.h5",
+      "size_bytes": 93609192,
+      "sha256": "7cbcdf42b8024b869e0050a91a4553f237fc8ea95669944aed7cdd301fc96fc2",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.24239885807037354
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3C",
+      "path": "InceptionV3/model_3c.h5",
+      "size_bytes": 93609192,
+      "sha256": "30eb64bd17fc0814995751600aa12c6fcba12eef61f8f42331f6aa981d8f0335",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.40114450454711914
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3D",
+      "path": "InceptionV3/model_3d.h5",
+      "size_bytes": 93609192,
+      "sha256": "e6ba68dd6ed38d9872452fa36eaae5fc61474b34c153e0aa5468921ba38bad02",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.6767524480819702
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3E",
+      "path": "InceptionV3/model_3e.h5",
+      "size_bytes": 93609192,
+      "sha256": "6966f9ab3f46c57cf78705520d3d7b7248480ae6c5d3b15d01b6dc571be40acc",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.7978048324584961
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-3F",
+      "path": "InceptionV3/model_3f.h5",
+      "size_bytes": 93609192,
+      "sha256": "4be7ed158444e47159a7682e9356c6bacfa11c9294a60257778d8352350604e5",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.6452392935752869
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4A",
+      "path": "InceptionV3/model_4a.h5",
+      "size_bytes": 93609192,
+      "sha256": "61cf1bc5243a84661e2a1d6dfd5699a2c34a6e8034b3197815a45be61077e752",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.9244043231010437
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4B",
+      "path": "InceptionV3/model_4b.h5",
+      "size_bytes": 93609192,
+      "sha256": "3d72fd709073421abdcde3f37f14a703a923ce7eead23f89d0b90c5c185409dc",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.7049086689949036
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4C",
+      "path": "InceptionV3/model_4c.h5",
+      "size_bytes": 93609192,
+      "sha256": "ab4540134786ae80f931229cafefc56850ed049ecabae1e6bd61bf6c31885479",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.8561850190162659
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4D",
+      "path": "InceptionV3/model_4d.h5",
+      "size_bytes": 93609192,
+      "sha256": "6de387549895773659bd2e6021269ede6f0b1f8cd4d5dc3eee7792be421f1094",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.692126452922821
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4E",
+      "path": "InceptionV3/model_4e.h5",
+      "size_bytes": 93609192,
+      "sha256": "5e0284d78b76e97ab965d7805f3d4608e01b5cda47a5fd46a43bc81a9d1c1a44",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        5
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.9105944037437439
+    },
+    {
+      "architecture": "InceptionV3",
+      "section": "S-4F",
+      "path": "InceptionV3/model_4f.h5",
+      "size_bytes": 93609704,
+      "sha256": "bae983e4b2674335b3b36a0cfd0d14b22afda94e39c67a9ae24c73f3fac3fa08",
+      "format": "keras-h5",
+      "input_shape": [
+        299,
+        299,
+        3
+      ],
+      "output_shape": [
+        null,
+        6
+      ],
+      "class_labels": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "score_mapping_source": "services.class_mapping.CLASS_SCORE_MAP",
+      "dataset_preprocessing": "SECTION_BINARY_NON_INVERTED",
+      "application_preprocessing": "KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
+      "runtime_color_mode": "rgb_from_binary_non_inverted",
+      "training_ratio": "80:20",
+      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f",
+      "golden_predicted_index": 5,
+      "golden_confidence": 0.41470450162887573
+    }
+  ]
 }

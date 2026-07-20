@@ -1,11 +1,12 @@
 {
   "schema_version": 2,
   "manifest_type": "emathtoco-runtime-model-manifest",
-  "generated_at": "2026-07-14T18:35:14.267546+00:00",
-  "generated_from": "Models_New training export + local filesystem checksum",
-  "source_training_manifest": "training_manifest.json",
+  "generated_at": "2026-07-20T07:46:46.293Z",
+  "generated_from": "Models_New training manifest, training golden inference, and local H5 checksums",
+  "source_training_manifest": "training_manifest_export.json",
   "source_golden_inference": "golden_inference.json",
   "model_collection": "Models_New",
+  "model_release": "models-new-densenet-bn-policy-aligned-2026-07-19",
   "total_artifacts": 72,
   "expected_sections": [
     "S-1A",
@@ -33,30 +34,33 @@
     "S-4E",
     "S-4F"
   ],
+  "artifact_contract_sha256": "abd9ccbe33a93bbedc9f374e74b22495413cb291e79e52116313e79a384126c8",
   "training_dataset_path": "/content/drive/MyDrive/2026-Caps02/Dataset/Preprocessed_Dataset",
   "training_dataset_preprocessing": {
     "decision_source": "verified_training_dataset_samples_2026-07-17",
-    "source_notebook_in_repo": "Preprocessing.ipynb",
-    "submitted_reference_notebook": "D:\\Download\\Preprocessing2026_(FIX)_.ipynb",
+    "source_notebook_in_repo": "Models_New/Preprocessing.ipynb",
     "preprocessing_notebook_status": "non_authoritative_polarity_mismatch_with_training_dataset_artifacts",
-    "evidence": "Two real PNG files from the exact Preprocessed_Dataset used by all training notebooks were verified as single-channel binary images containing only pixel values 0 and 255, with black ink on a white background. Training notebooks load them using ImageDataGenerator default RGB mode and architecture-specific preprocess_input.",
-    "verified_sample_sha256": [
-      "674e82df1629eb1d00fa75f3bc845f2867789a5e152861af94bf87e06193c729",
-      "048227d3d6d961b71bf52145429e1bd0180d09e3de29c5cf95fcb6536bb84c83"
-    ],
+    "evidence": "Verified training PNGs are binary black ink on white background. Training loaders use RGB mode and architecture-specific Keras preprocess_input.",
     "steps": [
       "use the complete section crop produced by the frontend without a second contour crop",
       "convert to grayscale and apply non-inverted Otsu binary threshold",
       "replicate the binary image across three RGB channels",
-      "resize according to architecture input_shape with nearest-neighbor interpolation",
-      "apply Keras application preprocess_input according to architecture"
+      "resize with nearest-neighbor interpolation to the architecture input shape",
+      "apply the matching Keras application preprocess_input function"
     ]
   },
   "runtime_policy": {
     "no_frontend_flow_change": true,
     "model_root_switchable": true,
     "recommended_default_architecture": "MobileNetV2",
-    "keep_old_models_until_vps_smoke_passes": true
+    "exactly_one_rq_worker": true,
+    "manifest_required_for_readiness": true
+  },
+  "architecture_comparison_policy": {
+    "shared_classification_head_protocol": true,
+    "shared_batch_normalization_policy": true,
+    "backbone_architectures_are_identical": false,
+    "note": "The three backbones remain architecturally different. Comparable means the fine-tuning, BatchNormalization freeze policy, head protocol, split, and optimization settings are aligned; it does not mean identical layer counts."
   },
   "architectures": {
     "MobileNetV2": {
@@ -116,8 +120,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1a.h5",
-      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932"
+      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.8253636956214905
     },
     {
       "architecture": "MobileNetV2",
@@ -148,8 +153,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1b.h5",
-      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268"
+      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.7260649800300598
     },
     {
       "architecture": "MobileNetV2",
@@ -180,8 +186,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1c.h5",
-      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9"
+      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.436369925737381
     },
     {
       "architecture": "MobileNetV2",
@@ -212,8 +219,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1d.h5",
-      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da"
+      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.6074833869934082
     },
     {
       "architecture": "MobileNetV2",
@@ -244,8 +252,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1e.h5",
-      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89"
+      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.46104034781455994
     },
     {
       "architecture": "MobileNetV2",
@@ -277,8 +286,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_1f.h5",
-      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1"
+      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.3401152491569519
     },
     {
       "architecture": "MobileNetV2",
@@ -309,8 +319,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2a.h5",
-      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc"
+      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.49248069524765015
     },
     {
       "architecture": "MobileNetV2",
@@ -340,8 +351,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2b.h5",
-      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913"
+      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.33492252230644226
     },
     {
       "architecture": "MobileNetV2",
@@ -372,8 +384,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2c.h5",
-      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d"
+      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.45642217993736267
     },
     {
       "architecture": "MobileNetV2",
@@ -404,8 +417,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2d.h5",
-      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4"
+      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.2508333921432495
     },
     {
       "architecture": "MobileNetV2",
@@ -436,8 +450,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2e.h5",
-      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d"
+      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.3115898370742798
     },
     {
       "architecture": "MobileNetV2",
@@ -469,8 +484,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_2f.h5",
-      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab"
+      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.4863142669200897
     },
     {
       "architecture": "MobileNetV2",
@@ -501,8 +517,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3a.h5",
-      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e"
+      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.632737934589386
     },
     {
       "architecture": "MobileNetV2",
@@ -533,8 +550,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3b.h5",
-      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9"
+      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.35374051332473755
     },
     {
       "architecture": "MobileNetV2",
@@ -565,8 +583,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3c.h5",
-      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a"
+      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.2951601445674896
     },
     {
       "architecture": "MobileNetV2",
@@ -597,8 +616,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3d.h5",
-      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0"
+      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.4666287899017334
     },
     {
       "architecture": "MobileNetV2",
@@ -629,8 +649,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3e.h5",
-      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e"
+      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.4847816228866577
     },
     {
       "architecture": "MobileNetV2",
@@ -661,8 +682,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_3f.h5",
-      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748"
+      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.8309188485145569
     },
     {
       "architecture": "MobileNetV2",
@@ -693,8 +715,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4a.h5",
-      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52"
+      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.545976996421814
     },
     {
       "architecture": "MobileNetV2",
@@ -725,8 +748,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4b.h5",
-      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8"
+      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.2698458433151245
     },
     {
       "architecture": "MobileNetV2",
@@ -757,8 +781,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4c.h5",
-      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e"
+      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.3164175748825073
     },
     {
       "architecture": "MobileNetV2",
@@ -789,8 +814,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4d.h5",
-      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e"
+      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.46020013093948364
     },
     {
       "architecture": "MobileNetV2",
@@ -821,8 +847,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/model_4e.h5",
-      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa"
+      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.38279667496681213
     },
     {
       "architecture": "MobileNetV2",
@@ -854,15 +881,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_MOBILENETV2_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/MobileNetV2/Section_4f.h5",
-      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f"
+      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f",
+      "golden_predicted_index": 5,
+      "golden_confidence": 0.8812562823295593
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1A",
       "path": "DenseNet121/model_1a.h5",
-      "size_bytes": 33852192,
-      "sha256": "c1c856721ba18a0315e4358cc56346e01b6492a79fae93644b84f4fed211db6c",
+      "size_bytes": 33838104,
+      "sha256": "2f68ae4d7f4d3fbcd16f2c796f49a23e1bd732bc487ef078cf97bfd4780ab11f",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -885,15 +913,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1a.h5",
-      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932"
+      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.6616722941398621
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1B",
       "path": "DenseNet121/model_1b.h5",
-      "size_bytes": 33852704,
-      "sha256": "e2abc14ccf6d1f81ec51ab11c85f43b62a0bcc2832afba19596c819e5e441061",
+      "size_bytes": 33838616,
+      "sha256": "6315bc4c9986773428970d5fcacf8881f43cf655cd1c14e87fb4c0dec275fdbf",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -917,15 +946,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1b.h5",
-      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268"
+      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5918288230895996
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1C",
       "path": "DenseNet121/model_1c.h5",
-      "size_bytes": 33852704,
-      "sha256": "36e498e04e34c1291850f7059ce60afb0887db2c7aea51092ab3a9c4ab1f2842",
+      "size_bytes": 33838616,
+      "sha256": "0e1a2724ed31d284ee32b8ef3b0515619d2187d2bed0e2eefc604955c9215cb7",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -949,15 +979,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1c.h5",
-      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9"
+      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.6818879842758179
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1D",
       "path": "DenseNet121/model_1d.h5",
-      "size_bytes": 33852704,
-      "sha256": "a0ee7e0f35c92825c1a8a0c749c8b584bb45acfd7452318c1743564147ae7978",
+      "size_bytes": 33838616,
+      "sha256": "2af53609d96b5fb8a678e2fa1d919b2cb479fa62e6bfd761c298726721b8e421",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -981,15 +1012,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1d.h5",
-      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da"
+      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5923583507537842
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1E",
       "path": "DenseNet121/model_1e.h5",
-      "size_bytes": 33852704,
-      "sha256": "c325447ea83d693ee508d6b67616b9e61dc541a32e3fff636c78d1e201cb8c75",
+      "size_bytes": 33838616,
+      "sha256": "4f3923d5a16a40fbf68ff62474f2d8939d1d4bb3278896b842997ee675bff528",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1013,15 +1045,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1e.h5",
-      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89"
+      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.4289613664150238
     },
     {
       "architecture": "DenseNet121",
       "section": "S-1F",
       "path": "DenseNet121/model_1f.h5",
-      "size_bytes": 33853216,
-      "sha256": "9829dd6db55b3e94479fefb00932038e898d9366dc690a46d57b9939edf41eb0",
+      "size_bytes": 33839128,
+      "sha256": "a237ee079e42eb25f11e294184e3fcc3c892c581d1f6ccd85524e47a7178fe2f",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1046,15 +1079,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_1f.h5",
-      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1"
+      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.22322364151477814
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2A",
       "path": "DenseNet121/model_2a.h5",
-      "size_bytes": 33852704,
-      "sha256": "c9ec912410ab194f17bcc7d422dc9e69624ee26b6207f87f40c35cfbb6735ce4",
+      "size_bytes": 33838616,
+      "sha256": "c90b5863431b342c3f3f3bf4e268935c40c599ce0881973a0f107a0b3cafc6cc",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1078,15 +1112,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2a.h5",
-      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc"
+      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.6566637754440308
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2B",
       "path": "DenseNet121/model_2b.h5",
-      "size_bytes": 33852192,
-      "sha256": "124399807c78b999eec4c7c6c0679a120e0ba5d126a141f17353a7149bc50693",
+      "size_bytes": 33838104,
+      "sha256": "a1371fcde957f6f19dcd4e320af57bbe055481544a937c26a11b72370469bfb5",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1109,15 +1144,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2b.h5",
-      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913"
+      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.31765416264533997
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2C",
       "path": "DenseNet121/model_2c.h5",
-      "size_bytes": 33852704,
-      "sha256": "0d41da53e4d02aa1963e3ee4eade6a9304d95b9f79823a73b0e3ea485df116c6",
+      "size_bytes": 33838616,
+      "sha256": "03e451225b88a850df7a8e77f70393b90d2b231e366ab2ddb1f4ffcf7775d08a",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1141,15 +1177,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2c.h5",
-      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d"
+      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.46021875739097595
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2D",
       "path": "DenseNet121/model_2d.h5",
-      "size_bytes": 33852704,
-      "sha256": "a67b7532a353abc2b61a78eba0af1883dc0f90c61f6a7780d290a2afe3bf83e4",
+      "size_bytes": 33838616,
+      "sha256": "2577688415b289c01464baa3f8621d73377af3909b30dc9402f003b4863c7fd4",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1173,15 +1210,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2d.h5",
-      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4"
+      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.264744371175766
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2E",
       "path": "DenseNet121/model_2e.h5",
-      "size_bytes": 33852704,
-      "sha256": "77c57f81b70ec2fff391652f5caf78b0a89d8a2146a6f2d1f9538c412648195c",
+      "size_bytes": 33838616,
+      "sha256": "9052be9a11efe1c32db4409d374b44cc5ae7d7450adbe45281911d0d9622c1af",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1205,15 +1243,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2e.h5",
-      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d"
+      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.3804997205734253
     },
     {
       "architecture": "DenseNet121",
       "section": "S-2F",
       "path": "DenseNet121/model_2f.h5",
-      "size_bytes": 33853216,
-      "sha256": "3c22d30d15c3e8d0f67609f77d1f902b70e2d5288a6412bfd5ebdae6c8a826bc",
+      "size_bytes": 33839128,
+      "sha256": "2ee861b8adc3e482401733ecc3d94f300f7450fe79156c271679e94df4e5b2f0",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1238,15 +1277,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_2f.h5",
-      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab"
+      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab",
+      "golden_predicted_index": 5,
+      "golden_confidence": 0.772537887096405
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3A",
       "path": "DenseNet121/model_3a.h5",
-      "size_bytes": 33852704,
-      "sha256": "ee2380784787ef931a82c65babf0cf30f5af6a324401b316ab70bd2bf0d21ea0",
+      "size_bytes": 33838616,
+      "sha256": "9a35b9021f20fa05ca262cd86c7a2e48a7075403018975cb5855acff8570a26b",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1270,15 +1310,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3a.h5",
-      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e"
+      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.6630373597145081
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3B",
       "path": "DenseNet121/model_3b.h5",
-      "size_bytes": 33852704,
-      "sha256": "9ce2652b62e9ea7fce9abbf231ee9f69bf0f4e62b01b86975a579a82048b4212",
+      "size_bytes": 33838616,
+      "sha256": "86dfd49c701f8a9014391b397a52cf3d250f97bbb26e388820753f3653616845",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1302,15 +1343,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3b.h5",
-      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9"
+      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.29985666275024414
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3C",
       "path": "DenseNet121/model_3c.h5",
-      "size_bytes": 33852704,
-      "sha256": "8e12ed4d573adee5cc3cef6eb827c2baf7d4d4e1cad88bd23c6613438bec0cec",
+      "size_bytes": 33838616,
+      "sha256": "228df7c15a24149c894cf9ee65743bb8614431c632995c70d4e59e2fb0d1b262",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1334,15 +1376,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3c.h5",
-      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a"
+      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.38381269574165344
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3D",
       "path": "DenseNet121/model_3d.h5",
-      "size_bytes": 33852704,
-      "sha256": "c34f0679a892b43a3114d691b05f63ca524af1a53cc3d283e178153e686b749e",
+      "size_bytes": 33838616,
+      "sha256": "7f47a20ce96f2228d060333e3b1f1da787123e0c2b4d997c12b9c6ebcf747ac4",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1366,15 +1409,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3d.h5",
-      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0"
+      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5872805118560791
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3E",
       "path": "DenseNet121/model_3e.h5",
-      "size_bytes": 33852704,
-      "sha256": "f764b48cd5ba8cb50b49775f847b421809ccdd5ebaf5470a5b2e6408fbd3ece4",
+      "size_bytes": 33838616,
+      "sha256": "2236bcbf0c17d6932f8fe681aa457150f1e903eed38b386df4af16a1a6c428be",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1398,15 +1442,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3e.h5",
-      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e"
+      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5884029865264893
     },
     {
       "architecture": "DenseNet121",
       "section": "S-3F",
       "path": "DenseNet121/model_3f.h5",
-      "size_bytes": 33852704,
-      "sha256": "29b57197d7c5d4cdbf9052a8645b53f0af7a1df09baf67327a485f21ef0b3290",
+      "size_bytes": 33838616,
+      "sha256": "8bbcbd1732c36fa9c27f52f4da2cbf9d74e179a167ec359d658cef7f902a6a28",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1430,15 +1475,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_3f.h5",
-      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748"
+      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.755183219909668
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4A",
       "path": "DenseNet121/model_4a.h5",
-      "size_bytes": 33852704,
-      "sha256": "9422fa36dcb8f298072bb37d71391956a69d6ec78e2e946af2ea7d0d56ad32d7",
+      "size_bytes": 33838616,
+      "sha256": "abc8729cfbac84869d6927c69a92571328d7030c7a66d39ffb4418baa1d69d4d",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1462,15 +1508,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4a.h5",
-      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52"
+      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5972515940666199
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4B",
       "path": "DenseNet121/model_4b.h5",
-      "size_bytes": 33852704,
-      "sha256": "a0fdf3fee80b04999d82f42dc6bd68a9d4876618ae67e1a07f01e4d6e58c0d1e",
+      "size_bytes": 33838616,
+      "sha256": "98429a66268f1651bc1bdfa7fc8116540622cfd4124c02e97450d4b533656aa7",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1494,15 +1541,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4b.h5",
-      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8"
+      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.517076849937439
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4C",
       "path": "DenseNet121/model_4c.h5",
-      "size_bytes": 33852704,
-      "sha256": "261eada52fd205196ad413768cf0cb4884261124993534332230c56c7ad9e05f",
+      "size_bytes": 33838616,
+      "sha256": "21e5ba738584eb92393f8c351e2de6dad099cb3eda28e3be509d996c0012030c",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1526,15 +1574,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4c.h5",
-      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e"
+      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.755730152130127
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4D",
       "path": "DenseNet121/model_4d.h5",
-      "size_bytes": 33852704,
-      "sha256": "1cd561078f5aed01bd27c17d6b923e2aaa53c4d40e52a17f9164a7e81b06d5a4",
+      "size_bytes": 33838616,
+      "sha256": "d7e1bc53e4c60f8f042098a868b78b062107dad74b8d85712801cfe2d76742ee",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1558,15 +1607,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4d.h5",
-      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e"
+      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.42055606842041016
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4E",
       "path": "DenseNet121/model_4e.h5",
-      "size_bytes": 33852704,
-      "sha256": "2cf8a59945e06a3997595ac74dda5d0c3789b57fc563418bcf13e57b9270233b",
+      "size_bytes": 33838616,
+      "sha256": "7afc6f78e750ece2a85046ffb3941774c41896f04a3d534d7705d7360150c290",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1590,15 +1640,16 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4e.h5",
-      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa"
+      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.4882640540599823
     },
     {
       "architecture": "DenseNet121",
       "section": "S-4F",
       "path": "DenseNet121/model_4f.h5",
-      "size_bytes": 33853216,
-      "sha256": "a49310e3aeaeab66f3f3aad2b675478be3ea72635818d16f6cd43e2d714f0954",
+      "size_bytes": 33839128,
+      "sha256": "d5e79a91d443b86cd7d0f18efad0a893c91a39422e300c87e7116021640d0850",
       "format": "keras-h5",
       "input_shape": [
         224,
@@ -1623,8 +1674,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_DENSENET121_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/DenseNet121/model_4f.h5",
-      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f"
+      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f",
+      "golden_predicted_index": 5,
+      "golden_confidence": 0.5501746535301208
     },
     {
       "architecture": "InceptionV3",
@@ -1654,8 +1706,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1a.h5",
-      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932"
+      "golden_sample_image_sha256": "48800656bb63d33a00445e2672aa17e77444a9b8b27381021b7e485eb05bf932",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.880620002746582
     },
     {
       "architecture": "InceptionV3",
@@ -1686,8 +1739,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1b.h5",
-      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268"
+      "golden_sample_image_sha256": "7d26c25c72f32ceeb2a773a93dfac1c1fc35ff8d15353c4fe1a34afa84971268",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5429455637931824
     },
     {
       "architecture": "InceptionV3",
@@ -1718,8 +1772,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1c.h5",
-      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9"
+      "golden_sample_image_sha256": "113271c6f68eae0075dacb8869550851cfa0792b70ba49f1a5c7b153366314d9",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.48341166973114014
     },
     {
       "architecture": "InceptionV3",
@@ -1750,8 +1805,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1d.h5",
-      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da"
+      "golden_sample_image_sha256": "546b6b866dd1cfab93c95ddf2544fad9aa311d60f34c55b3c64029a4c3a144da",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.9315504431724548
     },
     {
       "architecture": "InceptionV3",
@@ -1782,8 +1838,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1e.h5",
-      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89"
+      "golden_sample_image_sha256": "94aab94c55a29b63ee0f6dd21daf1d6b4f03835691d7e8f7fc7134e69cfeff89",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.45110249519348145
     },
     {
       "architecture": "InceptionV3",
@@ -1815,8 +1872,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_1f.h5",
-      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1"
+      "golden_sample_image_sha256": "07c3a12f802a1f9f1fca76eb7341f0b69f84f09ce4bd0fa35da060daf10792e1",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.18752755224704742
     },
     {
       "architecture": "InceptionV3",
@@ -1847,8 +1905,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2a.h5",
-      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc"
+      "golden_sample_image_sha256": "f64ec41c803cf2d9708cc8e1e5adc4b062c2c7b047c89ec0e371ff2336495ccc",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.4864407777786255
     },
     {
       "architecture": "InceptionV3",
@@ -1878,8 +1937,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2b.h5",
-      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913"
+      "golden_sample_image_sha256": "f782d6128a9db458ada683ad848070bbd812aa20816c64d3ce143a19a4851913",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.3097703158855438
     },
     {
       "architecture": "InceptionV3",
@@ -1910,8 +1970,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2c.h5",
-      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d"
+      "golden_sample_image_sha256": "5c7e4f9da0eab4e47b0caf72544b93944b1dd297e37af78b8aa36e704ce5210d",
+      "golden_predicted_index": 1,
+      "golden_confidence": 0.6397033333778381
     },
     {
       "architecture": "InceptionV3",
@@ -1942,8 +2003,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2d.h5",
-      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4"
+      "golden_sample_image_sha256": "baeec233ec975d68b04cc65834f3fc82f05fabb5a2912a0c8beb6cd985e2c0c4",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.23244592547416687
     },
     {
       "architecture": "InceptionV3",
@@ -1974,8 +2036,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2e.h5",
-      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d"
+      "golden_sample_image_sha256": "046812e87217aa816d14a6a3a0a9ff48891b7c276fbcd61add27538be229262d",
+      "golden_predicted_index": 0,
+      "golden_confidence": 0.48605114221572876
     },
     {
       "architecture": "InceptionV3",
@@ -2007,8 +2070,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_2f.h5",
-      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab"
+      "golden_sample_image_sha256": "9e1f0a538e905f5667a580360c64b330e4b311dedefab9af0237dd5d856d6cab",
+      "golden_predicted_index": 5,
+      "golden_confidence": 0.7409579753875732
     },
     {
       "architecture": "InceptionV3",
@@ -2039,8 +2103,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3a.h5",
-      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e"
+      "golden_sample_image_sha256": "e6243a8e834f3129dc8c6eb1aecac0d165ce3c2f465cd9043e9d54aeab57f55e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.5881123542785645
     },
     {
       "architecture": "InceptionV3",
@@ -2071,8 +2136,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3b.h5",
-      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9"
+      "golden_sample_image_sha256": "67ff8cc7b79bf5d915fb0de5ae57ef3d2407efa635888a4aef98aaf9b1a381c9",
+      "golden_predicted_index": 3,
+      "golden_confidence": 0.24239885807037354
     },
     {
       "architecture": "InceptionV3",
@@ -2103,8 +2169,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3c.h5",
-      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a"
+      "golden_sample_image_sha256": "18ec9b1b0cf6cf3abfe94b318fbc9a043cdc83071f1b86d2778ab85b2732701a",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.40114450454711914
     },
     {
       "architecture": "InceptionV3",
@@ -2135,8 +2202,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3d.h5",
-      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0"
+      "golden_sample_image_sha256": "1421171a8f1fc6e68b3b156803faba6dfe2e68503bed0cedcbdaeae97b8a63d0",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.6767524480819702
     },
     {
       "architecture": "InceptionV3",
@@ -2167,8 +2235,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3e.h5",
-      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e"
+      "golden_sample_image_sha256": "c703d1c673e6b20fbb51264e4207d8606625cc9b62be0e1bbef08c1a8daae93e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.7978048324584961
     },
     {
       "architecture": "InceptionV3",
@@ -2199,8 +2268,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_3f.h5",
-      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748"
+      "golden_sample_image_sha256": "e7e0ba2ce13f96ec890c4bb5c3e0e56b7bfd3097f328d850768af96429dee748",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.6452392935752869
     },
     {
       "architecture": "InceptionV3",
@@ -2231,8 +2301,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4a.h5",
-      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52"
+      "golden_sample_image_sha256": "d1f1037096522dfe5c031456a5484b0da299468f98c8f0877afd543d2f809d52",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.9244043231010437
     },
     {
       "architecture": "InceptionV3",
@@ -2263,8 +2334,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4b.h5",
-      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8"
+      "golden_sample_image_sha256": "999dbda08beb10c8113879c3ea1247b6748b840b7ef59c134e3c9b9c284042f8",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.7049086689949036
     },
     {
       "architecture": "InceptionV3",
@@ -2295,8 +2367,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4c.h5",
-      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e"
+      "golden_sample_image_sha256": "928a4ff44233c570d97cb14d9bfbaf8fe9140a215a1de435f3b3cbebd1336d6e",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.8561850190162659
     },
     {
       "architecture": "InceptionV3",
@@ -2327,8 +2400,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4d.h5",
-      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e"
+      "golden_sample_image_sha256": "41aeffa4c6df3dc764f640adbd3fb1640f01c1389bbb623b6204677e8075493e",
+      "golden_predicted_index": 2,
+      "golden_confidence": 0.692126452922821
     },
     {
       "architecture": "InceptionV3",
@@ -2359,8 +2433,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4e.h5",
-      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa"
+      "golden_sample_image_sha256": "cf63fdbfb25b4125c252a7b0e42581773a56afc6d5195a673b090f9a90d90bfa",
+      "golden_predicted_index": 4,
+      "golden_confidence": 0.9105944037437439
     },
     {
       "architecture": "InceptionV3",
@@ -2392,8 +2467,9 @@
       "preprocessing": "SECTION_BINARY_NON_INVERTED_NEAREST_THEN_KERAS_INCEPTIONV3_PREPROCESS_INPUT",
       "runtime_color_mode": "rgb_from_binary_non_inverted",
       "training_ratio": "80:20",
-      "source_training_path": "/content/drive/MyDrive/models_emathtoco/InceptionV3/model_4f.h5",
-      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f"
+      "golden_sample_image_sha256": "c2695dbc2da130bd6fe89eaf4cd0b5d98c05c48b2ab95b2cbbff25cb8df2567f",
+      "golden_predicted_index": 5,
+      "golden_confidence": 0.41470450162887573
     }
   ]
 }
