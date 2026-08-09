@@ -34,7 +34,7 @@ from utils.logging_helper import logger
 load_dotenv()
 runtime_settings = load_runtime_settings()
 
-app = FastAPI(title="EMATHTOCO AI Backend Versi 1.0.0")
+app = FastAPI(title="SCOVIS AI Backend Versi 1.0.0")
 
 _rate_limit_buckets: dict[str, deque[float]] = defaultdict(deque)
 _supabase_readiness_cache = {

@@ -60,7 +60,7 @@ class JsonFormatter(logging.Formatter):
             log_data["exception"] = redact(self.formatException(record.exc_info))
         return json.dumps(log_data, ensure_ascii=False)
 
-def setup_logger(name: str = "emathtoco") -> logging.Logger:
+def setup_logger(name: str = "scovis") -> logging.Logger:
     logger = logging.getLogger(name)
     if not logger.handlers:
         level_name = os.getenv("LOG_LEVEL", "INFO").upper()

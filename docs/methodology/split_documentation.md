@@ -1,6 +1,6 @@
 # Dataset Split Methodology
 
-Dokumen ini menjelaskan aturan validasi split dataset untuk model E-MATHTOCO.
+Dokumen ini menjelaskan aturan validasi split dataset untuk model SCOVIS.
 
 ## Prinsip utama
 

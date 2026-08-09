@@ -1,4 +1,4 @@
-# SHA-256 Registry — 72 Model H5 E-MATHTOCO
+# SHA-256 Registry — 72 Model H5 SCOVIS
 
 > Sumber: `Models_New/manifest.json` dan `Models_New/training_manifest.json`
 > Verifikasi disk: sample MobileNetV2/model_1a.h5 dikonfirmasi cocok via `certutil` pada 2026-07-18.

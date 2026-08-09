@@ -1,6 +1,6 @@
 # Draft BAB 3 — Spesifikasi Dataset dan Model Deep Learning
 
-> Dokumen ini berisi paragraf siap pakai untuk BAB 3 tugas akhir E-MATHTOCO.
+> Dokumen ini berisi paragraf siap pakai untuk BAB 3 tugas akhir SCOVIS.
 > Semua angka bersumber dari artefak repository. Frasa guardrail diterapkan sesuai `08_ACADEMIC_CLAIM_GUARDRAILS.md`.
 
 ---
@@ -47,4 +47,4 @@ Eksperimen menggunakan fixed split 80:20 pada 65 gambar per section. Metrik eval
 
 Kalimat transisi:
 
-> Spesifikasi dan desain tersebut menjadi dasar realisasi E-MATHTOCO. BAB 4 menjelaskan implementasi setiap subsistem, hubungan antarkomponen, serta prosedur pengoperasian solusi yang dibangun.
+> Spesifikasi dan desain tersebut menjadi dasar realisasi SCOVIS. BAB 4 menjelaskan implementasi setiap subsistem, hubungan antarkomponen, serta prosedur pengoperasian solusi yang dibangun.

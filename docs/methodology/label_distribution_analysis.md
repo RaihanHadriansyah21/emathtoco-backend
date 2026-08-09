@@ -1,4 +1,4 @@
-# Distribusi Label per Section — Dataset E-MATHTOCO
+# Distribusi Label per Section — Dataset SCOVIS
 
 > Sumber: `services/class_mapping.py` dan `Models_New/manifest.json`
 > Evidence level: **B** — berasal dari label yang dikenali oleh model, bukan dari listing file dataset asli.

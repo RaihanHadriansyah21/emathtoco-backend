@@ -1,4 +1,4 @@
-# Draft Lineage — 72 Model H5 E-MATHTOCO
+# Draft Lineage — 72 Model H5 SCOVIS
 
 > Tanggal: 2026-07-18
 > Sumber: `training_manifest.json`, `manifest.json`, `golden_inference.json`, `Preprocessing.ipynb`

@@ -1,6 +1,6 @@
 # Draft BAB 5 — Analisis Dataset dan Model
 
-> Dokumen ini berisi paragraf siap pakai untuk BAB 5 tugas akhir E-MATHTOCO.
+> Dokumen ini berisi paragraf siap pakai untuk BAB 5 tugas akhir SCOVIS.
 > Semua angka bersumber dari artefak repository. Guardrail akademik diterapkan.
 
 ---

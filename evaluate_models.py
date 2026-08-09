@@ -9,7 +9,7 @@ from pathlib import Path
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Evaluate real E-MATHTOCO images. No synthetic fallback exists.",
+        description="Evaluate real SCOVIS images. No synthetic fallback exists.",
     )
     parser.add_argument("--dataset-manifest", type=Path, required=True)
     parser.add_argument("--model-manifest", type=Path, required=True)

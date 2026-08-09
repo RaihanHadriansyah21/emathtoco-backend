@@ -1,5 +1,5 @@
 {
-  "name": "emathtoco-backend-tooling",
+  "name": "scovis-backend-tooling",
   "private": true,
   "scripts": {
     "db:init": "supabase init",

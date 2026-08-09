@@ -1,6 +1,6 @@
 # Draft BAB 4 — Implementasi Model dan Pipeline AI
 
-> Dokumen ini berisi paragraf siap pakai untuk BAB 4 tugas akhir E-MATHTOCO.
+> Dokumen ini berisi paragraf siap pakai untuk BAB 4 tugas akhir SCOVIS.
 > Semua angka bersumber dari artefak repository.
 
 ---
