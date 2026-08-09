@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [switch]$WriteGolden,
-    [string]$Image = "emathtoco-worker:local",
+    [string]$Image = "scovis-worker:local",
     [string]$ModelDirectory = "Models_New",
     [ValidateRange(0, 71)]
     [int]$StartIndex = 0,

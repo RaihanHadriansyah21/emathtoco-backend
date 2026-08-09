@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "manifest_type": "emathtoco-runtime-model-manifest",
+  "manifest_type": "scovis-runtime-model-manifest",
   "generated_at": "2026-07-20T07:46:46.293Z",
   "generated_from": "Models_New training manifest, training golden inference, and local H5 checksums",
   "source_training_manifest": "training_manifest_export.json",

@@ -1,4 +1,4 @@
-name: emathtoco
+name: scovis
 
 services:
   caddy:
@@ -30,7 +30,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.api
-    image: emathtoco-api:${IMAGE_TAG:-local}
+    image: scovis-api:${IMAGE_TAG:-local}
     restart: unless-stopped
     env_file: ${ENV_FILE:-.env.vps}
     expose:
@@ -61,7 +61,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.worker
-    image: emathtoco-worker:${IMAGE_TAG:-local}
+    image: scovis-worker:${IMAGE_TAG:-local}
     restart: unless-stopped
     init: true
     stop_grace_period: 90s

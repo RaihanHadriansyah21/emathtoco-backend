@@ -24,8 +24,8 @@ jobs:
       - run: ruff check .
       - run: python -m pytest
       - run: python -m pip check
-      - run: docker build -f Dockerfile.api -t emathtoco-api:${{ github.sha }} .
-      - run: docker build -f Dockerfile.worker -t emathtoco-worker:${{ github.sha }} .
+      - run: docker build -f Dockerfile.api -t scovis-api:${{ github.sha }} .
+      - run: docker build -f Dockerfile.worker -t scovis-worker:${{ github.sha }} .
 
   database:
     runs-on: ubuntu-24.04

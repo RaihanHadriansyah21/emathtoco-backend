@@ -228,7 +228,7 @@ const artifactContractDigest = createHash("sha256")
 const generatedAt = new Date().toISOString();
 const manifest = {
   schema_version: 2,
-  manifest_type: "emathtoco-runtime-model-manifest",
+  manifest_type: "scovis-runtime-model-manifest",
   generated_at: generatedAt,
   generated_from:
     "Models_New training manifest, training golden inference, and local H5 checksums",

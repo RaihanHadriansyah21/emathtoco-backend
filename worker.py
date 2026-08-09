@@ -40,7 +40,7 @@ def main() -> None:
         # blocking the replacement worker until Redis expires it.
         name=(
             os.getenv("RQ_WORKER_NAME")
-            or f"emathtoco-ai-worker-{socket.gethostname()}-{uuid4().hex[:12]}"
+            or f"scovis-ai-worker-{socket.gethostname()}-{uuid4().hex[:12]}"
         ),
     )
     worker.work(with_scheduler=True)
