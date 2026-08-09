@@ -78,11 +78,11 @@ class Settings(BaseModel):
             raise RuntimeError(f"Invalid application configuration: {exc}") from exc
 
         if settings.is_production and settings.allowed_origins != (
-            "https://emathtoco.vercel.app",
+            "https://scovis.vercel.app",
         ):
             raise RuntimeError(
                 "Production ALLOWED_ORIGINS must be exactly "
-                "https://emathtoco.vercel.app"
+                "https://scovis.vercel.app"
             )
         return settings
 

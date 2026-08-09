@@ -12,7 +12,7 @@ services:
     environment:
       REDIS_URL: redis://redis:6379/0
       MODEL_ROOT: /models
-      ALLOWED_ORIGINS: http://localhost:3000,https://emathtoco.vercel.app
+      ALLOWED_ORIGINS: http://localhost:3000,https://scovis.vercel.app
       ENVIRONMENT: development
       LOG_LEVEL: INFO
       RQ_JOB_TIMEOUT: "1800"
@@ -24,7 +24,7 @@ services:
     environment:
       REDIS_URL: redis://redis:6379/0
       MODEL_ROOT: /models
-      ALLOWED_ORIGINS: http://localhost:3000,https://emathtoco.vercel.app
+      ALLOWED_ORIGINS: http://localhost:3000,https://scovis.vercel.app
       ENVIRONMENT: development
       LOG_LEVEL: INFO
       RQ_JOB_TIMEOUT: "1800"

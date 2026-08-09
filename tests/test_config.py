@@ -37,6 +37,21 @@ def test_production_origin_is_exact(monkeypatch: pytest.MonkeyPatch) -> None:
         Settings.from_environment()
 
 
+def test_production_accepts_scovis_origin(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
+    monkeypatch.setenv("SUPABASE_SECRET_KEY", "s" * 32)
+    monkeypatch.setenv("REDIS_URL", "redis://redis:6379/0")
+    monkeypatch.setenv("MODEL_ROOT", str(Path.cwd() / "Models"))
+    monkeypatch.setenv("ALLOWED_ORIGINS", "https://scovis.vercel.app")
+    monkeypatch.setenv("ENVIRONMENT", "production")
+    monkeypatch.setenv("LOG_LEVEL", "INFO")
+    monkeypatch.setenv("RQ_JOB_TIMEOUT", "1800")
+
+    settings = Settings.from_environment()
+
+    assert settings.allowed_origins == ("https://scovis.vercel.app",)
+
+
 def test_development_accepts_legacy_service_role_name(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -45,7 +60,7 @@ def test_development_accepts_legacy_service_role_name(
     monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
     monkeypatch.setenv("REDIS_URL", "redis://redis:6379/0")
     monkeypatch.setenv("MODEL_ROOT", str(Path.cwd() / "Models"))
-    monkeypatch.setenv("ALLOWED_ORIGINS", "https://emathtoco.vercel.app")
+    monkeypatch.setenv("ALLOWED_ORIGINS", "https://scovis.vercel.app")
     monkeypatch.setenv("ENVIRONMENT", "development")
     monkeypatch.setenv("LOG_LEVEL", "INFO")
     monkeypatch.setenv("RQ_JOB_TIMEOUT", "1800")
@@ -63,7 +78,7 @@ def test_production_rejects_legacy_service_role_name(
     monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
     monkeypatch.setenv("REDIS_URL", "redis://redis:6379/0")
     monkeypatch.setenv("MODEL_ROOT", str(Path.cwd() / "Models"))
-    monkeypatch.setenv("ALLOWED_ORIGINS", "https://emathtoco.vercel.app")
+    monkeypatch.setenv("ALLOWED_ORIGINS", "https://scovis.vercel.app")
     monkeypatch.setenv("ENVIRONMENT", "production")
     monkeypatch.setenv("LOG_LEVEL", "INFO")
     monkeypatch.setenv("RQ_JOB_TIMEOUT", "1800")
